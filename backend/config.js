@@ -1,2 +1,5 @@
-export const PORT = 5000;
-export const mongoDBURL = `mongodb+srv://dominicpunladomingo120:root123@appointment-services.ji56rwp.mongodb.net/appointment?retryWrites=true&w=majority`;
+// config.js
+require("dotenv").config();
+
+export const PORT = process.env.PORT;
+export const mongoDBURL = process.env.MONGODB_URI;
