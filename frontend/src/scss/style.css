@@ -125,7 +125,7 @@ li a:hover::after {
   font-family: boldest !important;
 }
 
-button {
+.fadeout--btn {
   position: relative;
   display: inline-block;
   margin: 10px;
@@ -143,11 +143,11 @@ button {
   border-radius: 10px;
   box-shadow: inset 0 0 0 0 #fe8401;
 }
-button:hover {
+.fadeout--btn:hover {
   color: white;
   box-shadow: inset 0 -100px 0 0 #fe8401;
 }
-button:active {
+.fadeout--btn:active {
   transform: scale(0.9);
 }
 
@@ -216,4 +216,87 @@ button:active {
   height: 4px !important;
   border-radius: 0px !important;
   background: #ea9234 !important;
+}
+
+.contact {
+  padding: 2rem;
+}
+
+.contact--container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 2rem;
+  justify-content: space-around;
+  border-bottom: 2px solid black;
+}
+.contact--container .contact--logo img {
+  width: 100px;
+  height: 100px;
+}
+.contact--container .contact-nav-list {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin: 0 !important;
+  padding: 0;
+}
+.contact--container .contact-nav-list li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.contact--container .contact-nav-list li a {
+  text-decoration: none;
+  color: black;
+}
+.contact--container .contact-socmed-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.contact--container .contact-socmed-list a {
+  color: black;
+}
+
+.other--section {
+  background-color: aliceblue;
+  text-align: start;
+  padding: 2rem;
+  margin: 50px 0px;
+}
+.other--section .other--content {
+  padding-left: 3rem;
+  width: 50%;
+}
+.other--section .other--content h1 {
+  font-size: 30px;
+}
+.other--section .other--content p {
+  color: gray;
+}
+
+.fadein--btn {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+  padding: 15px 30px;
+  text-align: center;
+  font-size: 18px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  color: white;
+  z-index: 2;
+  background: transparent;
+  cursor: pointer;
+  transition: ease-out 0.5s;
+  border: 2px solid #fe8401;
+  border-radius: 10px;
+  box-shadow: inset 0 -100px 0 0 #fe8401;
+}
+.fadein--btn:hover {
+  color: #fe8401;
+  box-shadow: inset 0 0 0 0 #fe8401;
+}
+.fadein--btn:active {
+  transform: scale(0.9);
 }/*# sourceMappingURL=style.css.map */

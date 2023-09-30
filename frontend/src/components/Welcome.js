@@ -1,4 +1,4 @@
-import logo from "../images/logo1.png";
+import logo from "../images/logo.png";
 import hairService from "../images/hair.jpg";
 import nailService from "../images/nails.jpg";
 import "../scss/style.css";
@@ -7,7 +7,13 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import image from "../images/img.png";
-import { BsChevronRight } from "react-icons/bs";
+import {
+  BsChevronRight,
+  BsGithub,
+  BsFacebook,
+  BsLinkedin,
+  BsInstagram,
+} from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import "swiper/css";
 import React, { useRef, useState } from "react";
@@ -51,7 +57,9 @@ function Welcome() {
               empower independent beauty service providers to thrive and expand
               their businesses
             </p>
-            <button onClick={() => navigate("/login")}> Get Started</button>
+            <button className="fadeout--btn" onClick={() => navigate("/login")}>
+              Get Started
+            </button>
           </div>
           <div className="img">
             <img src={image} />
@@ -74,8 +82,8 @@ function Welcome() {
               ready to help you look and feel at your best.
             </p>
             <div className="btns">
-              <button>Learn More</button>{" "}
-              <button>
+              <button className="fadeout--btn">Learn More</button>
+              <button className="fadein--btn">
                 Sign Up <BsChevronRight style={{ fontWeight: "bold" }} />
               </button>
             </div>
@@ -112,7 +120,6 @@ function Welcome() {
           className="mySwiper"
         >
           <SwiperSlide>
-            {" "}
             <Card sx={{ maxWidth: 500 }}>
               <CardMedia
                 sx={{ height: 140 }}
@@ -253,8 +260,83 @@ function Welcome() {
           </SwiperSlide>
         </Swiper>
       </section>
-      <section style={{ height: "100vh", marginTop: "200px" }}>
-        <h1>Contacts</h1>
+      <section className="other--section">
+        <div className="other--content">
+          <p>Discover</p>
+          <h1>
+            Are you a independent beauty services business owner? We help you
+            grow your business!
+          </h1>
+          <p>
+            Enhance your business and streamline the scheduling process for both
+            you and your customers, allowing them to conveniently book
+            appointments at their preferred times
+          </p>
+          <div className="btns">
+            <button className="explore--btn fadein--btn">Explore</button>
+          </div>
+        </div>
+      </section>
+      <section className="contact">
+        <div className="contact--container">
+          <div className="contact--logo">
+            <img src={logo} />
+          </div>
+          <ul className="contact-nav-list">
+            <li>
+              <a href="#about">About us</a>
+            </li>
+            <li>
+              <a href="#">Services</a>
+            </li>
+
+            <li>
+              <a href="#">Partners</a>
+            </li>
+            <li>
+              <a href="#">Contacts</a>
+            </li>
+          </ul>
+          <ul className="contact-socmed-list">
+            <li>
+              <a href="#">
+                <BsGithub />
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <BsFacebook />{" "}
+              </a>
+            </li>
+
+            <li>
+              <a href="#">
+                <BsInstagram />
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <BsLinkedin />
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "1rem",
+            }}
+          >
+            <p>&copy; 2023 GlamourEase. All Rights Reserved.</p>
+            <a href="#">Privacy Policy</a>
+            <a href="#"> Terms and conditions</a>
+            <a href="#"> Cookie Policy</a>
+          </div>
+        </div>
       </section>
     </div>
   );

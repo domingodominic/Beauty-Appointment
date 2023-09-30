@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import { Route, Routes } from "react-router-dom";
 import UpdateCustomer from "./components/UpdateCustomer";
 import DeleteCustomer from "./components/DeleteCustomer";
