@@ -7,64 +7,135 @@ import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
-import "../styles/LogIn.css";
+import image from "../images/registration-form-img.jpg";
+import axios from "axios"; // Import Axios
+import "../scss/style.css";
 
 function LoginForm() {
   const { enqueueSnackbar } = useSnackbar();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
-  const handleSignin = () => {
-    if (username === "admin" && password === "admin") {
-      enqueueSnackbar("Sign in successful", { variant: "success" });
-      navigate("/Municipality");
-    } else {
-      enqueueSnackbar("Sign in failed", { variant: "error" });
+  const handleSignin = async () => {
+    try {
+      const response = await axios.post("http://localhost:5000/user/login", {
+        email,
+        password,
+      });
+
+      if (response.status === 200) {
+        enqueueSnackbar("Sign in successful", { variant: "success" });
+        navigate("/Municipality");
+      } else {
+        enqueueSnackbar("Sign in failed", { variant: "error" });
+      }
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar("An error occurred during sign in", { variant: "error" });
     }
   };
+
   return (
     <div className="container--body">
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "100vh", // Optional: Center vertically in the viewport
-        }}
-        className="login--body"
-      >
-        <Card sx={{ minWidth: 300, maxWidth: 50 }}>
-          <CardContent>
-            <h2>Sign In</h2>
+      <div className="content--container">
+        <div className="reg--bg">
+          <img src={image} alt="salon image woman" />
+        </div>
+        <div className="form">
+          <h2 style={{ color: "#ff9a9c", marginBottom: "3rem" }}>Sign In</h2>
+          <div>
             <TextField
               id="outlined-basic"
               label="Username"
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               variant="outlined"
-              sx={{ marginBottom: 1, padding: 0.1 }}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#ff9a9c", // Border color for the default state
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#fdcfcf", // Border color when hovered
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#fdcfcf", // Border color when focused
+                  },
+                },
+                "& label.Mui-focused": {
+                  color: "#fdcfcf", // Text color when focused
+                },
+                marginBottom: 2,
+                padding: 0.1,
+                width: "100%",
+              }}
             />
+          </div>
+
+          <div>
             <TextField
               id="outlined-password-input"
               label="Password"
               type="password"
               onChange={(e) => setPassword(e.target.value)}
-              autoComplete="current-password"
-              sx={{ marginBottom: 1, padding: 0.1 }}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#ff9a9c", // Border color for the default state
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#fdcfcf", // Border color when hovered
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#fdcfcf", // Border color when focused
+                  },
+                },
+                "& label.Mui-focused": {
+                  color: "#fdcfcf", // Text color when focused
+                },
+                marginBottom: 1,
+                padding: 0.1,
+                width: "100%",
+              }}
             />
-            <Button variant="outlined" onClick={() => handleSignin()}>
+          </div>
+          <div>
+            <div
+              style={{
+                display: "flex",
+                fontSize: "11px",
+                justifyContent: "center",
+              }}
+            >
+              <input type="checkbox" />{" "}
+              <p>
+                I agree all statements in{" "}
+                <Link to="/" style={{ color: "#ff9a9c" }}>
+                  Terms & Conditions
+                </Link>
+              </p>
+            </div>
+            <button
+              style={{ marginBottom: "3rem" }}
+              className="fadein--btn"
+              onClick={() => handleSignin()}
+            >
               Sign In
-            </Button>
+            </button>
+          </div>
 
-            <p>
-              <Link to="/Municipality">
-                Don't have an account yet? Sign Up here.
-              </Link>
-            </p>
-          </CardContent>
-        </Card>
-      </Box>
+          <p style={{ fontSize: "12px" }}>
+            Already have an account?
+            <Link
+              to="/signup"
+              style={{ color: "#ff9a9c", fontSize: "12px", marginLeft: "2px" }}
+            >
+              Log in here.
+            </Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

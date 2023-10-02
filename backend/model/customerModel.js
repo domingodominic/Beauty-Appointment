@@ -28,4 +28,4 @@ const customerSchema = mongoose.Schema(
   }
 );
 
-export const customer = mongoose.model("Cat", customerSchema);
+export const customer = mongoose.model("Customer", customerSchema);

@@ -66,6 +66,26 @@ function Welcome() {
           </div>
         </section>
       </div>
+      <section
+        className="other--section"
+        style={{ maginTop: "0px !important" }}
+      >
+        <div className="other--content">
+          <p>Discover</p>
+          <h1>
+            Are you a independent beauty services business owner? We help you
+            grow your business!
+          </h1>
+          <p>
+            Enhance your business and streamline the scheduling process for both
+            you and your customers, allowing them to conveniently book
+            appointments at their preferred times
+          </p>
+          <div className="btns">
+            <button className="explore--btn fadein--btn">Explore</button>
+          </div>
+        </div>
+      </section>
       <section className="about" id="about">
         <div className="about--content">
           <div>
@@ -93,6 +113,7 @@ function Welcome() {
           <div className="img"></div>
         </div>
       </section>
+
       <section className="services" id="services">
         <h1>Discover our Beauty services</h1>
 
@@ -131,7 +152,7 @@ function Welcome() {
                   gutterBottom
                   variant="h5"
                   component="div"
-                  style={{ color: "orange", fontFamily: "semi-bold" }}
+                  style={{ color: "#ff9a9c", fontFamily: "semi-bold" }}
                 >
                   Nails Services
                 </Typography>
@@ -154,7 +175,7 @@ function Welcome() {
                   gutterBottom
                   variant="h5"
                   component="div"
-                  style={{ color: "orange", fontFamily: "semi-bold" }}
+                  style={{ color: "#ff9a9c", fontFamily: "semi-bold" }}
                 >
                   Hair Services
                 </Typography>
@@ -177,7 +198,7 @@ function Welcome() {
                   gutterBottom
                   variant="h5"
                   component="div"
-                  style={{ color: "orange", fontFamily: "semi-bold" }}
+                  style={{ color: "#ff9a9c", fontFamily: "semi-bold" }}
                 >
                   Makeup Services
                 </Typography>
@@ -200,7 +221,7 @@ function Welcome() {
                   gutterBottom
                   variant="h5"
                   component="div"
-                  style={{ color: "orange", fontFamily: "semi-bold" }}
+                  style={{ color: "#ff9a9c", fontFamily: "semi-bold" }}
                 >
                   Nails Services
                 </Typography>
@@ -224,7 +245,7 @@ function Welcome() {
                   gutterBottom
                   variant="h5"
                   component="div"
-                  style={{ color: "orange", fontFamily: "semi-bold" }}
+                  style={{ color: "#ff9a9c", fontFamily: "semi-bold" }}
                 >
                   Nails Services
                 </Typography>
@@ -247,7 +268,7 @@ function Welcome() {
                   gutterBottom
                   variant="h5"
                   component="div"
-                  style={{ color: "orange", fontFamily: "semi-bold" }}
+                  style={{ color: "#ff9a9c", fontFamily: "semi-bold" }}
                 >
                   Makeup Services
                 </Typography>
@@ -329,6 +350,7 @@ function Welcome() {
               justifyContent: "center",
               alignItems: "center",
               gap: "1rem",
+              color: "white",
             }}
           >
             <p>&copy; 2023 GlamourEase. All Rights Reserved.</p>

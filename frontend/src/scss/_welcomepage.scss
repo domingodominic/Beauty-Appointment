@@ -1,12 +1,12 @@
 $color_1: #ff840000;
 $color_2: #191444;
-$color_3: #fe8401;
+$color_3: #ff9a9c;
 $color_4: white;
 $font-family_1: regular;
 $font-family_2: semi-bold;
 $font-family_3: boldest;
 $background-color_1: #f4ffff;
-$background-color_2: #fe8401;
+$background-color_2: #ff9a9c;
 
 /* welcome.css */
 @font-face {
@@ -27,7 +27,7 @@ $background-color_2: #fe8401;
 }
 .welcome--container {
   position: relative;
-  background-color: $background-color_1;
+  // background-color: $background-color_1;
   box-shadow: "inset 0 0 0 100vw rgba(0, 0, 0, 0.5)";
   width: 100vw;
   height: 100%;
@@ -112,8 +112,8 @@ li {
   height: 100%;
   .section--container--bg {
     position: absolute;
-    background-image: url("../images/Mataura.png");
-    background-repeat: no-repeat;
+    // background-image: url("../images/Mataura.png");
+    // background-repeat: no-repeat;
     opacity: 0.1;
     background-size: cover;
     width: 100%;
@@ -150,12 +150,12 @@ li {
   background: transparent;
   cursor: pointer;
   transition: ease-out 0.5s;
-  border: 2px solid #fe8401;
+  border: 2px solid #ff9a9c;
   border-radius: 10px;
-  box-shadow: inset 0 0 0 0 #fe8401;
+  box-shadow: inset 0 0 0 0 #ff9a9c;
   &:hover {
-    color: $color_4;
-    box-shadow: inset 0 -100px 0 0 #fe8401;
+    color: #ff9a9c;
+    box-shadow: inset 0 -100px 0 0 #ff9a9c;
   }
   &:active {
     transform: scale(0.9);
@@ -214,13 +214,13 @@ li {
   height: 300px;
 }
 .swiper-pagination-bullet-active {
-  background: #ff8400 !important;
+  background: #ff9a9c !important;
 }
 .swiper-pagination-clickable {
   .swiper-pagination-bullet {
     width: 26px !important;
     height: 4px !important;
     border-radius: 0px !important;
-    background: #ea9234 !important;
+    background: #ff9a9c !important;
   }
 }
