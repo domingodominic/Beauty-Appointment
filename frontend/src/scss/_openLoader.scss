@@ -1,0 +1,44 @@
+.cssanimation,
+.cssanimation span {
+  color: white;
+  font-family: boldest;
+  font-size: 4rem;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+.cssanimation span {
+  display: inline-block;
+}
+
+.leMagnify span {
+  animation-name: leMagnify;
+}
+@keyframes leMagnify {
+  50% {
+    transform: scale(1.8);
+    letter-spacing: 26px;
+    text-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.logo--float {
+  height: 300px;
+
+  //   animation-delay: 1s;
+}
+
+.logo--floating {
+  animation-delay: 2s;
+  animation-name: logoFloat;
+  opacity: 0;
+  animation-fill-mode: forwards;
+
+  animation-duration: 1.5s;
+}
+
+@keyframes logoFloat {
+  to {
+    opacity: 1;
+  }
+}

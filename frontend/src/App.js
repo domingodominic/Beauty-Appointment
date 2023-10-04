@@ -8,14 +8,15 @@ import Spinner from "./components/Spinner";
 import Welcome from "./components/Welcome";
 import LoginForm from "./components/LogInForm";
 import Signup from "./components/Signup";
-import NewForm from "./components/NewForm";
+import OpenLoader from "./components/OpenLoader";
+
 import "./App.css";
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/newform" element={<NewForm />} />
+        <Route path="/loader" element={<OpenLoader />} />
         <Route path="/" element={<Welcome />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<Signup />} />

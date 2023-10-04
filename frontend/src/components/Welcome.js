@@ -57,7 +57,7 @@ function Welcome() {
               empower independent beauty service providers to thrive and expand
               their businesses
             </p>
-            <button className="fadeout--btn" onClick={() => navigate("/login")}>
+            <button className="fadein--btn" onClick={() => navigate("/login")}>
               Get Started
             </button>
           </div>
@@ -350,7 +350,7 @@ function Welcome() {
               justifyContent: "center",
               alignItems: "center",
               gap: "1rem",
-              color: "white",
+              color: "#191444",
             }}
           >
             <p>&copy; 2023 GlamourEase. All Rights Reserved.</p>

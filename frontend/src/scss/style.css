@@ -83,6 +83,7 @@ li a:hover::after {
   font-weight: bold;
   font-size: 20px;
   padding: 20px;
+  color: #191444;
 }
 .logo img {
   margin-left: 10px;
@@ -98,6 +99,7 @@ li a:hover::after {
   align-items: center;
   width: 100%;
   height: 100%;
+  background-color: rgba(253, 207, 207, 0.3294117647);
 }
 .section--container .section--container--bg {
   position: absolute;
@@ -118,7 +120,7 @@ li a:hover::after {
   font-size: 3rem;
   font-weight: bolder;
   line-height: 4rem;
-  color: #ff9a9c;
+  color: #1f4172;
   font-family: boldest !important;
 }
 
@@ -141,7 +143,7 @@ li a:hover::after {
   box-shadow: inset 0 0 0 0 #ff9a9c;
 }
 .fadeout--btn:hover {
-  color: #ff9a9c;
+  color: white;
   box-shadow: inset 0 -100px 0 0 #ff9a9c;
 }
 .fadeout--btn:active {
@@ -164,6 +166,7 @@ li a:hover::after {
   text-align: start;
   display: grid;
   line-height: 2rem;
+  background-color: rgba(253, 207, 207, 0.3294117647);
   grid-template-columns: 1fr 1fr;
 }
 .about .about--content {
@@ -176,6 +179,10 @@ li a:hover::after {
   font-size: 2rem;
   font-weight: bold;
   line-height: 2.5rem;
+  color: #191444;
+}
+.about .about--content p {
+  color: rgba(25, 20, 68, 0.7294117647);
 }
 .about .about--img {
   padding: 5rem;
@@ -187,6 +194,8 @@ li a:hover::after {
 
 .services {
   position: relative;
+  padding: 9rem 0rem 9rem 0rem;
+  background-color: rgba(253, 207, 207, 0.3294117647);
   height: 100%;
   width: 100%;
 }
@@ -217,7 +226,7 @@ li a:hover::after {
 
 .contact {
   padding: 2rem;
-  background-color: #949494;
+  background-color: rgba(253, 207, 207, 0.3294117647);
 }
 
 .contact--container {
@@ -245,7 +254,7 @@ li a:hover::after {
 }
 .contact--container .contact-nav-list li a {
   text-decoration: none;
-  color: white;
+  color: #191444;
 }
 .contact--container .contact-socmed-list {
   padding: 0;
@@ -253,11 +262,11 @@ li a:hover::after {
   list-style: none;
 }
 .contact--container .contact-socmed-list a {
-  color: white;
+  color: #191444;
 }
 
 .other--section {
-  background-color: aliceblue;
+  background-color: rgba(240, 248, 255, 0.6588235294);
   text-align: start;
   padding: 2rem;
 }
@@ -267,6 +276,7 @@ li a:hover::after {
 }
 .other--section .other--content h1 {
   font-size: 30px;
+  color: #191444;
 }
 .other--section .other--content p {
   color: gray;
@@ -298,13 +308,6 @@ li a:hover::after {
   transform: scale(0.9);
 }
 
-.parent--container--form {
-  display: block;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid red;
-  width: 80%;
-}
 @keyframes bringDown {
   from {
     transform: translateY(-200px);
@@ -350,5 +353,46 @@ body {
   }
   img {
     display: none;
+  }
+}
+.cssanimation,
+.cssanimation span {
+  color: white;
+  font-family: boldest;
+  font-size: 4rem;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+.cssanimation span {
+  display: inline-block;
+}
+
+.leMagnify span {
+  animation-name: leMagnify;
+}
+
+@keyframes leMagnify {
+  50% {
+    transform: scale(1.8);
+    letter-spacing: 26px;
+    text-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4);
+  }
+}
+.logo--float {
+  height: 300px;
+}
+
+.logo--floating {
+  animation-delay: 2s;
+  animation-name: logoFloat;
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-duration: 1.5s;
+}
+
+@keyframes logoFloat {
+  to {
+    opacity: 1;
   }
 }/*# sourceMappingURL=style.css.map */
