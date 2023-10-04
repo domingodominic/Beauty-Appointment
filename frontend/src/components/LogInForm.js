@@ -39,7 +39,7 @@ function LoginForm() {
 
   return (
     <div className="container--body">
-      <div className="content--container">
+      <div className="content--container login--bodycd">
         <div className="reg--bg">
           <img src={image} alt="salon image woman" />
         </div>
