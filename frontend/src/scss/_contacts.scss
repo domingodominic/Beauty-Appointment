@@ -1,13 +1,14 @@
 .contact {
   padding: 2rem;
+  background-color: #fdcfcf54;
 }
 
 .contact--container {
   display: flex;
   flex-wrap: wrap;
-  padding: 2rem;
-  justify-content: space-around;
-  border-bottom: 2px solid black;
+  padding: 4rem 3rem;
+  justify-content: space-between;
+  border-bottom: 1px solid white;
 
   .contact--logo {
     img {
@@ -29,7 +30,7 @@
 
       a {
         text-decoration: none;
-        color: black;
+        color: $color_2;
       }
     }
   }
@@ -39,7 +40,7 @@
     margin: 0;
     list-style: none;
     a {
-      color: black;
+      color: $color_2;
     }
   }
 }

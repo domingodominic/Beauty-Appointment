@@ -17,7 +17,6 @@
 
 .welcome--container {
   position: relative;
-  background-color: #f4ffff;
   box-shadow: "inset 0 0 0 100vw rgba(0, 0, 0, 0.5)";
   width: 100vw;
   height: 100%;
@@ -66,11 +65,11 @@ li a::after {
   left: 0;
   bottom: -5px;
   height: 2px;
-  background-color: #fe8401;
+  background-color: #ff9a9c;
 }
 li a:hover {
   transition: 0.5s;
-  color: #fe8401;
+  color: #ff9a9c;
 }
 li a:hover::after {
   transition: 0.5s;
@@ -84,6 +83,7 @@ li a:hover::after {
   font-weight: bold;
   font-size: 20px;
   padding: 20px;
+  color: #191444;
 }
 .logo img {
   margin-left: 10px;
@@ -99,11 +99,10 @@ li a:hover::after {
   align-items: center;
   width: 100%;
   height: 100%;
+  background-color: rgba(253, 207, 207, 0.3294117647);
 }
 .section--container .section--container--bg {
   position: absolute;
-  background-image: url("../images/Mataura.png");
-  background-repeat: no-repeat;
   opacity: 0.1;
   background-size: cover;
   width: 100%;
@@ -121,7 +120,7 @@ li a:hover::after {
   font-size: 3rem;
   font-weight: bolder;
   line-height: 4rem;
-  color: #fe8401;
+  color: #1f4172;
   font-family: boldest !important;
 }
 
@@ -134,18 +133,18 @@ li a:hover::after {
   font-size: 18px;
   letter-spacing: 1px;
   text-decoration: none;
-  color: #fe8401;
+  color: #ff9a9c;
   z-index: 2;
   background: transparent;
   cursor: pointer;
   transition: ease-out 0.5s;
-  border: 2px solid #fe8401;
+  border: 2px solid #ff9a9c;
   border-radius: 10px;
-  box-shadow: inset 0 0 0 0 #fe8401;
+  box-shadow: inset 0 0 0 0 #ff9a9c;
 }
 .fadeout--btn:hover {
   color: white;
-  box-shadow: inset 0 -100px 0 0 #fe8401;
+  box-shadow: inset 0 -100px 0 0 #ff9a9c;
 }
 .fadeout--btn:active {
   transform: scale(0.9);
@@ -167,6 +166,7 @@ li a:hover::after {
   text-align: start;
   display: grid;
   line-height: 2rem;
+  background-color: rgba(253, 207, 207, 0.3294117647);
   grid-template-columns: 1fr 1fr;
 }
 .about .about--content {
@@ -179,6 +179,10 @@ li a:hover::after {
   font-size: 2rem;
   font-weight: bold;
   line-height: 2.5rem;
+  color: #191444;
+}
+.about .about--content p {
+  color: rgba(25, 20, 68, 0.7294117647);
 }
 .about .about--img {
   padding: 5rem;
@@ -190,6 +194,8 @@ li a:hover::after {
 
 .services {
   position: relative;
+  padding: 9rem 0rem 9rem 0rem;
+  background-color: rgba(253, 207, 207, 0.3294117647);
   height: 100%;
   width: 100%;
 }
@@ -208,26 +214,27 @@ li a:hover::after {
 }
 
 .swiper-pagination-bullet-active {
-  background: #ff8400 !important;
+  background: #ff9a9c !important;
 }
 
 .swiper-pagination-clickable .swiper-pagination-bullet {
   width: 26px !important;
   height: 4px !important;
   border-radius: 0px !important;
-  background: #ea9234 !important;
+  background: #ff9a9c !important;
 }
 
 .contact {
   padding: 2rem;
+  background-color: rgba(253, 207, 207, 0.3294117647);
 }
 
 .contact--container {
   display: flex;
   flex-wrap: wrap;
-  padding: 2rem;
-  justify-content: space-around;
-  border-bottom: 2px solid black;
+  padding: 4rem 3rem;
+  justify-content: space-between;
+  border-bottom: 1px solid white;
 }
 .contact--container .contact--logo img {
   width: 100px;
@@ -247,7 +254,7 @@ li a:hover::after {
 }
 .contact--container .contact-nav-list li a {
   text-decoration: none;
-  color: black;
+  color: #191444;
 }
 .contact--container .contact-socmed-list {
   padding: 0;
@@ -255,14 +262,13 @@ li a:hover::after {
   list-style: none;
 }
 .contact--container .contact-socmed-list a {
-  color: black;
+  color: #191444;
 }
 
 .other--section {
-  background-color: aliceblue;
+  background-color: rgba(240, 248, 255, 0.6588235294);
   text-align: start;
   padding: 2rem;
-  margin: 50px 0px;
 }
 .other--section .other--content {
   padding-left: 3rem;
@@ -270,6 +276,7 @@ li a:hover::after {
 }
 .other--section .other--content h1 {
   font-size: 30px;
+  color: #191444;
 }
 .other--section .other--content p {
   color: gray;
@@ -289,14 +296,103 @@ li a:hover::after {
   background: transparent;
   cursor: pointer;
   transition: ease-out 0.5s;
-  border: 2px solid #fe8401;
+  border: 2px solid #ff9a9c;
   border-radius: 10px;
-  box-shadow: inset 0 -100px 0 0 #fe8401;
+  box-shadow: inset 0 -100px 0 0 #ff9a9c;
 }
 .fadein--btn:hover {
-  color: #fe8401;
-  box-shadow: inset 0 0 0 0 #fe8401;
+  color: #ff9a9c;
+  box-shadow: inset 0 0 0 0 #ff9a9c;
 }
 .fadein--btn:active {
   transform: scale(0.9);
+}
+
+@keyframes bringDown {
+  from {
+    transform: translateY(-200px);
+  }
+}
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.content--container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.form {
+  background-color: white;
+  padding: 2rem;
+}
+
+.reg--bg {
+  background-color: white;
+}
+
+.container--body {
+  background: linear-gradient(90deg, rgb(248, 218, 210) 29%, rgb(251, 210, 208) 59%, rgb(253, 207, 207) 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.login--body {
+  animation: bringDown 1s forwards;
+}
+
+@media (max-width: 800px) {
+  .content--container {
+    display: block;
+  }
+  img {
+    display: none;
+  }
+}
+.cssanimation,
+.cssanimation span {
+  color: white;
+  font-family: boldest;
+  font-size: 4rem;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+.cssanimation span {
+  display: inline-block;
+}
+
+.leMagnify span {
+  animation-name: leMagnify;
+}
+
+@keyframes leMagnify {
+  50% {
+    transform: scale(1.8);
+    letter-spacing: 26px;
+    text-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4);
+  }
+}
+.logo--float {
+  height: 300px;
+}
+
+.logo--floating {
+  animation-delay: 2s;
+  animation-name: logoFloat;
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-duration: 1.5s;
+}
+
+@keyframes logoFloat {
+  to {
+    opacity: 1;
+  }
 }/*# sourceMappingURL=style.css.map */
