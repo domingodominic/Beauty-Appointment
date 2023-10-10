@@ -6,13 +6,15 @@ import mongoose from "mongoose";
 import cors from "cors";
 
 const app = express();
+
 const corsOptions = {
-  origin: "http://localhost:3000", // Allow requests from this origin
-  methods: "PUT,POST,DELETE,GET", // Allow these HTTP methods
-  allowedHeaders: "Content-Type", // Allow the specified header
+  origin: "http://localhost:3000",
+  methods: "PUT,POST,DELETE,GET",
+  allowedHeaders: "Content-Type",
 };
 
 app.use(cors(corsOptions));
+
 app.get("/", (req, res) => {
   // Use `res` instead of `response`
   console.log(req);
