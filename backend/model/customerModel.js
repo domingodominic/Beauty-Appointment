@@ -10,18 +10,46 @@ const customerSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    middlename: {
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
       type: String,
       required: true,
     },
-    services: {
-      type: Array,
+    confirmPassword: {
+      type: String,
+      required: true,
+    },
+    municipality: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    contactNumber: {
+      type: Number,
+      required: true,
+    },
+    birthdate: {
+      type: Date,
       required: true,
     },
     age: {
       type: Number,
       required: true,
     },
+    selected_service: [
+      {
+        service_provider: { type: String },
+        appointed_service: { type: String },
+        appointed_price: { type: Number },
+      },
+    ],
   },
   {
     timestamps: true,

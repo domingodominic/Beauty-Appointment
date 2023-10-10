@@ -347,6 +347,12 @@ body {
   animation: bringDown 1s forwards;
 }
 
+.input--divider {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
 @media (max-width: 800px) {
   .content--container {
     display: block;

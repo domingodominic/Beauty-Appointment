@@ -25,12 +25,7 @@ body {
   background-color: $background-color_1;
 }
 .container--body {
-  background: linear-gradient(
-    90deg,
-    rgba(248, 218, 210, 1) 29%,
-    rgba(251, 210, 208, 1) 59%,
-    rgba(253, 207, 207, 1) 100%
-  );
+  background: linear-gradient(90deg, #f8dad2 29%, #fbd2d0 59%, #fdcfcf 100%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,6 +33,12 @@ body {
 }
 .login--body {
   animation: bringDown 1s forwards;
+}
+
+.input--divider {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 @media (max-width: 800px) {

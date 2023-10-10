@@ -5,13 +5,19 @@ const router = express.Router();
 //route to save a custome details
 
 router.post("/", async (request, response) => {
+  console.log("request body", request.body);
   try {
     if (
       !request.body.firstname ||
       !request.body.lastname ||
-      !request.body.middlename ||
-      !request.body.services ||
-      !request.body.age
+      !request.body.age ||
+      !request.body.username ||
+      !request.body.email ||
+      !request.body.confirmPassword ||
+      !request.body.password ||
+      !request.body.birthdate ||
+      !request.body.municipality ||
+      !request.body.contactNumber
     ) {
       return response
         .status(400)
@@ -21,9 +27,14 @@ router.post("/", async (request, response) => {
     const newCustomer = {
       firstname: request.body.firstname,
       lastname: request.body.lastname,
-      middlename: request.body.middlename,
-      services: request.body.services,
       age: request.body.age,
+      username: request.body.username,
+      password: request.body.password,
+      confirmPassword: request.body.confirmPassword,
+      email: request.body.email,
+      birthdate: request.body.birthdate,
+      municipality: request.body.municipality,
+      contactNumber: request.body.contactNumber,
     };
 
     const book = await customer.create(newCustomer);
@@ -72,7 +83,8 @@ router.put("/:id", async (request, response) => {
       !request.body.lastname ||
       !request.body.middlename ||
       !request.body.services ||
-      !request.body.age
+      !request.body.age ||
+      !request.body.selected_service
     ) {
       {
         return response

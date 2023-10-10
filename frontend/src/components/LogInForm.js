@@ -126,12 +126,12 @@ function LoginForm() {
           </div>
 
           <p style={{ fontSize: "12px" }}>
-            Already have an account?
+            Don't have an account yet?
             <Link
               to="/signup"
               style={{ color: "#ff9a9c", fontSize: "12px", marginLeft: "2px" }}
             >
-              Log in here.
+              Sign up here.
             </Link>
           </p>
         </div>
