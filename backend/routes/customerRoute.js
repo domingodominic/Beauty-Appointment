@@ -2,10 +2,7 @@ import express from "express";
 import { customer } from "../model/customerModel.js";
 const router = express.Router();
 
-//route to save a custome details
-
 router.post("/", async (request, response) => {
-  console.log("request body", request.body);
   try {
     if (
       !request.body.firstname ||
