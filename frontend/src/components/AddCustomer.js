@@ -36,7 +36,6 @@ function AddCustomer() {
   return (
     <div style={{ maxWidth: "400px", margin: "0 auto" }}>
       <h1>Add Customer</h1>
-      <h1> hello </h1>
       <form onSubmit={handleSubmit} style={{ display: "grid", gap: "10px" }}>
         <div>
           <label htmlFor="firstname">First Name:</label>
