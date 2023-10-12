@@ -1,6 +1,47 @@
-import express from "express";
+import express, { request } from "express";
 import { customer } from "../model/customerModel.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"; // Import JWT library
+
 const router = express.Router();
+
+// handle sign in
+
+// Route to handle user login
+router.post("/login", async (request, response) => {
+  try {
+    const { username, password } = request.body;
+    console.log("Received request with username:", username);
+
+    const user = await customer.findOne({ username });
+    console.log("User found in the database:", user);
+    if (!user) {
+      return response
+        .status(401)
+        .json({ message: "Authentication failed username" });
+    }
+
+    // Compare the entered password with the stored password hash
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return response
+        .status(401)
+        .json({ message: "Authentication failed password" });
+    }
+
+    // If authentication succeeds, create a JWT token
+    const token = jwt.sign({ userId: user._id }, "your-secret-key", {
+      expiresIn: "1h", // Adjust token expiration as needed
+    });
+
+    // Send the token in the response
+    response.status(200).json({ token });
+  } catch (error) {
+    console.error(error);
+    response.status(500).send({ message: "Internal server error" });
+  }
+});
 
 router.post("/", async (request, response) => {
   try {
@@ -20,14 +61,18 @@ router.post("/", async (request, response) => {
         .status(400)
         .send({ message: "please send all required fields" });
     }
-
+    const hashedPassword = await bcrypt.hash(request.body.password, 12);
+    const ConfirmHashedPassword = await bcrypt.hash(
+      request.body.confirmPassword,
+      12
+    );
     const newCustomer = {
       firstname: request.body.firstname,
       lastname: request.body.lastname,
       age: request.body.age,
       username: request.body.username,
-      password: request.body.password,
-      confirmPassword: request.body.confirmPassword,
+      password: hashedPassword,
+      confirmPassword: ConfirmHashedPassword,
       email: request.body.email,
       birthdate: request.body.birthdate,
       municipality: request.body.municipality,
@@ -41,6 +86,23 @@ router.post("/", async (request, response) => {
     console.log("error: ", error);
 
     response.status(500).send({ message: error.message });
+  }
+});
+
+router.get("/data", async (request, response) => {
+  try {
+    const { username } = request.query;
+
+    const result = await customer.findOne({ username });
+
+    if (result) {
+      response.status(200).json(result);
+    } else {
+      response.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Internal Server Error" });
   }
 });
 

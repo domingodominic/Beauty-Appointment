@@ -1,6 +1,7 @@
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useState } from "react";
 import { format } from "date-fns";
 import TextField from "@mui/material/TextField";
 import React from "react";
@@ -10,7 +11,10 @@ import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import { useSnackbar } from "notistack";
 import "../scss/style.css";
+import LoginSpinner from "./LoginSpinner";
 import axios from "axios";
+
+// const bcrypt = require("bcrypt");
 
 const schema = yup.object().shape({
   firstname: yup.string().required("First Name is required"),
@@ -44,6 +48,7 @@ const schema = yup.object().shape({
 });
 
 function Signup() {
+  const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const {
     control,
@@ -52,17 +57,18 @@ function Signup() {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
   const onSubmit = async (data) => {
     console.table(data);
     try {
+      setLoading(true);
+
       const response = await axios.post("http://localhost:5000/customer", {
         firstname: data.firstname,
         lastname: data.lastname,
         age: data.age,
         birthdate: data.birthdate,
         username: data.username,
-        password: data.password,
+        password: data.password, // Store the hashed password
         confirmPassword: data.confirmPassword,
         municipality: data.municipality,
         email: data.email,
@@ -76,11 +82,14 @@ function Signup() {
       }
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="container--body">
+      {loading && <LoginSpinner />}
       <Box
         sx={{
           display: "flex",
@@ -132,7 +141,7 @@ function Signup() {
                     )}
                   />
                 </div>
-                <div style={{ flex: 1, marginRight: "1rem" }}>
+                <div style={{ flex: 1 }}>
                   <Controller
                     name="lastname"
                     control={control}
@@ -209,7 +218,7 @@ function Signup() {
                   />
                 </div>
 
-                <div style={{ flex: 1, marginRight: "1rem" }}>
+                <div style={{ flex: 1 }}>
                   <Controller
                     name="password"
                     control={control}
@@ -285,7 +294,7 @@ function Signup() {
                     )}
                   />
                 </div>
-                <div style={{ flex: 1, marginRight: "1rem" }}>
+                <div style={{ flex: 1 }}>
                   <Controller
                     name="confirmPassword"
                     control={control}
@@ -368,7 +377,7 @@ function Signup() {
                   />
                 </div>
 
-                <div style={{ flex: 1, marginRight: "1rem" }}>
+                <div style={{ flex: 1 }}>
                   <Controller
                     name="municipality"
                     control={control}
@@ -442,7 +451,7 @@ function Signup() {
                     )}
                   />
                 </div>
-                <div style={{ flex: 1, marginRight: "1rem" }}>
+                <div style={{ flex: 1 }}>
                   <Controller
                     name="birthdate"
                     control={control}

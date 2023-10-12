@@ -9,6 +9,7 @@ import Welcome from "./components/Welcome";
 import LoginForm from "./components/LogInForm";
 import Signup from "./components/Signup";
 import OpenLoader from "./components/OpenLoader";
+import LoginSpinner from "./components/LoginSpinner";
 
 import "./App.css";
 
@@ -16,6 +17,7 @@ function App() {
   return (
     <div className="App">
       <Routes>
+        <Route path="/loginSpinner" element={<LoginSpinner />} />
         <Route path="/loader" element={<OpenLoader />} />
         <Route path="/" element={<Welcome />} />
         <Route path="/login" element={<LoginForm />} />
