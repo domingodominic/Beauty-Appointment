@@ -1,9 +1,11 @@
 import express, { request, response } from "express"; // Import express without the relative path
-import { PORT, mongoDBURL } from "./config.js";
+// import { PORT, mongoDBURL } from "./config.js";//PM doms
 import customerRoute from "./routes/customerRoute.js";
 import userAccountRouter from "./routes/userAccountRouter.js";
 import mongoose from "mongoose";
 import cors from "cors";
+import providerRouter from "./routes/providerRoute.js";
+import { PORT, mongoDBURL } from "./configs.js";//sheesh ully
 
 const app = express();
 
@@ -23,8 +25,9 @@ app.get("/", (req, res) => {
 
 app.use(express.json());
 
-app.use("/customer", customerRoute);
+app.use("/customerist", customerRoute);
 app.use("/user", userAccountRouter);
+app.use("/provider", providerRouter);
 
 mongoose
   .connect(mongoDBURL)
