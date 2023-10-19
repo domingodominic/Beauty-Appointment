@@ -27,10 +27,13 @@ const providerSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-  businessName: {
-    type: String,
-    required: true,
-  },
+    businessDescription: {
+      type: String,
+    },
+    businessName: {
+      type: String,
+      required: true,
+    },
     businessEmail: {
       type: String,
       required: true,
@@ -39,19 +42,19 @@ const providerSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
-   
+
     services: [
       {
         service_name: { type: String },
-        service_description: { type: String, required: true},
+        service_description: { type: String, required: true },
         service_price: { type: Number },
-        availability_time: {type: Array},
-      }
-    ]
+        availability_time: { type: Array },
+      },
+    ],
   },
   {
     timestamps: true,
   }
 );
 
-export const providermodel = mongoose.model('provider', providerSchema);
+export const providermodel = mongoose.model("provider", providerSchema);

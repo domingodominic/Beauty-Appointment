@@ -5,6 +5,7 @@ $color_4: white;
 $font-family_1: regular;
 $font-family_2: semi-bold;
 $font-family_3: boldest;
+$font-family_4: blacks;
 $background-color_1: #f4ffff;
 $background-color_2: #ff9a9c;
 
@@ -20,6 +21,10 @@ $background-color_2: #ff9a9c;
 @font-face {
   font-family: boldest;
   src: url("../fonts/Poppins-Bold.ttf");
+}
+@font-face {
+  font-family: blacks;
+  src: url("../fonts/Poppins-Black.ttf");
 }
 
 * {

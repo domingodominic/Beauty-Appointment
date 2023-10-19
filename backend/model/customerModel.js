@@ -10,6 +10,9 @@ const customerSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    profilePicture: {
+      type: String,
+    },
     username: {
       type: String,
       required: true,

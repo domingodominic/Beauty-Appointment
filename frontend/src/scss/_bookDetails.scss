@@ -1,0 +1,36 @@
+.book--details--container {
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 10px;
+  z-index: 3;
+  background-color: #cfcfcf4a;
+  height: 100%;
+  width: 100%;
+  .book--details {
+    text-align: start;
+    animation: 0.5s forwards BookDetails;
+    max-height: 400px;
+    width: 350px;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .item {
+      border-bottom: dashed;
+      border-color: gray;
+      color: #191444;
+    }
+  }
+}
+
+@keyframes BookDetails {
+  from {
+    transform: scale(0);
+    // transform: translateY(-200px);
+  }
+}

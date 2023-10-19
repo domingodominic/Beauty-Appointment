@@ -8,6 +8,7 @@ import axios from "axios";
 import "../scss/style.css";
 import HomeCustomer from "./HomeCustomer";
 import MyContext from "./MyContext";
+import AppointmentList from "./AppointmentList";
 
 function LoginForm() {
   const { enqueueSnackbar } = useSnackbar();
@@ -52,117 +53,121 @@ function LoginForm() {
   };
 
   return (
-    <div className="container--body">
+    <div>
       {loading ? <LoginSpinner /> : null}
       {isLoggedIn ? (
         <HomeCustomer sharedData={userData} />
       ) : (
-        <div
-          className={`content--container login--bodycd ${
-            loading ? "hidden" : ""
-          }`}
-        >
-          <div className="reg--bg">
-            <img src={image} alt="salon image woman" />
-          </div>
-          <div className="form">
-            <h2 style={{ color: "#ff9a9c", marginBottom: "3rem" }}>Sign In</h2>
-            <div>
-              <TextField
-                id="outlined-basic"
-                label="Username"
-                onChange={(e) => setUsername(e.target.value)}
-                variant="outlined"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "#ff9a9c",
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "#fdcfcf",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#fdcfcf",
-                    },
-                  },
-                  "& label.Mui-focused": {
-                    color: "#fdcfcf",
-                  },
-                  marginBottom: 2,
-                  padding: 0.1,
-                  width: "100%",
-                }}
-              />
+        <div className="container--body">
+          <div
+            className={`content--container login--bodycd ${
+              loading ? "hidden" : ""
+            }`}
+          >
+            <div className="reg--bg">
+              <img src={image} alt="salon image woman" />
             </div>
-
-            <div>
-              <TextField
-                id="outlined-password-input"
-                label="Password"
-                type="password"
-                onChange={(e) => setPassword(e.target.value)}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "#ff9a9c",
+            <div className="form">
+              <h2 style={{ color: "#ff9a9c", marginBottom: "3rem" }}>
+                Sign In
+              </h2>
+              <div>
+                <TextField
+                  id="outlined-basic"
+                  label="Username"
+                  onChange={(e) => setUsername(e.target.value)}
+                  variant="outlined"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "#ff9a9c",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "#fdcfcf",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#fdcfcf",
+                      },
                     },
-                    "&:hover fieldset": {
-                      borderColor: "#fdcfcf",
+                    "& label.Mui-focused": {
+                      color: "#fdcfcf",
                     },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#fdcfcf",
-                    },
-                  },
-                  "& label.Mui-focused": {
-                    color: "#fdcfcf",
-                  },
-                  marginBottom: 1,
-                  padding: 0.1,
-                  width: "100%",
-                }}
-              />
-            </div>
-            <div>
-              <div
-                style={{
-                  display: "flex",
-                  fontSize: "11px",
-                  justifyContent: "center",
-                }}
-              >
-                <input
-                  type="checkbox"
-                  onChange={() => setBtnDisabled(!btnDisabled)}
+                    marginBottom: 2,
+                    padding: 0.1,
+                    width: "100%",
+                  }}
                 />
-                <p>
-                  I agree all statements in{" "}
-                  <Link to="/" style={{ color: "#ff9a9c" }}>
-                    Terms & Conditions
+              </div>
+
+              <div>
+                <TextField
+                  id="outlined-password-input"
+                  label="Password"
+                  type="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "#ff9a9c",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "#fdcfcf",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#fdcfcf",
+                      },
+                    },
+                    "& label.Mui-focused": {
+                      color: "#fdcfcf",
+                    },
+                    marginBottom: 1,
+                    padding: 0.1,
+                    width: "100%",
+                  }}
+                />
+              </div>
+              <div>
+                <div
+                  style={{
+                    display: "flex",
+                    fontSize: "11px",
+                    justifyContent: "center",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    onChange={() => setBtnDisabled(!btnDisabled)}
+                  />
+                  <p>
+                    I agree all statements in{" "}
+                    <Link to="/" style={{ color: "#ff9a9c" }}>
+                      Terms & Conditions
+                    </Link>
+                  </p>
+                </div>
+                <button
+                  disabled={btnDisabled}
+                  style={{ marginBottom: "3rem" }}
+                  className={btnDisabled === true ? "none" : "fadein--btn"}
+                  onClick={() => handleSignin()}
+                >
+                  Sign In
+                </button>
+
+                <p style={{ fontSize: "12px" }}>
+                  Don't have an account yet ?
+                  <Link
+                    to="/signup"
+                    style={{
+                      color: "#ff9a9c",
+                      fontSize: "12px",
+                      marginLeft: "2px",
+                    }}
+                  >
+                    Sign up here.
                   </Link>
                 </p>
               </div>
-              <button
-                disabled={btnDisabled}
-                style={{ marginBottom: "3rem" }}
-                className={btnDisabled === true ? "none" : "fadein--btn"}
-                onClick={() => handleSignin()}
-              >
-                Sign In
-              </button>
-
-              <p style={{ fontSize: "12px" }}>
-                Don't have an account yet ?
-                <Link
-                  to="/signup"
-                  style={{
-                    color: "#ff9a9c",
-                    fontSize: "12px",
-                    marginLeft: "2px",
-                  }}
-                >
-                  Sign up here.
-                </Link>
-              </p>
             </div>
           </div>
         </div>

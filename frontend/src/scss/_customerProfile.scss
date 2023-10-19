@@ -1,0 +1,48 @@
+.customer--profile--container {
+  background-color: aliceblue;
+  height: 100%;
+  .customer--header--profile {
+    background: #ff9a9ca3;
+    border-radius: 0px 0px 100px 100px;
+    padding-top: 1rem;
+    width: 100%;
+  }
+  .title {
+    text-align: start;
+    font-family: semi-bold;
+    color: #191444;
+  }
+  .customer--name {
+    font-size: 25px;
+    margin-top: 1rem;
+    font-family: semi-bold;
+  }
+  .customer--email {
+    padding-bottom: 1rem;
+    font-size: 12px;
+    font-style: italic;
+    color: #ffffff;
+  }
+  .customer--info--table {
+    margin: 0 auto;
+    width: 80%;
+    border-collapse: collapse;
+
+    tr {
+      transition: background-color 0.3s;
+      border-bottom: 1px solid rgb(223, 223, 223);
+
+      &:hover {
+        transition: background-color 0.3s;
+      }
+    }
+    td {
+      padding: 15px;
+      border-collapse: collapse;
+      color: #191444;
+
+      font-size: 14px;
+      width: 30%;
+    }
+  }
+}

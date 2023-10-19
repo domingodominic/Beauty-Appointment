@@ -15,7 +15,8 @@ import LoginSpinner from "./LoginSpinner";
 import axios from "axios";
 
 // const bcrypt = require("bcrypt");
-
+const defaultProfile =
+  "https://www.ssrl-uark.com/wp-content/uploads/2014/06/no-profile-image.png";
 const schema = yup.object().shape({
   firstname: yup.string().required("First Name is required"),
   lastname: yup.string().required("Last Name is required"),
@@ -73,6 +74,7 @@ function Signup() {
         municipality: data.municipality,
         email: data.email,
         contactNumber: data.contactNumber,
+        profilePicture: defaultProfile,
       });
 
       if (response.status === 201) {

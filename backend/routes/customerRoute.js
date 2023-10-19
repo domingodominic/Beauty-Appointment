@@ -3,9 +3,9 @@ import { customer } from "../model/customerModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"; // Import JWT library
 
-const router = express.Router();
+import route from "./providerRoute.js";
 
-// handle sign in
+const router = express.Router();
 
 // Route to handle user login
 router.post("/login", async (request, response) => {
@@ -42,6 +42,26 @@ router.post("/login", async (request, response) => {
     response.status(500).send({ message: "Internal server error" });
   }
 });
+router.put("/updateProfilePicture/:id", async (req, res) => {
+  const { id } = req.params;
+  const { profilePicture } = req.body;
+
+  try {
+    const Foundcustomer = await customer.findByIdAndUpdate(id, {
+      profilePicture,
+    });
+
+    if (!Foundcustomer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+
+    res.json({ message: "Profile picture updated successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
+  }
+});
 
 router.post("/", async (request, response) => {
   try {
@@ -55,7 +75,8 @@ router.post("/", async (request, response) => {
       !request.body.password ||
       !request.body.birthdate ||
       !request.body.municipality ||
-      !request.body.contactNumber
+      !request.body.contactNumber ||
+      !request.body.profilePicture
     ) {
       return response
         .status(400)
@@ -77,11 +98,13 @@ router.post("/", async (request, response) => {
       birthdate: request.body.birthdate,
       municipality: request.body.municipality,
       contactNumber: request.body.contactNumber,
+      selected_service: request.body.selected_service,
+      profilePicture: request.body.profilePicture,
     };
 
-    const book = await customer.create(newCustomer);
+    const customers = await customer.create(newCustomer);
 
-    return response.status(201).send(book);
+    return response.status(201).send(customers);
   } catch (error) {
     console.log("error: ", error);
 
