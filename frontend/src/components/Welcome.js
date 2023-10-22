@@ -57,7 +57,7 @@ function Welcome() {
               empower independent beauty service providers to thrive and expand
               their businesses
             </p>
-            <button className="fadein--btn" onClick={() => navigate("/login")}>
+            <button className="fadein--btn" onClick={() => navigate("/signup")}>
               Get Started
             </button>
           </div>

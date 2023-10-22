@@ -1,4 +1,4 @@
-import express, { request } from "express";
+import express, { request, response } from "express";
 import { customer } from "../model/customerModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"; // Import JWT library
@@ -10,10 +10,10 @@ const router = express.Router();
 // Route to handle user login
 router.post("/login", async (request, response) => {
   try {
-    const { username, password } = request.body;
-    console.log("Received request with username:", username);
+    const { email, password } = request.body;
+    console.log("Received request with username:", email);
 
-    const user = await customer.findOne({ username });
+    const user = await customer.findOne({ email });
     console.log("User found in the database:", user);
     if (!user) {
       return response
@@ -36,12 +36,14 @@ router.post("/login", async (request, response) => {
     });
 
     // Send the token in the response
-    response.status(200).json({ token });
+    response.status(200).json({ token: token, message: "Welcome back" });
   } catch (error) {
     console.error(error);
     response.status(500).send({ message: "Internal server error" });
   }
 });
+
+//customer for update their profile picture
 router.put("/updateProfilePicture/:id", async (req, res) => {
   const { id } = req.params;
   const { profilePicture } = req.body;
@@ -63,13 +65,22 @@ router.put("/updateProfilePicture/:id", async (req, res) => {
   }
 });
 
+//get customer data with email
+
+router.get("/get-user", async (request, response) => {
+  const email = request.query.email;
+
+  const foundUser = await customer.find({ email: email });
+
+  response.json(foundUser);
+});
+
 router.post("/", async (request, response) => {
   try {
     if (
       !request.body.firstname ||
       !request.body.lastname ||
       !request.body.age ||
-      !request.body.username ||
       !request.body.email ||
       !request.body.confirmPassword ||
       !request.body.password ||
@@ -91,7 +102,6 @@ router.post("/", async (request, response) => {
       firstname: request.body.firstname,
       lastname: request.body.lastname,
       age: request.body.age,
-      username: request.body.username,
       password: hashedPassword,
       confirmPassword: ConfirmHashedPassword,
       email: request.body.email,
@@ -114,9 +124,9 @@ router.post("/", async (request, response) => {
 
 router.get("/data", async (request, response) => {
   try {
-    const { username } = request.query;
+    const { email } = request.query;
 
-    const result = await customer.findOne({ username });
+    const result = await customer.findOne({ email });
 
     if (result) {
       response.status(200).json(result);

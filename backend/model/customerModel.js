@@ -13,11 +13,7 @@ const customerSchema = mongoose.Schema(
     profilePicture: {
       type: String,
     },
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-    },
+
     password: {
       type: String,
       required: true,
@@ -32,6 +28,7 @@ const customerSchema = mongoose.Schema(
     },
     email: {
       type: String,
+      unique: true,
       required: true,
     },
     contactNumber: {

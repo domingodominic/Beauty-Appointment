@@ -18,11 +18,9 @@ function CustomerProfile(props) {
   const formattedDate = date.toLocaleDateString("en-US", options);
 
   useEffect(() => {
-    // Gumawa ng GET request gamit ang ID mula sa props
     axios
-      .get(`http://localhost:5000/customer/${data._id}`)
+      .get(`http://localhost:5000/customer/${props.data._id}`)
       .then((res) => {
-        // I-update ang state ng userData
         setUserData(res.data);
       })
       .catch((error) => {
@@ -57,7 +55,6 @@ function CustomerProfile(props) {
         profilePicture: cloudinaryResponse.data.secure_url,
       });
 
-      // Gumawa ng GET request para sa bagong data mula sa backend
       const res = await axios.get(`http://localhost:5000/customer/${data._id}`);
       console.log(res.data);
       setUserData(res.data);
@@ -104,24 +101,25 @@ function CustomerProfile(props) {
             </div>
             <div className="customer--email">{userData.email}</div>
           </div>
-
           <table className="customer--info--table">
-            <tr>
-              <td>Join on</td>
-              <td>{formattedDate}</td>
-            </tr>
-            <tr>
-              <td>Contact no</td>
-              <td>{userData.contactNumber}</td>
-            </tr>
-            <tr>
-              <td>Municipality</td>
-              <td>{userData.municipality}</td>
-            </tr>
-            <tr>
-              <td>Username</td>
-              <td>{userData.username}</td>
-            </tr>
+            <tbody>
+              <tr>
+                <td>Join on</td>
+                <td>{formattedDate}</td>
+              </tr>
+              <tr>
+                <td>Contact no</td>
+                <td>{userData.contactNumber}</td>
+              </tr>
+              <tr>
+                <td>Municipality</td>
+                <td>{userData.municipality}</td>
+              </tr>
+              <tr>
+                <td>Username</td>
+                <td>{userData.username}</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       ) : (

@@ -5,6 +5,8 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import "../scss/style.css";
 import AppointmentList from "./AppointmentList";
 import CustomerProfile from "./CustomerProfile";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase-config";
 import { color } from "@mui/system";
 function HomeCustomer(props) {
   const [loading, setLoading] = useState(true);
@@ -12,7 +14,21 @@ function HomeCustomer(props) {
   const [data, setData] = useState({});
   useEffect(() => {
     setLoading(true);
-    setData(props.sharedData);
+
+    // Check kung may laman ang props
+    if (props.sharedData) {
+      setData(props.sharedData);
+    } else {
+      // Kung walang laman ang props, hanapin ang username mula sa authenticated user
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is authenticated, kumuha ng username mula sa user object
+          setData(user.displayName);
+        }
+      });
+
+      return () => unsubscribe();
+    }
   }, [props.sharedData]);
 
   return (
@@ -84,7 +100,8 @@ function HomeCustomer(props) {
             {(() => {
               switch (currentPage) {
                 case "home":
-                  return <AppointmentList data={props.sharedData} />;
+                  return <AppointmentList />;
+                // return <AppointmentList data={props.sharedData} />;
                 case "profile":
                   return <CustomerProfile data={props.sharedData} />;
                 default:

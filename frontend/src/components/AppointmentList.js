@@ -3,44 +3,52 @@ import "../scss/style.css";
 import { IoAddCircle } from "react-icons/io5";
 import { PiEyeThin } from "react-icons/pi";
 import BookedDetails from "./BookedDetails";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase-config";
+import axios from "axios";
 function AppointmentList(props) {
   const [selectedService, setSelectedService] = useState([]);
   const [serviceData, setServiceData] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
-  const data = props.data;
+  // const data = props.data;
 
-  useEffect(() => {
-    setSelectedService(data.selected_service);
-  }, [data]);
-  console.log(modalOpen);
-  window.addEventListener("click", () => {
-    setModalOpen(false);
-  });
+  // useEffect(() => {
+  //   setSelectedService(data.selected_service);
+  // }, [data]);
+  // console.log(modalOpen);
+  // window.addEventListener("click", () => {
+  //   setModalOpen(false);
+  // });
+
+  const Signout = async () => {
+    await signOut(auth);
+  };
 
   return (
     <div>
       {modalOpen ? <BookedDetails data={serviceData} /> : null}
 
-      {selectedService.length === 0 ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: "4.5rem",
-          }}
-        >
-          <div>
-            <img
-              src={require("../images/think--img.jpg")}
-              alt="think image"
-              style={{ width: "200px" }}
-            />
-            <p style={{ color: "gray" }}>Seems you haven't booked yet?</p>
-            <button className="fadein--btn">Book now</button>
-          </div>
+      {/* {selectedService.length === 0 ? ( */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "4.5rem",
+        }}
+      >
+        <div>
+          <img
+            src={require("../images/think--img.jpg")}
+            alt="think image"
+            style={{ width: "200px" }}
+          />
+          <p style={{ color: "gray" }}>Seems you haven't booked yet?</p>
+          <button className="fadein--btn">Book now</button>
+          <button onClick={Signout}>Sign out</button>
         </div>
-      ) : (
+      </div>
+      {/* ) : (
         <div
           style={{
             position: "relative",
@@ -107,7 +115,7 @@ function AppointmentList(props) {
             ))}
           </ul>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

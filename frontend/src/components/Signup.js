@@ -13,6 +13,8 @@ import { useSnackbar } from "notistack";
 import "../scss/style.css";
 import LoginSpinner from "./LoginSpinner";
 import axios from "axios";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase-config";
 
 // const bcrypt = require("bcrypt");
 const defaultProfile =
@@ -34,7 +36,6 @@ const schema = yup.object().shape({
 
     .required("Birthdate is required"),
 
-  username: yup.string().required("Username is required"),
   password: yup
     .string()
     .min(6, "Password must be at least 6 characters")
@@ -62,13 +63,18 @@ function Signup() {
     console.table(data);
     try {
       setLoading(true);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
 
+      const user = userCredential.user;
       const response = await axios.post("http://localhost:5000/customer", {
         firstname: data.firstname,
         lastname: data.lastname,
         age: data.age,
         birthdate: data.birthdate,
-        username: data.username,
         password: data.password, // Store the hashed password
         confirmPassword: data.confirmPassword,
         municipality: data.municipality,
@@ -184,32 +190,30 @@ function Signup() {
               <div className="input--divider">
                 <div style={{ flex: 1, marginRight: "1rem" }}>
                   <Controller
-                    name="username"
+                    name="email"
                     control={control}
                     defaultValue=""
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        label="Username"
+                        label="Email"
                         variant="outlined"
-                        error={!!errors.username}
-                        helperText={
-                          errors.username ? errors.username.message : ""
-                        }
+                        error={!!errors.email}
+                        helperText={errors.email ? errors.email.message : ""}
                         sx={{
                           "& .MuiOutlinedInput-root": {
                             "& fieldset": {
-                              borderColor: "#ff9a9c",
+                              borderColor: "#ff9a9c", // Border color for the default state
                             },
                             "&:hover fieldset": {
-                              borderColor: "#fdcfcf",
+                              borderColor: "#fdcfcf", // Border color when hovered
                             },
                             "&.Mui-focused fieldset": {
-                              borderColor: "#fdcfcf",
+                              borderColor: "#fdcfcf", // Border color when focused
                             },
                           },
                           "& label.Mui-focused": {
-                            color: "#fdcfcf",
+                            color: "#fdcfcf", // Text color when focused
                           },
                           marginBottom: 1,
                           padding: 0.1,
@@ -219,7 +223,6 @@ function Signup() {
                     )}
                   />
                 </div>
-
                 <div style={{ flex: 1 }}>
                   <Controller
                     name="password"
@@ -418,41 +421,6 @@ function Signup() {
                 </div>
               </div>
               <div className="input--divider">
-                <div style={{ flex: 1, marginRight: "1rem" }}>
-                  <Controller
-                    name="email"
-                    control={control}
-                    defaultValue=""
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        label="Email"
-                        variant="outlined"
-                        error={!!errors.email}
-                        helperText={errors.email ? errors.email.message : ""}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            "& fieldset": {
-                              borderColor: "#ff9a9c", // Border color for the default state
-                            },
-                            "&:hover fieldset": {
-                              borderColor: "#fdcfcf", // Border color when hovered
-                            },
-                            "&.Mui-focused fieldset": {
-                              borderColor: "#fdcfcf", // Border color when focused
-                            },
-                          },
-                          "& label.Mui-focused": {
-                            color: "#fdcfcf", // Text color when focused
-                          },
-                          marginBottom: 1,
-                          padding: 0.1,
-                          width: "100%",
-                        }}
-                      />
-                    )}
-                  />
-                </div>
                 <div style={{ flex: 1 }}>
                   <Controller
                     name="birthdate"

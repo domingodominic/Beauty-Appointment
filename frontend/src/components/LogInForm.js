@@ -9,10 +9,16 @@ import "../scss/style.css";
 import HomeCustomer from "./HomeCustomer";
 import MyContext from "./MyContext";
 import AppointmentList from "./AppointmentList";
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
+import { auth } from "../firebase-config";
 
 function LoginForm() {
   const { enqueueSnackbar } = useSnackbar();
-  const [username, setUsername] = useState("");
+  const [email, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState({});
@@ -26,7 +32,7 @@ function LoginForm() {
       const response = await axios.post(
         "http://localhost:5000/customer/login",
         {
-          username,
+          email,
           password,
         }
       );
@@ -34,8 +40,15 @@ function LoginForm() {
       if (response.status === 200) {
         enqueueSnackbar("Sign in successful", { variant: "success" });
 
+        try {
+          const user = await signInWithEmailAndPassword(auth, email, password);
+          console.log(user);
+        } catch (error) {
+          console.log(error);
+        }
+
         const getDataResponse = await axios.get(
-          `http://localhost:5000/customer/data?username=${username}`
+          `http://localhost:5000/customer/data?email=${email}`
         );
         setUserData(getDataResponse.data);
 
@@ -74,8 +87,8 @@ function LoginForm() {
               <div>
                 <TextField
                   id="outlined-basic"
-                  label="Username"
-                  onChange={(e) => setUsername(e.target.value)}
+                  label="Email"
+                  onChange={(e) => setUserEmail(e.target.value)}
                   variant="outlined"
                   sx={{
                     "& .MuiOutlinedInput-root": {
