@@ -9,11 +9,7 @@ import "../scss/style.css";
 import HomeCustomer from "./HomeCustomer";
 import MyContext from "./MyContext";
 import AppointmentList from "./AppointmentList";
-import {
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-config";
 
 function LoginForm() {
@@ -38,22 +34,21 @@ function LoginForm() {
       );
 
       if (response.status === 200) {
-        enqueueSnackbar("Sign in successful", { variant: "success" });
-
         try {
+          const getDataResponse = await axios.get(
+            `http://localhost:5000/customer/data?email=${email}`
+          );
+          setUserData(getDataResponse.data);
+          console.log("this is the result of request", getDataResponse);
           const user = await signInWithEmailAndPassword(auth, email, password);
-          console.log(user);
+          console.log("this is the user", user);
+
+          setIsLoggedIn(true);
+          // Update login status
+          enqueueSnackbar("Sign in successful", { variant: "success" });
         } catch (error) {
           console.log(error);
         }
-
-        const getDataResponse = await axios.get(
-          `http://localhost:5000/customer/data?email=${email}`
-        );
-        setUserData(getDataResponse.data);
-
-        // Update login status
-        setIsLoggedIn(true);
       } else {
         enqueueSnackbar("Sign in failed", { variant: "error" });
       }

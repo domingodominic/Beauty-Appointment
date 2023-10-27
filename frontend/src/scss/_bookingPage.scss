@@ -5,6 +5,7 @@ $primary_color: #191444;
   grid-template-rows: auto 1fr auto;
   grid-template-columns: 1fr;
   height: 100vh;
+  overflow: hidden;
 }
 .content--container--booking {
   position: relative;
@@ -33,6 +34,7 @@ $primary_color: #191444;
   grid-row: 1;
   margin-top: 2rem;
   justify-content: center;
+  color: #191444;
   gap: 1rem;
 
   .logo--img {
@@ -58,14 +60,14 @@ $primary_color: #191444;
 
 .home--menu {
   position: absolute;
-  left: 7%;
+  left: 7.5%;
 
   ul {
     margin: 0;
-    padding: 0;
     padding: 1rem;
     border-radius: 50px;
-    box-shadow: 0px 2px 10px #0296ff30;
+    background-color: #ff9a9c;
+    // box-shadow: 0px 2px 10px #0296ff30;
 
     li {
       margin: 0;

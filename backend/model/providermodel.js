@@ -2,31 +2,6 @@ import mongoose from "mongoose";
 
 const providerSchema = mongoose.Schema(
   {
-    firstname: {
-      type: String,
-      required: true,
-    },
-    lastname: {
-      type: String,
-      required: true,
-    },
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    confirmPassword: {
-      type: String,
-      required: true,
-    },
-    municipality: {
-      type: String,
-      required: true,
-    },
     businessDescription: {
       type: String,
     },
@@ -38,11 +13,6 @@ const providerSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    businessContactNumber: {
-      type: Number,
-      required: true,
-    },
-
     services: [
       {
         service_name: { type: String },
@@ -51,6 +21,10 @@ const providerSchema = mongoose.Schema(
         availability_time: { type: Array },
       },
     ],
+    userAccount: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UserAccount",
+    },
   },
   {
     timestamps: true,

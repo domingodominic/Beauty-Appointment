@@ -3,52 +3,80 @@ import "../scss/style.css";
 import { IoAddCircle } from "react-icons/io5";
 import { PiEyeThin } from "react-icons/pi";
 import BookedDetails from "./BookedDetails";
-import { signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase-config";
 import axios from "axios";
+
 function AppointmentList(props) {
-  const [selectedService, setSelectedService] = useState([]);
-  const [serviceData, setServiceData] = useState({});
+  const [userData, setUserData] = useState({});
+  const [userAppointmentData, setUserAppointmentData] = useState({});
+  const [appointedService, setAppointedService] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  // const data = props.data;
+  const [serviceData, setServiceData] = useState({});
 
-  // useEffect(() => {
-  //   setSelectedService(data.selected_service);
-  // }, [data]);
-  // console.log(modalOpen);
-  // window.addEventListener("click", () => {
-  //   setModalOpen(false);
-  // });
+  window.addEventListener("click", (e) => {
+    e.preventDefault();
+    setModalOpen(false);
+  });
 
-  const Signout = async () => {
-    await signOut(auth);
-  };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const user = auth.currentUser;
+
+      if (user) {
+        try {
+          const response = await axios.get(
+            `http://localhost:5000/customer/get-user?email=${user.email}`
+          );
+          setUserData(response.data.customerData);
+          setAppointedService(response.data.customerData.selected_service);
+
+          console.log("this is the id of the data", response.data.customerData);
+          const res = await axios.get(
+            `http://localhost:5000/customer/${response.data.customerData.userAccount}`
+          );
+          setUserAppointmentData(res.data);
+          console.log("Appointment data is ", res.data);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchUserData();
+      } else {
+        setUserData([]); // Set to an empty array when no user is signed in
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div>
       {modalOpen ? <BookedDetails data={serviceData} /> : null}
-
-      {/* {selectedService.length === 0 ? ( */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "4.5rem",
-        }}
-      >
-        <div>
-          <img
-            src={require("../images/think--img.jpg")}
-            alt="think image"
-            style={{ width: "200px" }}
-          />
-          <p style={{ color: "gray" }}>Seems you haven't booked yet?</p>
-          <button className="fadein--btn">Book now</button>
-          <button onClick={Signout}>Sign out</button>
+      {appointedService.length === 0 ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "4.5rem",
+          }}
+        >
+          <div>
+            <img
+              src={require("../images/think--img.png")}
+              alt="think image"
+              style={{ width: "200px" }}
+            />
+            <p style={{ color: "gray" }}>Seems you haven't booked yet?</p>
+            <button className="fadein--btn">Book now</button>
+          </div>
         </div>
-      </div>
-      {/* ) : (
+      ) : (
         <div
           style={{
             position: "relative",
@@ -62,60 +90,70 @@ function AppointmentList(props) {
             </div>
           </div>
           <ul className="service--lists">
-            {selectedService.map((service, index) => (
-              <li key={index}>
-                <div className="details--container">
-                  <div className="details">
-                    <img
-                      src={require("../images/hair.jpg")}
-                      alt="service image"
-                      style={{ width: "100px", borderRadius: "10px" }}
-                    />
-                    <div className="service--details">
-                      <p>
-                        <span
-                          style={{ fontFamily: "semi-bold", color: "#191444" }}
-                        >
-                          Service provider:
-                        </span>
-                        {"  " + service.service_provider}
-                      </p>
-                      <p>
-                        <span
-                          style={{ fontFamily: "semi-bold", color: "#191444" }}
-                        >
-                          Appointed service:
-                        </span>
-                        {"  " + service.appointed_service}
-                      </p>
-                      <p>
-                        <span
-                          style={{ fontFamily: "semi-bold", color: "#191444" }}
-                        >
-                          Price:
-                        </span>
-                        <span style={{ color: "#C9B81A" }}>
-                          {"  $" + service.appointed_price}
-                        </span>
-                      </p>
+            {appointedService &&
+              appointedService.map((service, index) => (
+                <li key={index}>
+                  <div className="details--container">
+                    <div className="details">
+                      <img
+                        src={require("../images/hair.jpg")}
+                        alt="service image"
+                        style={{ width: "100px", borderRadius: "10px" }}
+                      />
+                      <div className="service--details">
+                        <p>
+                          <span
+                            style={{
+                              fontFamily: "semi-bold",
+                              color: "#191444",
+                            }}
+                          >
+                            Service provider:
+                          </span>
+                          {"  " + service.service_provider}
+                        </p>
+                        <p>
+                          <span
+                            style={{
+                              fontFamily: "semi-bold",
+                              color: "#191444",
+                            }}
+                          >
+                            Appointed service:
+                          </span>
+                          {"  " + service.appointed_service}
+                        </p>
+                        <p>
+                          <span
+                            style={{
+                              fontFamily: "semi-bold",
+                              color: "#191444",
+                            }}
+                          >
+                            Price:
+                          </span>
+                          <span style={{ color: "#C9B81A" }}>
+                            {"  $" + service.appointed_price}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      className="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setServiceData(service);
+                        setModalOpen(true);
+                      }}
+                    >
+                      <PiEyeThin />
                     </div>
                   </div>
-                  <div
-                    className="icon"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setServiceData(service);
-                      setModalOpen(true);
-                    }}
-                  >
-                    <PiEyeThin />
-                  </div>
-                </div>
-              </li>
-            ))}
+                </li>
+              ))}
           </ul>
         </div>
-      )} */}
+      )}
     </div>
   );
 }

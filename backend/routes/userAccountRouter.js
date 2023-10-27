@@ -1,7 +1,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"; // Import JWT library
-import { user as UserModel } from "../model/userAccountModel.js"; // Renaming the imported user model
+import { userAccount } from "../model/userAccountModel.js"; // Renaming the imported user model
 const router = express.Router();
 
 const authenticateUser = async (req, res, next) => {
@@ -9,7 +9,7 @@ const authenticateUser = async (req, res, next) => {
 
   try {
     // Find the user by email in the database
-    const user = await UserModel.findOne({ email });
+    const user = await userAccount.findOne({ email });
 
     if (!user) {
       return res.status(401).json({ message: "Authentication failed" });
@@ -37,7 +37,7 @@ router.post("/login", async (request, response) => {
     const { email, password } = request.body;
 
     // Find the user by email in the database
-    const user = await UserModel.findOne({ email });
+    const user = await userAccount.findOne({ email });
     console.log(user);
 
     if (!user) {
@@ -101,7 +101,7 @@ router.post("/register", async (request, response) => {
 
     newUser.password = hashedPassword;
 
-    const createdUser = await UserModel.create(newUser); // Use UserModel instead of user
+    const createdUser = await userAccount.create(newUser); // Use UserModel instead of user
 
     return response.status(201).send(createdUser);
   } catch (error) {
@@ -113,7 +113,7 @@ router.post("/register", async (request, response) => {
 // Route to get all users
 router.get("/", async (request, response) => {
   try {
-    const users = await UserModel.find({});
+    const users = await userAccount.find({});
     return response.status(200).json({ count: users.length, data: users });
   } catch (error) {
     console.error(error);
@@ -125,7 +125,7 @@ router.get("/", async (request, response) => {
 router.get("/:id", async (request, response) => {
   try {
     const { id } = request.params;
-    const user = await UserModel.findById(id);
+    const user = await userAccount.findById(id);
     return response.status(200).json(user);
   } catch (error) {
     console.error(error);
@@ -151,7 +151,7 @@ router.put("/:id", authenticateUser, async (request, response) => {
     }
 
     const { id } = request.params;
-    const result = await UserModel.findByIdAndUpdate(id, request.body);
+    const result = await userAccount.findByIdAndUpdate(id, request.body);
 
     if (!result) {
       return response.status(404).json({ message: "User not found" });
@@ -168,7 +168,7 @@ router.put("/:id", authenticateUser, async (request, response) => {
 router.delete("/:id", authenticateUser, async (request, response) => {
   try {
     const { id } = request.params;
-    const result = await UserModel.findByIdAndDelete(id);
+    const result = await userAccount.findByIdAndDelete(id);
 
     if (!result) {
       return response.status(404).json({ message: "User not found" });

@@ -18,16 +18,27 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    middlename: {
+    profilePicture: {
       type: String,
-      required: true,
-    },
-    gender: {
-      type: String,
-      required: true,
     },
     age: {
       type: Number,
+      required: true,
+    },
+    municipality: {
+      type: String,
+      required: true,
+    },
+    contactNumber: {
+      type: Number,
+      required: true,
+    },
+    birthdate: {
+      type: Date,
+      required: true,
+    },
+    role: {
+      type: String,
       required: true,
     },
   },
@@ -36,4 +47,4 @@ const userSchema = mongoose.Schema(
   }
 );
 
-export const user = mongoose.model("User", userSchema);
+export const userAccount = mongoose.model("User", userSchema);

@@ -19,6 +19,7 @@ import { auth } from "../firebase-config";
 // const bcrypt = require("bcrypt");
 const defaultProfile =
   "https://www.ssrl-uark.com/wp-content/uploads/2014/06/no-profile-image.png";
+const role = "customer";
 const schema = yup.object().shape({
   firstname: yup.string().required("First Name is required"),
   lastname: yup.string().required("Last Name is required"),
@@ -63,27 +64,28 @@ function Signup() {
     console.table(data);
     try {
       setLoading(true);
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
 
-      const user = userCredential.user;
       const response = await axios.post("http://localhost:5000/customer", {
         firstname: data.firstname,
         lastname: data.lastname,
         age: data.age,
         birthdate: data.birthdate,
-        password: data.password, // Store the hashed password
+        password: data.password,
         confirmPassword: data.confirmPassword,
         municipality: data.municipality,
         email: data.email,
         contactNumber: data.contactNumber,
         profilePicture: defaultProfile,
+        role: role,
       });
 
       if (response.status === 201) {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          data.email,
+          data.password
+        );
+
         enqueueSnackbar("Sign up successful", { variant: "success" });
       } else {
         enqueueSnackbar("Sign up failed", { variant: "error" });
