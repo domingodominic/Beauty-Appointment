@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import { useSnackbar } from "notistack";
 import "../scss/style.css";
-import LoginSpinner from "./LoginSpinner";
+import LoginSpinner from "../components/LoginSpinner";
 import axios from "axios";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-config";
@@ -19,7 +19,7 @@ import { auth } from "../firebase-config";
 // const bcrypt = require("bcrypt");
 const defaultProfile =
   "https://www.ssrl-uark.com/wp-content/uploads/2014/06/no-profile-image.png";
-const role = "customer";
+const role = "provider";
 const schema = yup.object().shape({
   firstname: yup.string().required("First Name is required"),
   lastname: yup.string().required("Last Name is required"),
@@ -48,9 +48,17 @@ const schema = yup.object().shape({
   municipality: yup.string().required("Municipality is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
   contactNumber: yup.number().required("contact number is required"),
+  business_email: yup
+    .string()
+    .email("Invalid Email")
+    .required("Business email is required"),
+  business_description: yup
+    .string()
+    .required("Business description is required"),
+  business_name: yup.string().required("Business name is required"),
 });
 
-function Signup() {
+function ProviderSignup() {
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const {
@@ -65,19 +73,24 @@ function Signup() {
     try {
       setLoading(true);
 
-      const response = await axios.post("http://localhost:5000/customer", {
-        firstname: data.firstname,
-        lastname: data.lastname,
-        age: data.age,
-        birthdate: data.birthdate,
-        password: data.password,
-        confirmPassword: data.confirmPassword,
-        municipality: data.municipality,
-        email: data.email,
-        contactNumber: data.contactNumber,
-        profilePicture: defaultProfile,
-        role: role,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/provider/signup/",
+        {
+          firstname: data.firstname,
+          lastname: data.lastname,
+          age: data.age,
+          birthdate: data.birthdate,
+          password: data.password,
+          municipality: data.municipality,
+          email: data.email,
+          contactNumber: data.contactNumber,
+          profilePicture: defaultProfile,
+          businessDescription: data.business_description,
+          businessEmail: data.business_email,
+          businessName: data.business_name,
+          role: role,
+        }
+      );
 
       if (response.status === 201) {
         const userCredential = await createUserWithEmailAndPassword(
@@ -109,7 +122,7 @@ function Signup() {
         }}
         className="login--body"
       >
-        <Card sx={{ minWidth: 300, maxWidth: 500, padding: "0" }}>
+        <Card className="signup--card">
           <h2 style={{ color: "#ff9a9c" }}>Sign up</h2>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -472,7 +485,129 @@ function Signup() {
                   />
                 </div>
               </div>
-
+              <div className="input--divider">
+                <div style={{ flex: 1 }}>
+                  <Controller
+                    name="business_name"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label="Business name"
+                        variant="outlined"
+                        error={!!errors.business_name}
+                        helperText={
+                          errors.business_name
+                            ? errors.business_name.message
+                            : ""
+                        }
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "& fieldset": {
+                              borderColor: "#ff9a9c", // Border color for the default state
+                            },
+                            "&:hover fieldset": {
+                              borderColor: "#fdcfcf", // Border color when hovered
+                            },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "#fdcfcf", // Border color when focused
+                            },
+                          },
+                          "& label.Mui-focused": {
+                            color: "#fdcfcf", // Text color when focused
+                          },
+                          marginBottom: 1,
+                          padding: 0.1,
+                          width: "100%",
+                        }}
+                      />
+                    )}
+                  />
+                </div>
+              </div>
+              <div className="input--divider">
+                <div style={{ flex: 1 }}>
+                  <Controller
+                    name="business_description"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label="Business Description"
+                        variant="outlined"
+                        error={!!errors.business_description}
+                        helperText={
+                          errors.business_description
+                            ? errors.business_description.message
+                            : ""
+                        }
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "& fieldset": {
+                              borderColor: "#ff9a9c", // Border color for the default state
+                            },
+                            "&:hover fieldset": {
+                              borderColor: "#fdcfcf", // Border color when hovered
+                            },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "#fdcfcf", // Border color when focused
+                            },
+                          },
+                          "& label.Mui-focused": {
+                            color: "#fdcfcf", // Text color when focused
+                          },
+                          marginBottom: 1,
+                          padding: 0.1,
+                          width: "100%",
+                        }}
+                      />
+                    )}
+                  />
+                </div>
+              </div>
+              <div className="input--divider">
+                <div style={{ flex: 1 }}>
+                  <Controller
+                    name="business_email"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label="Business email"
+                        variant="outlined"
+                        error={!!errors.business_email}
+                        helperText={
+                          errors.business_email
+                            ? errors.business_email.message
+                            : ""
+                        }
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "& fieldset": {
+                              borderColor: "#ff9a9c", // Border color for the default state
+                            },
+                            "&:hover fieldset": {
+                              borderColor: "#fdcfcf", // Border color when hovered
+                            },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "#fdcfcf", // Border color when focused
+                            },
+                          },
+                          "& label.Mui-focused": {
+                            color: "#fdcfcf", // Text color when focused
+                          },
+                          marginBottom: 1,
+                          padding: 0.1,
+                          width: "100%",
+                        }}
+                      />
+                    )}
+                  />
+                </div>
+              </div>
               <button className="fadein--btn" type="submit">
                 Submit
               </button>
@@ -498,4 +633,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default ProviderSignup;

@@ -1,45 +1,65 @@
 import { providermodel } from "../model/providermodel.js";
+import { userAccount } from "../model/userAccountModel.js";
 import express from "express";
+import bcrypt from "bcrypt";
 const route = express.Router();
 
 //route - provider
-route.post("/", async (request, response) => {
+route.post("/signup/", async (request, response) => {
   try {
+    console.log("firstname: " + request.body.firstname);
+    console.log("lastname: " + request.body.lastname);
+    console.log("email: " + request.body.email);
+    console.log("password: " + request.body.password);
+    console.log("birthdate: " + request.body.birthdate);
+    console.log("municipality: " + request.body.municipality);
+    console.log("businessName: " + request.body.businessName);
+    console.log("businessEmail: " + request.body.businessEmail);
+    console.log("Contact Number: " + request.body.contactNumber);
+    console.log("businessDescription: " + request.body.businessDescription);
+    console.log("role: " + request.body.role);
+
     if (
       !request.body.firstname ||
       !request.body.lastname ||
-      !request.body.username ||
+      !request.body.email ||
       !request.body.password ||
-      !request.body.confirmPassword ||
+      !request.body.birthdate ||
       !request.body.municipality ||
       !request.body.businessName ||
       !request.body.businessEmail ||
-      !request.body.businessContactNumber ||
-      !request.body.services ||
-      !request.body.businessDescription
+      !request.body.contactNumber ||
+      !request.body.businessDescription ||
+      !request.body.role
     ) {
       return response.status(400).send({
         message: "Send all required fields! ",
       });
     }
+    const hashedPassword = await bcrypt.hash(request.body.password, 12);
 
-    const newProvider = {
+    const createdUserAcc = await userAccount.create({
+      email: request.body.email,
+      password: hashedPassword,
       firstname: request.body.firstname,
       lastname: request.body.lastname,
-      username: request.body.username,
-      password: request.body.password,
-      confirmPassword: request.body.confirmPassword,
+      age: request.body.age,
+      birthdate: request.body.birthdate,
       municipality: request.body.municipality,
-      businessName: request.body.businessName,
-      businessEmail: request.body.businessEmail,
-      businessContactNumber: request.body.businessContactNumber,
-      services: request.body.services,
+      contactNumber: request.body.contactNumber,
+      profilePicture: request.body.profilePicture,
+      role: request.body.role,
+    });
+
+    const provider = await userAccount.create(createdUserAcc);
+    const newProvider = {
+      userAccount: createdUserAcc._id,
       businessDescription: request.body.businessDescription,
+      businessEmail: request.body.businessEmail,
+      businessName: request.body.businessName,
     };
-
-    const provider = await providermodel.create(newProvider);
-
-    return response.status(201).send(provider);
+    const providerAcc = await providermodel.create(newProvider);
+    return response.status(201).send(newProvider);
   } catch (error) {
     console.log(error.message);
     response.status(500).send({ message: error.message });

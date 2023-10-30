@@ -1,5 +1,7 @@
 import express, { request, response } from "express";
 import { customer } from "../model/customerModel.js";
+import { userAccount } from "../model/userAccountModel.js";
+import { providermodel } from "../model/providermodel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"; // Import JWT library
 
@@ -13,7 +15,7 @@ router.post("/login", async (request, response) => {
     const { email, password } = request.body;
     console.log("Received request with username:", email);
 
-    const user = await customer.findOne({ email });
+    const user = await userAccount.findOne({ email });
     console.log("User found in the database:", user);
     if (!user) {
       return response
@@ -49,7 +51,7 @@ router.put("/updateProfilePicture/:id", async (req, res) => {
   const { profilePicture } = req.body;
 
   try {
-    const Foundcustomer = await customer.findByIdAndUpdate(id, {
+    const Foundcustomer = await userAccount.findByIdAndUpdate(id, {
       profilePicture,
     });
 
@@ -70,9 +72,69 @@ router.put("/updateProfilePicture/:id", async (req, res) => {
 router.get("/get-user", async (request, response) => {
   const email = request.query.email;
 
-  const foundUser = await customer.find({ email: email });
+  try {
+    const foundUser = await userAccount.findOne({
+      email: { $regex: new RegExp(email, "i") },
+    });
+    console.log("the found user is", foundUser);
+    if (!foundUser) {
+      return response.status(404).json({ message: "User not found" });
+    }
+    console.log(foundUser.role);
 
-  response.json(foundUser);
+    if (foundUser.role === "customer") {
+      const customerData = await customer.findOne({
+        userAccount: foundUser._id,
+      });
+      if (!customerData) {
+        return response
+          .status(404)
+          .json({ message: "Customer data not found" });
+      }
+      response.status(200).json({ foundUser, customerData });
+    } else if (foundUser.role === "provider") {
+      const providerData = await providermodel.findOne({
+        userAccount: foundUser._id,
+      });
+      if (!providerData) {
+        return response
+          .status(404)
+          .json({ message: "Provider data not found" });
+      }
+      response.status(200).json(providerData);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    response.status(500).json({ message: "Internal server error" });
+  }
+});
+
+//get specific user
+
+router.get("get--user/:id", async (request, response) => {
+  try {
+    const { id } = request.params;
+    const customers = await userAccount.findById(id);
+
+    return response.status(200).json(customers);
+  } catch (error) {
+    console.error(error);
+
+    response.status(500).send({ message: "Internal server error" });
+  }
+});
+//get all users
+
+router.get("/get--user", async (request, response) => {
+  try {
+    const customers = await userAccount.find({});
+
+    return response.status(200).json(customers);
+  } catch (error) {
+    console.error(error);
+
+    response.status(500).send({ message: "Internal server error" });
+  }
 });
 
 router.post("/", async (request, response) => {
@@ -82,34 +144,33 @@ router.post("/", async (request, response) => {
       !request.body.lastname ||
       !request.body.age ||
       !request.body.email ||
-      !request.body.confirmPassword ||
       !request.body.password ||
       !request.body.birthdate ||
       !request.body.municipality ||
       !request.body.contactNumber ||
-      !request.body.profilePicture
+      !request.body.profilePicture ||
+      !request.body.role
     ) {
       return response
         .status(400)
         .send({ message: "please send all required fields" });
     }
     const hashedPassword = await bcrypt.hash(request.body.password, 12);
-    const ConfirmHashedPassword = await bcrypt.hash(
-      request.body.confirmPassword,
-      12
-    );
-    const newCustomer = {
+
+    const createdUserAcc = await userAccount.create({
+      email: request.body.email,
+      password: hashedPassword,
       firstname: request.body.firstname,
       lastname: request.body.lastname,
       age: request.body.age,
-      password: hashedPassword,
-      confirmPassword: ConfirmHashedPassword,
-      email: request.body.email,
       birthdate: request.body.birthdate,
       municipality: request.body.municipality,
       contactNumber: request.body.contactNumber,
-      selected_service: request.body.selected_service,
       profilePicture: request.body.profilePicture,
+      role: request.body.role,
+    });
+    const newCustomer = {
+      userAccount: createdUserAcc._id,
     };
 
     const customers = await customer.create(newCustomer);
@@ -126,7 +187,7 @@ router.get("/data", async (request, response) => {
   try {
     const { email } = request.query;
 
-    const result = await customer.findOne({ email });
+    const result = await userAccount.findOne({ email });
 
     if (result) {
       response.status(200).json(result);
@@ -158,7 +219,7 @@ router.get("/", async (request, response) => {
 router.get("/:id", async (request, response) => {
   try {
     const { id } = request.params;
-    const customers = await customer.findById(id);
+    const customers = await userAccount.findById(id);
 
     return response.status(200).json(customers);
   } catch (error) {
@@ -170,14 +231,7 @@ router.get("/:id", async (request, response) => {
 
 router.put("/:id", async (request, response) => {
   try {
-    if (
-      !request.body.firstname ||
-      !request.body.lastname ||
-      !request.body.middlename ||
-      !request.body.services ||
-      !request.body.age ||
-      !request.body.selected_service
-    ) {
+    if (!request.body.selected_service) {
       {
         return response
           .status(400)

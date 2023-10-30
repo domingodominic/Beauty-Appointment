@@ -10,3 +10,41 @@
 @import "_bookingPage.scss";
 @import "_customerProfile.scss";
 @import "_bookDetails.scss";
+@import "_themeChanger.scss";
+@import "_accordion.scss";
+:root {
+  --background-color: #ffff;
+  --color: #ff9a9c;
+}
+
+[lightmode] {
+  --background-color: #ffff;
+  --color: #ff9a9c;
+}
+[darkmode] {
+  --background-color: #191444;
+  --color: #ff9a9c;
+}
+
+//for darkmode
+.dark {
+  color: #ff9a9c !important;
+}
+.light {
+  color: #191444 !important;
+}
+.color--light {
+  color: #191444 !important;
+}
+.color--dark {
+  color: rgb(230, 230, 230);
+}
+
+.App--container--dark {
+  transition: all 0.5s;
+  background-color: #191444 !important;
+}
+.App--container--light {
+  transition: all 0.5s;
+  background-color: white !important;
+}
