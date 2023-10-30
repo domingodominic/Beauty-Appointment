@@ -16,7 +16,7 @@ const providerSchema = mongoose.Schema(
     services: [
       {
         service_name: { type: String },
-        service_description: { type: String, required: true },
+        service_description: { type: String },
         service_price: { type: Number },
         availability_time: { type: Array },
       },

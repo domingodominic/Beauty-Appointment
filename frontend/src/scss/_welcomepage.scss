@@ -130,7 +130,7 @@ li {
     padding: 0px 6rem;
     font-size: 1.3rem;
     line-height: 2rem;
-    z-index: 2;
+    // z-index: 2;
   }
 }
 .content {
@@ -152,7 +152,7 @@ li {
   letter-spacing: 1px;
   text-decoration: none;
   color: $color_3;
-  z-index: 2;
+  // z-index: 2;
   background: transparent;
   cursor: pointer;
   transition: ease-out 0.5s;

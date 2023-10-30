@@ -7,10 +7,17 @@ import { CardActionArea } from "@mui/material";
 import "../scss/style.css";
 import styled from "@emotion/styled";
 
-function BookedDetails(props) {
-  console.log(props.data);
+function BookedDetails({ data, closeModal }) {
   return (
     <div className="book--details--container">
+      <button
+        style={{ position: "absolute", top: "7%", right: "33%" }}
+        onClick={() => {
+          closeModal(false);
+        }}
+      >
+        CLOSE
+      </button>
       <div className="book--details">
         <Card>
           <CardActionArea>
@@ -31,11 +38,11 @@ function BookedDetails(props) {
               </div>
               <div className="item">
                 <p>Selected service</p>
-                <h3>{props.data.appointed_service}</h3>
+                <h3>{data.appointed_service}</h3>
               </div>
               <div className="item">
                 <p>Appointed price</p>
-                <h3> ${" " + props.data.appointed_price}</h3>
+                <h3> ${" " + data.appointed_price}</h3>
               </div>
             </CardContent>
           </CardActionArea>

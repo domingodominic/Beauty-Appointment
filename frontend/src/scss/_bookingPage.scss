@@ -61,13 +61,13 @@ $primary_color: #191444;
 .home--menu {
   position: absolute;
   left: 7.5%;
+  z-index: 4;
 
   ul {
     margin: 0;
     padding: 1rem;
     border-radius: 50px;
     background-color: #ff9a9c;
-    // box-shadow: 0px 2px 10px #0296ff30;
 
     li {
       margin: 0;

@@ -21,7 +21,6 @@ $primary_color: #191444;
     overflow-y: scroll;
     height: 85%;
     width: 80%;
-    border-radius: 25px 0px 0px 25px;
     box-shadow: 3px 3px 15px #00000024;
     &::-webkit-scrollbar {
       padding: 1rem;
@@ -41,8 +40,7 @@ $primary_color: #191444;
     overflow-y: scroll;
     height: 85%;
     width: 80%;
-    border-radius: 25px 0px 0px 25px;
-    box-shadow: 3px 3px 15px #ffffff24;
+    box-shadow: 0px 0px 10px #ffffff42;
     &::-webkit-scrollbar {
       padding: 1rem;
       width: 3px;
@@ -87,7 +85,7 @@ $primary_color: #191444;
 
 .home--menu {
   position: absolute;
-  z-index: 2;
+  // z-index: 3;
   left: 7.5%;
 
   ul {
@@ -95,7 +93,6 @@ $primary_color: #191444;
     padding: 0;
     padding: 1rem;
     border-radius: 50px;
-    box-shadow: 0px 2px 10px #0296ff30;
 
     li {
       margin: 0;

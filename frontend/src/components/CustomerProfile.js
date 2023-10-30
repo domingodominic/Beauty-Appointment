@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import SkeletonLoading from "./SkeletonLoading";
-import LoginSpinner from "./LoginSpinner";
-import { CiEdit } from "react-icons/ci";
+import MyAccordion from "./MyAccordion";
 import { BsFillCameraFill, BsPersonFillLock } from "react-icons/bs";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { useSnackbar } from "notistack";
@@ -10,6 +8,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase-config";
 import ThemeChanger from "./ThemeChanger";
+import Linear from "../components/loaders_folder/Linear";
 import { ThemeContext } from "../App";
 import "../scss/style.css";
 
@@ -91,7 +90,6 @@ function CustomerProfile({ profile, data }) {
 
   return (
     <div className="customer--profile--container">
-      {loading ? <LoginSpinner /> : null}
       {userData && userData.profilePicture ? (
         <div>
           <div className="customer--header--profile">
@@ -187,41 +185,7 @@ function CustomerProfile({ profile, data }) {
               </div>
             </div>
             <div className="profile--right--info">
-              <div>
-                <Button
-                  aria-controls="simple-menu"
-                  aria-haspopup="true"
-                  onClick={handleClick}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    width: "100%",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      fontSize: "13px",
-                    }}
-                  >
-                    <BsPersonFillLock />
-                    <p>Privacy shortcuts</p>
-                  </div>{" "}
-                  <IoIosArrowDown />
-                </Button>
-                <Menu
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                  style={{ width: "100" }}
-                >
-                  <MenuItem onClick={handleClose}>Option 1</MenuItem>
-                  <MenuItem onClick={handleClose}>Option 2</MenuItem>
-                  <MenuItem onClick={handleClose}>Option 3</MenuItem>
-                </Menu>
-              </div>
+              <MyAccordion />
               <button className="logout--btn" onClick={Signout}>
                 Log out
               </button>
@@ -229,7 +193,7 @@ function CustomerProfile({ profile, data }) {
           </div>
         </div>
       ) : (
-        <SkeletonLoading />
+        <Linear />
       )}
     </div>
   );

@@ -20,7 +20,6 @@
   }
   .title {
     font-family: $font-family_2;
-    color: $color_2;
   }
 }
 
@@ -28,11 +27,40 @@
   margin: 0;
   padding: 0;
   margin-top: 2rem;
-  li {
+  li,
+  .list--light {
     list-style: none;
 
     margin-bottom: 1.5rem;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    border-radius: 7px;
+
+    .details {
+      display: flex;
+      gap: 1rem;
+
+      .service--details {
+        text-align: start;
+        font-size: 13px;
+
+        p {
+          margin: 0;
+          padding-bottom: 5px;
+        }
+      }
+    }
+    .details--container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  .list--dark {
+    list-style: none;
+
+    margin-bottom: 1.5rem;
+    box-shadow: 0px 0px 7px rgba(255, 255, 255, 0.29);
     padding: 10px 20px;
     border-radius: 7px;
 

@@ -73,11 +73,14 @@ router.get("/get-user", async (request, response) => {
   const email = request.query.email;
 
   try {
-    const foundUser = await userAccount.findOne({ email: email });
+    const foundUser = await userAccount.findOne({
+      email: { $regex: new RegExp(email, "i") },
+    });
     console.log("the found user is", foundUser);
     if (!foundUser) {
       return response.status(404).json({ message: "User not found" });
     }
+    console.log(foundUser.role);
 
     if (foundUser.role === "customer") {
       const customerData = await customer.findOne({

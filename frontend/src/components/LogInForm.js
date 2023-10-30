@@ -7,10 +7,19 @@ import LoginSpinner from "./LoginSpinner";
 import axios from "axios";
 import "../scss/style.css";
 import HomeCustomer from "./HomeCustomer";
-import MyContext from "./MyContext";
-import AppointmentList from "./AppointmentList";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import Slide from "@mui/material/Slide";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-config";
+import { useNavigate } from "react-router-dom";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function LoginForm() {
   const { enqueueSnackbar } = useSnackbar();
@@ -20,6 +29,16 @@ function LoginForm() {
   const [userData, setUserData] = useState({});
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleSignin = async () => {
     try {
@@ -162,10 +181,9 @@ function LoginForm() {
                   Sign In
                 </button>
 
-                <p style={{ fontSize: "12px" }}>
+                <p style={{ fontSize: "12px" }} onClick={handleClickOpen}>
                   Don't have an account yet ?
                   <Link
-                    to="/signup"
                     style={{
                       color: "#ff9a9c",
                       fontSize: "12px",
@@ -180,6 +198,32 @@ function LoginForm() {
           </div>
         </div>
       )}
+      <Dialog
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"Good day!"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Before we proceed with creating your account, would you like to
+            specify your role ? &#x1F604;
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <button onClick={() => navigate("/signup")} className="join--btn">
+            Customer
+          </button>
+          <button
+            onClick={() => navigate("/provider--signup")}
+            className="join--btn"
+          >
+            Provider
+          </button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

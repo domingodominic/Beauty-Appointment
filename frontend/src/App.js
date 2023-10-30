@@ -17,6 +17,7 @@ import BookingPage from "./components/BookingPage";
 import CustomerProfile from "./components/CustomerProfile";
 import ThemeChanger from "./components/ThemeChanger";
 import "./App.css";
+import ProviderSignup from "./provider/ProviderSignup";
 export const ThemeContext = createContext();
 
 function App() {
@@ -59,7 +60,9 @@ function App() {
 
   return (
     <div className={`App App--container--${theme}`}>
-      <ThemeContext.Provider value={{ theme, updateThemeState }}>
+      <ThemeContext.Provider
+        value={{ theme, updateThemeState, userDatas: { userData } }}
+      >
         <Routes>
           <Route path="/customerProfile" element={<CustomerProfile />} />
           <Route path="/Bookingpage" element={<BookingPage />} />
@@ -67,9 +70,11 @@ function App() {
             path="/Appointments"
             element={<AppointmentList user={userData} />}
           />
+
           <Route path="/theme--changer" element={<ThemeChanger />} />
           <Route path="/" element={<Welcome />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/provider--signup" element={<ProviderSignup />} />
           <Route path="/login" element={<LoginForm />} />
           <Route
             path="/login"

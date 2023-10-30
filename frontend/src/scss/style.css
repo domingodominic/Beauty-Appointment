@@ -117,7 +117,6 @@ li a:hover::after {
   padding: 0px 6rem;
   font-size: 1.3rem;
   line-height: 2rem;
-  z-index: 2;
 }
 
 .content .content--promotion {
@@ -138,7 +137,6 @@ li a:hover::after {
   letter-spacing: 1px;
   text-decoration: none;
   color: #ff9a9c;
-  z-index: 2;
   background: transparent;
   cursor: pointer;
   transition: ease-out 0.5s;
@@ -365,6 +363,58 @@ body {
     display: none;
   }
 }
+.join--btn {
+  padding: 0.4em 1.2em;
+  border: 2px solid #ff9a9c;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  background-color: transparent;
+  text-align: center;
+  font-size: 16px;
+  transition: 0.3s;
+  cursor: pointer;
+  z-index: 1;
+  font-family: inherit;
+  color: #ff9a9c;
+}
+
+.join--btn::before {
+  content: "";
+  width: 0;
+  height: 300%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: #ff9a9c;
+  transition: 0.5s ease;
+  display: block;
+  z-index: -1;
+}
+
+.join--btn:hover::before {
+  width: 105%;
+}
+
+.join--btn:hover {
+  color: white;
+}
+
+.signup--card {
+  max-height: 80vh;
+  overflow-y: scroll !important;
+}
+.signup--card::-webkit-scrollbar {
+  padding: 1rem;
+  width: 3px;
+  border-radius: 100px;
+}
+.signup--card::-webkit-scrollbar-thumb {
+  background-color: #ff9a9c;
+  height: 20px;
+}
+
 .cssanimation,
 .cssanimation span {
   color: white;
@@ -489,7 +539,6 @@ body {
   overflow-y: scroll;
   height: 85%;
   width: 80%;
-  border-radius: 25px 0px 0px 25px;
   box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.1411764706);
 }
 .content--conatiner .main--content--light::-webkit-scrollbar {
@@ -508,8 +557,7 @@ body {
   overflow-y: scroll;
   height: 85%;
   width: 80%;
-  border-radius: 25px 0px 0px 25px;
-  box-shadow: 3px 3px 15px rgba(255, 255, 255, 0.1411764706);
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2588235294);
 }
 .content--conatiner .main--content--dark::-webkit-scrollbar {
   padding: 1rem;
@@ -551,7 +599,6 @@ body {
 
 .home--menu {
   position: absolute;
-  z-index: 2;
   left: 7.5%;
 }
 .home--menu ul {
@@ -559,7 +606,6 @@ body {
   padding: 0;
   padding: 1rem;
   border-radius: 50px;
-  box-shadow: 0px 2px 10px rgba(2, 150, 255, 0.1882352941);
 }
 .home--menu ul li {
   margin: 0;
@@ -638,7 +684,6 @@ body {
 }
 .top--content .title {
   font-family: semi-bold;
-  color: #191444;
 }
 
 .service--lists {
@@ -646,26 +691,55 @@ body {
   padding: 0;
   margin-top: 2rem;
 }
-.service--lists li {
+.service--lists li,
+.service--lists .list--light {
   list-style: none;
   margin-bottom: 1.5rem;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   padding: 10px 20px;
   border-radius: 7px;
 }
-.service--lists li .details {
+.service--lists li .details,
+.service--lists .list--light .details {
   display: flex;
   gap: 1rem;
 }
-.service--lists li .details .service--details {
+.service--lists li .details .service--details,
+.service--lists .list--light .details .service--details {
   text-align: start;
   font-size: 13px;
 }
-.service--lists li .details .service--details p {
+.service--lists li .details .service--details p,
+.service--lists .list--light .details .service--details p {
   margin: 0;
   padding-bottom: 5px;
 }
-.service--lists li .details--container {
+.service--lists li .details--container,
+.service--lists .list--light .details--container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.service--lists .list--dark {
+  list-style: none;
+  margin-bottom: 1.5rem;
+  box-shadow: 0px 0px 7px rgba(255, 255, 255, 0.29);
+  padding: 10px 20px;
+  border-radius: 7px;
+}
+.service--lists .list--dark .details {
+  display: flex;
+  gap: 1rem;
+}
+.service--lists .list--dark .details .service--details {
+  text-align: start;
+  font-size: 13px;
+}
+.service--lists .list--dark .details .service--details p {
+  margin: 0;
+  padding-bottom: 5px;
+}
+.service--lists .list--dark .details--container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -738,6 +812,7 @@ body {
 .home--menu {
   position: absolute;
   left: 7.5%;
+  z-index: 4;
 }
 .home--menu ul {
   margin: 0;
@@ -866,9 +941,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  top: 10px;
-  z-index: 3;
-  background-color: rgba(207, 207, 207, 0.2901960784);
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.4392156863);
   height: 100%;
   width: 100%;
 }
@@ -905,7 +979,8 @@ body {
   line-height: 1;
 }
 .toggle .input {
-  display: none;
+  opacity: 0;
+  position: absolute;
 }
 .toggle .icon {
   grid-column: 1/1;
@@ -926,6 +1001,67 @@ body {
 #switch:checked ~ .icon--sun {
   transition-delay: 200ms;
   transform: scale(0) rotate(360deg);
+}
+
+.typography {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+}
+.typography .accordion--title {
+  font-size: 12px;
+}
+
+.accordion--item--light {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  font-size: 13px;
+  gap: 0.3rem;
+  padding-left: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: rgba(223, 223, 223, 0.708);
+}
+.accordion--item--light:hover {
+  transition: all 0.3s;
+  background-color: rgb(223, 223, 223);
+}
+
+.accordion--item--dark {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  font-size: 13px;
+  gap: 0.3rem;
+  padding-left: 0.2rem;
+  margin-bottom: 0.5rem;
+  border-radius: 5px;
+  background-color: rgba(70, 70, 70, 0.2980392157);
+  cursor: pointer;
+}
+.accordion--item--dark:hover {
+  transition: all 0.3s;
+  background-color: rgba(70, 70, 70, 0.4823529412);
+}
+
+.css-o4b71y-MuiAccordionSummary-content {
+  margin: 0 !important;
+}
+
+.Accordion--container--dark {
+  transition: all 0.5s !important;
+  background-color: #191444 !important;
+  color: white !important;
+  box-shadow: 0px 0px 5px rgb(218, 218, 218) !important;
+}
+
+.Accordion--container--light {
+  transition: all 0.5s;
+  background-color: white !important;
 }
 
 :root {
@@ -961,10 +1097,10 @@ body {
 
 .App--container--dark {
   transition: all 0.5s;
-  background-color: #191444;
+  background-color: #191444 !important;
 }
 
 .App--container--light {
   transition: all 0.5s;
-  background-color: white;
+  background-color: white !important;
 }/*# sourceMappingURL=style.css.map */

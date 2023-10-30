@@ -11,7 +11,7 @@
 @import "_customerProfile.scss";
 @import "_bookDetails.scss";
 @import "_themeChanger.scss";
-
+@import "_accordion.scss";
 :root {
   --background-color: #ffff;
   --color: #ff9a9c;
@@ -42,9 +42,9 @@
 
 .App--container--dark {
   transition: all 0.5s;
-  background-color: #191444;
+  background-color: #191444 !important;
 }
 .App--container--light {
   transition: all 0.5s;
-  background-color: white;
+  background-color: white !important;
 }
