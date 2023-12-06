@@ -16,7 +16,6 @@ import axios from "axios";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-config";
 
-// const bcrypt = require("bcrypt");
 const defaultProfile =
   "https://www.ssrl-uark.com/wp-content/uploads/2014/06/no-profile-image.png";
 const role = "customer";
@@ -61,7 +60,6 @@ function Signup() {
     resolver: yupResolver(schema),
   });
   const onSubmit = async (data) => {
-    console.table(data);
     try {
       setLoading(true);
 

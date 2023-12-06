@@ -3,6 +3,7 @@ import Spinner from "./Spinner";
 import { BsHouseDoor, BsJournalText, BsPersonCircle } from "react-icons/bs";
 import { IoNotificationsOutline } from "react-icons/io5";
 import "../scss/style.css";
+import { FiHome } from "react-icons/fi";
 import AppointmentList from "./AppointmentList";
 import CustomerProfile from "./CustomerProfile";
 import { onAuthStateChanged } from "firebase/auth";
@@ -49,9 +50,6 @@ function HomeCustomer(props) {
         </div>
 
         <div className="content--conatiner">
-          {/* <h3 style={{ position: "absolute", top: "0", right: " 12%" }}>
-            Hello, {props.profile.firstname}
-          </h3> */}
           <div className="home--menu">
             <ul>
               <li
@@ -66,7 +64,7 @@ function HomeCustomer(props) {
                   setCurrentPage("home");
                 }}
               >
-                <BsHouseDoor />
+                <FiHome />
               </li>
               <li
                 style={
@@ -110,7 +108,6 @@ function HomeCustomer(props) {
             {(() => {
               switch (currentPage) {
                 case "home":
-                  // return <AppointmentList />;
                   return <AppointmentList data={props.sharedData} />;
                 case "profile":
                   return (

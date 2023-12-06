@@ -1,7 +1,8 @@
 import express from "express";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken"; // Import JWT library
-import { userAccount } from "../model/userAccountModel.js"; // Renaming the imported user model
+import jwt from "jsonwebtoken";
+import { providermodel } from "../model/providermodel.js";
+import { userAccount } from "../model/userAccountModel.js";
 const router = express.Router();
 
 const authenticateUser = async (req, res, next) => {
@@ -69,7 +70,6 @@ router.post("/login", async (request, response) => {
 });
 
 // Route to save a user detailsconst bcrypt = require("bcrypt");
-
 router.post("/register", async (request, response) => {
   try {
     if (
@@ -178,6 +178,48 @@ router.delete("/:id", authenticateUser, async (request, response) => {
   } catch (error) {
     console.error(error);
     response.status(500).send("Internal Server Error");
+  }
+});
+//get specific branch/municipality for BookingAppointment
+router.get("/branches/:municipality", async (request, response) => {
+  try {
+    const municipality = request.params.municipality;
+
+    // Find user accounts based on municipality and role
+    const userAccounts = await userAccount.find({
+      role: "provider",
+      municipality: municipality,
+    });
+
+    const userAccountIds = userAccounts.map((account) => account._id);
+
+    // Use aggregation to combine data from the provider collection
+    const branches = await providermodel.aggregate([
+      {
+        $match: {
+          userAccount: { $in: userAccountIds },
+        },
+      },
+      {
+        $lookup: {
+          from: "userAccount",
+          localField: "userAccount",
+          foreignField: "_id",
+          as: "userInfo",
+        },
+      },
+    ]);
+
+    if (branches.length === 0) {
+      return response.status(200).json(false);
+    } else {
+      return response
+        .status(200)
+        .json([{ branches: branches, user: userAccounts }]);
+    }
+  } catch (error) {
+    console.error(error);
+    return response.status(500).json({ error: "Internal Server Error" });
   }
 });
 

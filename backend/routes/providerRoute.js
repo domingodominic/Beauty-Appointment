@@ -7,18 +7,6 @@ const route = express.Router();
 //route - provider
 route.post("/signup/", async (request, response) => {
   try {
-    console.log("firstname: " + request.body.firstname);
-    console.log("lastname: " + request.body.lastname);
-    console.log("email: " + request.body.email);
-    console.log("password: " + request.body.password);
-    console.log("birthdate: " + request.body.birthdate);
-    console.log("municipality: " + request.body.municipality);
-    console.log("businessName: " + request.body.businessName);
-    console.log("businessEmail: " + request.body.businessEmail);
-    console.log("Contact Number: " + request.body.contactNumber);
-    console.log("businessDescription: " + request.body.businessDescription);
-    console.log("role: " + request.body.role);
-
     if (
       !request.body.firstname ||
       !request.body.lastname ||
@@ -66,6 +54,69 @@ route.post("/signup/", async (request, response) => {
   }
 });
 
+route.post("/addService/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      service_name,
+      service_description,
+      service_price,
+      service_date,
+      availability_time,
+      service_image,
+    } = req.body;
+
+    // Create a new service object
+    const newService = {
+      service_name,
+      service_description,
+      service_price,
+      service_image,
+      timeAndDate: {
+        service_date,
+        availability_time,
+      },
+    };
+
+    // Find the provider by ID and push the new service to the services array
+    const provider = await providermodel.findByIdAndUpdate(
+      id,
+      {
+        $push: { services: newService },
+      },
+      { new: true }
+    );
+
+    res.status(201).json(provider); // Return the updated provider
+    console.log(provider);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error inserting service." });
+  }
+});
+
+//customer for update their profile picture
+route.put("/updateProfilePicture/:id", async (req, res) => {
+  const { id } = req.params;
+  const { profilePicture } = req.body;
+
+  try {
+    const Foundcustomer = await userAccount.findByIdAndUpdate(id, {
+      profilePicture,
+    });
+
+    if (!Foundcustomer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+
+    res.json({ message: "Profile picture updated successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
+  }
+});
+
 //route all get
 
 route.get("/", async (request, response) => {
@@ -94,8 +145,8 @@ route.get("/:id", async (request, response) => {
     response.status(500).send({ message: error.message });
   }
 });
+
 //Update - services
-//debug
 
 route.put("/:id", async (request, response) => {
   try {

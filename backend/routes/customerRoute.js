@@ -80,7 +80,6 @@ router.get("/get-user", async (request, response) => {
     if (!foundUser) {
       return response.status(404).json({ message: "User not found" });
     }
-    console.log(foundUser.role);
 
     if (foundUser.role === "customer") {
       const customerData = await customer.findOne({
@@ -101,7 +100,7 @@ router.get("/get-user", async (request, response) => {
           .status(404)
           .json({ message: "Provider data not found" });
       }
-      response.status(200).json(providerData);
+      response.status(200).json({ foundUser, providerData });
     }
   } catch (error) {
     console.error("Error:", error);

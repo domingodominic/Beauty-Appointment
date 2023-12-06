@@ -10,6 +10,7 @@ import { auth } from "../firebase-config";
 import ThemeChanger from "./ThemeChanger";
 import Linear from "../components/loaders_folder/Linear";
 import { ThemeContext } from "../App";
+import { useNavigate } from "react-router-dom";
 import "../scss/style.css";
 
 function CustomerProfile({ profile, data }) {
@@ -18,6 +19,8 @@ function CustomerProfile({ profile, data }) {
   const [loading, setLoading] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
+
+  const navigate = useNavigate();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -86,10 +89,13 @@ function CustomerProfile({ profile, data }) {
   };
   const Signout = async () => {
     await signOut(auth);
+    navigate("/");
   };
 
   return (
     <div className="customer--profile--container">
+      {loading ? <Linear /> : null}
+
       {userData && userData.profilePicture ? (
         <div>
           <div className="customer--header--profile">
