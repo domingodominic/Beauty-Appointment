@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { ThemeContext } from "../App";
+import { ThemeContext } from ".././../App";
 
 function ProviderAppointment() {
   const [serviceData, setServiceData] = useState({});

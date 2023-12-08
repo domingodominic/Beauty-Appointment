@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import useAppointmentStore from "../store/useAppointmentStore";
-import LoginSpinner from "../LoginSpinner";
+import LoginSpinner from "../loaders_folder/LoginSpinner";
 import axios from "axios";
 import { useState } from "react";
 import { ThemeContext } from "../../App";

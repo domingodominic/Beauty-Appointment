@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-import Spinner from "./Spinner";
+import Spinner from "../loaders_folder/Spinner";
 import { BsHouseDoor, BsJournalText, BsPersonCircle } from "react-icons/bs";
 import { IoNotificationsOutline } from "react-icons/io5";
-import "../scss/style.css";
+import "../../scss/style.css";
 import { FiHome } from "react-icons/fi";
 import AppointmentList from "./AppointmentList";
 import CustomerProfile from "./CustomerProfile";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase-config";
+import { auth } from "../../firebase-config";
 import { color } from "@mui/system";
-import { ThemeContext } from "../App";
+import CustomerNotification from "./CustomerNotification";
+import { ThemeContext } from "../../App";
 
 function HomeCustomer(props) {
   const { theme } = useContext(ThemeContext);
@@ -41,7 +42,7 @@ function HomeCustomer(props) {
       <div className="main--customer--page">
         <div className="header--logo">
           <div className="logo--img">
-            <img src={require("../images/logo3.png")} alt="logo png" />
+            <img src={require("../../images/logo3.png")} alt="logo png" />
           </div>
           <div className="location--name">
             <p className="logo--name">Glamour Ease</p>
@@ -116,6 +117,8 @@ function HomeCustomer(props) {
                       profile={customerProfile}
                     />
                   );
+                case "notification":
+                  return <CustomerNotification />;
                 default:
                   return <div>Page not found</div>;
               }

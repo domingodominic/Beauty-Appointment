@@ -1,5 +1,5 @@
 import React from "react";
-import "../scss/style.css";
+import "../../scss/style.css";
 
 function RedirectSpinner() {
   return (

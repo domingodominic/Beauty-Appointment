@@ -1,12 +1,12 @@
-import logo from "../images/logo.png";
-import hairService from "../images/hair.jpg";
-import nailService from "../images/nails.jpg";
-import "../scss/style.css";
+import logo from "../../images/logo.png";
+import hairService from "../../images/hair.jpg";
+import nailService from "../../images/nails.jpg";
+import "../../scss/style.css";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import image from "../images/img.png";
+import image from "../../images/img.png";
 import {
   BsChevronRight,
   BsGithub,
@@ -21,7 +21,7 @@ import { EffectCoverflow, Pagination } from "swiper/modules";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
-import makeupService from "../images/makeup.jpg";
+import makeupService from "../../images/makeup.jpg";
 
 function Welcome() {
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ function Welcome() {
               empower independent beauty service providers to thrive and expand
               their businesses
             </p>
-            <button className="fadein--btn" onClick={() => navigate("/signup")}>
+            <button className="fadein--btn" onClick={() => navigate("/login")}>
               Get Started
             </button>
           </div>

@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import MyAccordion from "../components/MyAccordion";
+import MyAccordion from "../../components/customer/MyAccordion";
 import { BsFillCameraFill, BsPersonFillLock } from "react-icons/bs";
-import { Button, Menu, MenuItem } from "@mui/material";
 import { useSnackbar } from "notistack";
-import { IoIosArrowDown } from "react-icons/io";
 import { signOut } from "firebase/auth";
-import { auth } from "../firebase-config";
-import ThemeChanger from "../components/ThemeChanger";
-import LoginSpinner from "../components/LoginSpinner";
-import Linear from "../components/loaders_folder/Linear";
-import { ThemeContext } from "../App";
+import { auth } from ".././../firebase-config";
+import ThemeChanger from "../customer/ThemeChanger";
+import Linear from "../../components/loaders_folder/Linear";
+import { ThemeContext } from "../../App";
 import { useNavigate } from "react-router-dom";
-import "../scss/style.css";
+import "../../scss/style.css";
 
 function ProviderProfile() {
   const { theme, customerProfiles, providerDatas } = useContext(ThemeContext);

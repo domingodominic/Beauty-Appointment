@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import image from "../images/registration-form-img.jpg";
-import LoginSpinner from "./LoginSpinner";
+import image from "../../images/registration-form-img.jpg";
+import LoginSpinner from "../loaders_folder/LoginSpinner";
 import axios from "axios";
-import "../scss/style.css";
+import "../../scss/style.css";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import Slide from "@mui/material/Slide";
@@ -13,7 +13,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase-config";
+import { auth } from "../../firebase-config";
 import { useNavigate } from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(props, ref) {

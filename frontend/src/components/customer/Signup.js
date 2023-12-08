@@ -10,11 +10,11 @@ import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import { useSnackbar } from "notistack";
-import "../scss/style.css";
-import LoginSpinner from "./LoginSpinner";
+import "../../scss/style.css";
+import LoginSpinner from "../loaders_folder/LoginSpinner";
 import axios from "axios";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase-config";
+import { auth } from "./../../firebase-config";
 
 const defaultProfile =
   "https://www.ssrl-uark.com/wp-content/uploads/2014/06/no-profile-image.png";

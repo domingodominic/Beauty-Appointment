@@ -4,7 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import "../scss/style.css";
+import "../../scss/style.css";
 import styled from "@emotion/styled";
 
 function BookedDetails({ data, closeModal }) {
@@ -24,7 +24,7 @@ function BookedDetails({ data, closeModal }) {
             <CardMedia
               component="img"
               height="140"
-              image={require("../images/hair.jpg")}
+              image={require("../../images/hair.jpg")}
               alt="green iguana"
             />
             <CardContent>

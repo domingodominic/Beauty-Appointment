@@ -1,19 +1,17 @@
 import React from "react";
-import "../scss/style.css";
+import "../../scss/style.css";
 
-function LoginSpinner() {
+function DefaultSpinner() {
   return (
     <div
       style={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
-        width: "100vw",
+        height: "100%",
         position: "fixed",
         top: "0",
         left: "0",
-        background: "#0000003b",
         zIndex: "9999",
       }}
     >
@@ -28,4 +26,4 @@ function LoginSpinner() {
   );
 }
 
-export default LoginSpinner;
+export default DefaultSpinner;

@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
-import LoginSpinner from "../components/LoginSpinner";
-import { ThemeContext } from "../App";
-import Linear from "../components/loaders_folder/Linear";
+import LoginSpinner from "../loaders_folder/LoginSpinner";
+import { ThemeContext } from "../../App";
+import Linear from "../loaders_folder/Linear";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import Slide from "@mui/material/Slide";
@@ -11,7 +11,7 @@ import Timepicker from "./Timepicker";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import "../scss/style.css";
+import "../../scss/style.css";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { IoIosAdd } from "react-icons/io";
@@ -156,7 +156,7 @@ function ProviderServices() {
           >
             <div>
               <img
-                src={require("../images/think--img.png")}
+                src={require("../../images/think--img.png")}
                 alt="think image"
                 width="200px"
               />

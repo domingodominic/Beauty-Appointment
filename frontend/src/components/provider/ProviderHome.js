@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { BsHouseDoor, BsJournalText, BsPersonCircle } from "react-icons/bs";
 import { IoNotificationsOutline } from "react-icons/io5";
-import "../scss/style.css";
+import "../../scss/style.css";
 import ProviderAppointment from "./ProviderAppointment";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase-config";
+import { auth } from ".././../firebase-config";
 import ProviderProfile from "./ProviderProfile";
 import ProviderServices from "./ProviderServices";
-import { ThemeContext } from "../App";
+import { ThemeContext } from "../../App";
 import ProviderNotification from "./ProviderNotification";
 import Datepicker from "./Datepicker";
 
@@ -23,7 +23,7 @@ function ProviderHome() {
       <div className="main--customer--page">
         <div className="header--logo">
           <div className="logo--img">
-            <img src={require("../images/logo3.png")} alt="logo png" />
+            <img src={require("../../images/logo3.png")} alt="logo png" />
           </div>
           <div className="location--name">
             <p className="logo--name">Glamour Ease</p>

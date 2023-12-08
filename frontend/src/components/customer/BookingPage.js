@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Spinner from "./Spinner";
 import { BsHouseDoor, BsJournalText, BsPersonCircle } from "react-icons/bs";
 import { IoNotificationsOutline } from "react-icons/io5";
-import DefaultSpinner from "./DefaultSpinner";
-import "../scss/style.css";
+import DefaultSpinner from "../loaders_folder/DefaultSpinner";
+import "../../scss/style.css";
 import AppointmentList from "./AppointmentList";
 import { color } from "@mui/system";
 import Branches from "./Branches";
@@ -35,7 +34,7 @@ function BookingPage() {
       <div className="main--customer--page">
         <div className="header--logo">
           <div className="logo--img">
-            <img src={require("../images/logo3.png")} alt="logo png" />
+            <img src={require("../../images/logo3.png")} alt="logo png" />
           </div>
           <div className="location--name">
             <p className="logo--name">Glamour Ease</p>

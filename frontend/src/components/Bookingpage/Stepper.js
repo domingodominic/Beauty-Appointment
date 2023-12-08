@@ -15,7 +15,7 @@ import { ThemeContext } from "../../App";
 import { useSnackbar } from "notistack";
 import useAppointmentStore from "../store/useAppointmentStore";
 import axios from "axios";
-import LoginSpinner from "../LoginSpinner";
+import LoginSpinner from "../loaders_folder/LoginSpinner";
 
 const steps = [
   "Select Municipality",

@@ -3,7 +3,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import dayjs from "dayjs";
-import "../scss/style.css";
+import "../../scss/style.css";
 
 export default function Datepicker({ selectDate }) {
   const [selectedDate, setSelectedDate] = React.useState(null);

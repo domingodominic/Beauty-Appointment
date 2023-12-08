@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
-import "../scss/style.css";
+import "../../scss/style.css";
 import { BiSolidMoon } from "react-icons/bi";
 import { BsSunFill } from "react-icons/bs";
-import { ThemeContext } from "../App";
+import { ThemeContext } from "../../App";
 
 function ThemeChanger() {
   const { theme, updateThemeState } = useContext(ThemeContext);

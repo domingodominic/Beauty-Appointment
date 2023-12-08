@@ -6,12 +6,12 @@ import { Button, Menu, MenuItem } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { IoIosArrowDown } from "react-icons/io";
 import { signOut } from "firebase/auth";
-import { auth } from "../firebase-config";
+import { auth } from "../../firebase-config";
 import ThemeChanger from "./ThemeChanger";
-import Linear from "../components/loaders_folder/Linear";
-import { ThemeContext } from "../App";
+import Linear from "../../components/loaders_folder/Linear";
+import { ThemeContext } from "../../App";
 import { useNavigate } from "react-router-dom";
-import "../scss/style.css";
+import "../../scss/style.css";
 
 function CustomerProfile({ profile, data }) {
   const { theme } = useContext(ThemeContext);

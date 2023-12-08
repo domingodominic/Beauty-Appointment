@@ -4,10 +4,10 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import { IoSettingsOutline, IoKeyOutline } from "react-icons/io5";
-import "../scss/style.css";
+import "../../scss/style.css";
 import { BsPerson } from "react-icons/bs";
 import { BiSolidChevronDown, BiKey } from "react-icons/bi";
-import { ThemeContext } from "../App";
+import { ThemeContext } from "../../App";
 export default function MyAccordion() {
   const { theme, updateThemeState } = useContext(ThemeContext);
   return (

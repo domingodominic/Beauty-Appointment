@@ -1,7 +1,6 @@
 import React from "react";
-import "../scss/style.css";
 
-function ProviderNotification() {
+function NoNotification() {
   return (
     <div>
       <div
@@ -15,15 +14,17 @@ function ProviderNotification() {
       >
         <div>
           <img
-            src={"https://cdn-icons-png.flaticon.com/512/6105/6105184.png"}
+            src={require("../images/notificationICON.png")}
             alt="think image"
-            width="200px"
+            width="250px"
           />
-          <p style={{ color: "gray" }}>You have no notifications so far</p>
+          <p style={{ color: "gray", margin: "0" }}>
+            You have no notifications so far
+          </p>
         </div>
       </div>
     </div>
   );
 }
 
-export default ProviderNotification;
+export default NoNotification;

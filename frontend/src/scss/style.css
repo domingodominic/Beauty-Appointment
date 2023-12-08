@@ -1616,6 +1616,15 @@ body {
   .css-1q04gal-MuiDateCalendar-root {
     width: 280px !important;
   }
+  .login--body {
+    padding: 1rem;
+  }
+  .fadein--btn {
+    padding: 10px 15px !important;
+  }
+  .reg--bg {
+    display: none;
+  }
 }
 .mb--municipality {
   display: none;

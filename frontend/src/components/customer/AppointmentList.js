@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import "../scss/style.css";
+import "../../scss/style.css";
 import { IoAddCircle } from "react-icons/io5";
 import { PiEyeThin } from "react-icons/pi";
 import BookedDetails from "./BookedDetails";
-import Linear from "../components/loaders_folder/Linear";
-import { ThemeContext } from "../App";
-import HorizontalLinearStepper from "./Bookingpage/Stepper";
+import Linear from "../loaders_folder/Linear";
+import { ThemeContext } from "../../App";
+import HorizontalLinearStepper from "../Bookingpage/Stepper";
 
 function AppointmentList() {
   const { theme, userDatas } = useContext(ThemeContext);
@@ -48,7 +48,7 @@ function AppointmentList() {
         >
           <div>
             <img
-              src={require("../images/think--img.png")}
+              src={require("../../images/think--img.png")}
               alt="think image"
               style={{ width: "200px" }}
             />
@@ -81,7 +81,7 @@ function AppointmentList() {
                   <div className="details--container">
                     <div className="details">
                       <img
-                        src={require("../images/hair.jpg")}
+                        src={require("../../images/hair.jpg")}
                         alt="service image"
                         style={{ width: "100px", borderRadius: "10px" }}
                       />

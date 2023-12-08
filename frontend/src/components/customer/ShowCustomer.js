@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Spinner from "./Spinner";
+import Spinner from "../loaders_folder/Spinner";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 function ShowCustomer() {
