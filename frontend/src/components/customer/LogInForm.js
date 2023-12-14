@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
 import { useSnackbar } from "notistack";
@@ -13,6 +13,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { ThemeContext } from "../../App";
 import { auth } from "../../firebase-config";
 import { useNavigate } from "react-router-dom";
 
@@ -29,6 +30,10 @@ function LoginForm() {
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [open, setOpen] = React.useState(false);
+  const [forgotpassOpen, setforgotpassOpen] = React.useState(false);
+  const [failedAuth, countFailedAuth] = useState(0);
+  const { theme, userDatas } = useContext(ThemeContext);
+
   const navigate = useNavigate();
 
   const handleClickOpen = () => {
@@ -38,6 +43,14 @@ function LoginForm() {
   const handleClose = () => {
     setOpen(false);
   };
+  const handleFPDialogOpen = () => {
+    setforgotpassOpen(true);
+    console.log("its cliked");
+  };
+  const handleFPDialogClose = () => {
+    setforgotpassOpen(false);
+  };
+  console.log("user datas are ", userDatas);
 
   const handleSignin = async () => {
     try {
@@ -70,6 +83,7 @@ function LoginForm() {
     } catch (error) {
       console.error(error);
       enqueueSnackbar("An error occurred during sign-in", { variant: "error" });
+      countFailedAuth((count) => count + 1);
     } finally {
       setLoading(false);
     }
@@ -146,6 +160,9 @@ function LoginForm() {
               />
             </div>
             <div>
+              {failedAuth === 3 ? (
+                <p onClick={() => setforgotpassOpen(true)}>Forgot password?</p>
+              ) : null}
               <div
                 style={{
                   display: "flex",
@@ -157,7 +174,7 @@ function LoginForm() {
                   type="checkbox"
                   onChange={() => setBtnDisabled(!btnDisabled)}
                 />
-                <p>
+                <p className={`color--${theme}`}>
                   I agree all statements in{" "}
                   <Link to="/" style={{ color: "#ff9a9c" }}>
                     Terms & Conditions
@@ -213,6 +230,30 @@ function LoginForm() {
             className="join--btn"
           >
             Provider
+          </button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={forgotpassOpen}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleFPDialogClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"Forgot your password?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            To initiate the account reset process, kindly provide the 6-digit
+            One-Time Password (OTP) sent to your registered email address. Your
+            cooperation is appreciated.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <button
+            onClick={() => navigate("/provider--signup")}
+            className="join--btn"
+          >
+            Send an OTP
           </button>
         </DialogActions>
       </Dialog>
