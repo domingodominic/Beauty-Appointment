@@ -40,4 +40,22 @@ router.post("/schedulingAppointment", async (request, response) => {
   }
 });
 
+// Delete Appointment by ID Route
+router.delete("/deleteAppointment/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+
+    const deletedAppointment = await scheduledAppointment.findByIdAndDelete(id);
+
+    if (!deletedAppointment) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+
+    res.json({ message: "Appointment deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "An error occurred", error: error.message });
+  }
+});
+
 export default router;

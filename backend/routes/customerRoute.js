@@ -80,6 +80,7 @@ router.get("/get-user", async (request, response) => {
     if (!foundUser) {
       return response.status(404).json({ message: "User not found" });
     }
+    console.log(foundUser.role);
 
     if (foundUser.role === "customer") {
       const customerData = await customer.findOne({
@@ -100,7 +101,7 @@ router.get("/get-user", async (request, response) => {
           .status(404)
           .json({ message: "Provider data not found" });
       }
-      response.status(200).json({ foundUser, providerData });
+      response.status(200).json(providerData);
     }
   } catch (error) {
     console.error("Error:", error);
@@ -267,5 +268,56 @@ router.delete("/:id", async (request, response) => {
     return response.status(500).send("Internal Server Error");
   }
 });
+
+// update profile info (HINDI SURE KUNG TAMA HAHAHA)
+
+router.put("/updateProfile/:id", async (req, res) => {
+  const { id } = req.params;
+  const { firstname, lastname, age, birthdate, municipality, contactNumber, profilePicture } = req.body;
+
+  try {
+    const updatedUser = await userAccount.findByIdAndUpdate(id, {
+      firstname,
+      lastname,
+      age,
+      birthdate,
+      municipality,
+      contactNumber,
+      profilePicture,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "Profile information updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "An error occurred", error: error.message });
+  }
+});
+
+// update ng password
+router.put("/updatePassword/:id", async (req, res) => {
+  const { id } = req.params;
+  const { newPassword } = req.body;
+
+  try {
+    // Hashing the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+    const updatedUser = await userAccount.findByIdAndUpdate(id, {
+      password: hashedPassword,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "Password updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "An error occurred", error: error.message });
+  }
+});
+
 
 export default router;
