@@ -15,7 +15,7 @@
     }
   }
   .main--customer--page {
-    padding: 0 1rem;
+    padding: 0 0.7rem;
   }
   .top--content {
     align-items: center;
@@ -30,7 +30,8 @@
 
   .list--dark,
   .list--light {
-    padding: 0.5rem !important;
+    padding: 0.3rem !important;
+    margin-bottom: 1rem !important;
   }
 
   .list--dark .icon {
@@ -50,6 +51,7 @@
   .main--content--light {
     width: 100% !important;
     height: 90% !important;
+    border-radius: 7px;
     margin-top: 1.2rem;
     display: static !important;
   }
@@ -57,6 +59,7 @@
   .main--content--dark {
     width: 100% !important;
     height: 90% !important;
+    border-radius: 7px;
     margin-top: 1.2rem;
     display: static !important;
   }
@@ -136,8 +139,8 @@
     padding: 0 5px !important;
   }
   .details img {
-    max-width: 7 a0px;
-    max-height: 70px;
+    max-width: 60px;
+    max-height: 60px;
   }
 
   //date calendar
@@ -156,6 +159,25 @@
   .reg--bg {
     display: none;
   }
+  //service button in provider page
+  .addService--btn {
+    padding: 5px 10px !important;
+    button {
+      font-size: 12px !important;
+    }
+  }
+  //table in provider showing customer list
+
+  .css-ptkaw2-MuiDataGrid-root {
+    width: 350px;
+  }
+  .providerService--mainContainer {
+    padding: 10px;
+  }
+  //accordion for selecting actions in provider services
+  // .css-o4b71y-MuiAccordionSummary-content {
+  //   display: none !important;
+  // }
 }
 
 .mb--municipality {

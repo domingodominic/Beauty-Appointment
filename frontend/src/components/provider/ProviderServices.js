@@ -8,13 +8,22 @@ import Slide from "@mui/material/Slide";
 import { TextField } from "@mui/material";
 import Datepicker from "./Datepicker";
 import Timepicker from "./Timepicker";
+import { IoEyeOutline } from "react-icons/io5";
+import { CiEdit } from "react-icons/ci";
+import { AiOutlineDelete } from "react-icons/ai";
+import { BiSolidChevronDown, BiKey } from "react-icons/bi";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AddButton from "../AddButton";
 import * as yup from "yup";
 import "../../scss/style.css";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { IoIosAdd } from "react-icons/io";
+import Actions from "../Actions";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -177,9 +186,8 @@ function ProviderServices() {
               <h4 className={`service--title--header  color--${theme}`}>
                 Service items
               </h4>
-              <div className="button--container">
-                <IoIosAdd />
-                <button onClick={handleClickOpen}>Add service</button>
+              <div onClick={handleClickOpen}>
+                <AddButton />
               </div>
             </div>
 
@@ -231,7 +239,7 @@ function ProviderServices() {
                         </div>
                       </div>
                       <div className={`icon color--${theme}`}>
-                        <IoIosAdd />
+                        <Actions />
                       </div>
                     </div>
                   </li>
@@ -395,11 +403,7 @@ function ProviderServices() {
                   </div>
                 </div>
               </div>
-              <button
-                className="simple--fadein--btn"
-                type="submit"
-                onClick={() => alert("working")}
-              >
+              <button className="simple--fadein--btn" type="submit">
                 Save
               </button>
 

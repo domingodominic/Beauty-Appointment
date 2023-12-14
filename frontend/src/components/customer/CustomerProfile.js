@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import MyAccordion from "./MyAccordion";
 import { BsFillCameraFill, BsPersonFillLock } from "react-icons/bs";
-import { Button, Menu, MenuItem } from "@mui/material";
+import { Button, DialogContent, Menu, MenuItem } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { IoIosArrowDown } from "react-icons/io";
 import { signOut } from "firebase/auth";
@@ -11,13 +11,21 @@ import ThemeChanger from "./ThemeChanger";
 import Linear from "../../components/loaders_folder/Linear";
 import { ThemeContext } from "../../App";
 import { useNavigate } from "react-router-dom";
+import Signout from "../Signout";
+import Dialog from "@mui/material/Dialog";
+import Slide from "@mui/material/Slide";
+import { DialogTitle } from "@mui/material";
 import "../../scss/style.css";
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 function CustomerProfile({ profile, data }) {
   const { theme } = useContext(ThemeContext);
   const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [openSignout, setOpenSignout] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
@@ -26,6 +34,10 @@ function CustomerProfile({ profile, data }) {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const openSignoutDialog = (data) => {
+    setOpenSignout(data);
   };
 
   // Converting date
@@ -50,6 +62,7 @@ function CustomerProfile({ profile, data }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageURL, setImageURL] = useState("");
   const preset_key = "rp5f2lnh";
+
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     const formdata = new FormData();
@@ -88,120 +101,156 @@ function CustomerProfile({ profile, data }) {
     }
   };
   const Signout = async () => {
+    setOpenSignout(true);
+  };
+  const closeDialog = () => {
+    setOpenSignout(false);
+  };
+  const logout = async () => {
     await signOut(auth);
-    navigate("/");
+    navigate("/login");
   };
 
   return (
-    <div className="customer--profile--container">
-      {loading ? <Linear /> : null}
+    <>
+      <div className="customer--profile--container">
+        {loading && <Linear />}
 
-      {userData && userData.profilePicture ? (
-        <div>
-          <div className="customer--header--profile">
-            <div className="image--container">
-              <img
-                src={
-                  userData
-                    ? userData.profilePicture
-                    : `https://th.bing.com/th/id/OIP.UujSBl4u7QBJFs8bfiYFfwHaHa?pid=ImgDet&rs=1`
-                }
-                alt="profile picture"
-                style={{
-                  width: "150px",
-                  height: "150px",
-                  borderRadius: "100%",
-                  boxShadow: "5px 5px  15px rgba(,0,0,0,0.2)",
-                }}
-              />
-
-              <label className="file-input-label">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="file-input"
+        {userData && userData.profilePicture ? (
+          <div>
+            <div className="customer--header--profile">
+              <div className="image--container">
+                <img
+                  src={
+                    userData
+                      ? userData.profilePicture
+                      : `https://th.bing.com/th/id/OIP.UujSBl4u7QBJFs8bfiYFfwHaHa?pid=ImgDet&rs=1`
+                  }
+                  alt="profile picture"
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                    borderRadius: "100%",
+                    boxShadow: "5px 5px  15px rgba(,0,0,0,0.2)",
+                  }}
                 />
-                <BsFillCameraFill className="edit-icon" />
-              </label>
-            </div>
 
-            <div className={`customer--name ${theme}`}>
-              {profile.firstname + " " + profile.lastname}
+                <label className="file-input-label">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="file-input"
+                  />
+                  <BsFillCameraFill className="edit-icon" />
+                </label>
+              </div>
+
+              <div className={`customer--name ${theme}`}>
+                {profile.firstname + " " + profile.lastname}
+              </div>
+              <div className="customer--email">{profile.email}</div>
+              <div style={{ position: "absolute", top: "5%", right: "5%" }}>
+                <ThemeChanger />
+              </div>
             </div>
-            <div className="customer--email">{profile.email}</div>
-            <div style={{ position: "absolute", top: "5%", right: "5%" }}>
-              <ThemeChanger />
+            <div className="profile--info--container">
+              <div className="profile--left">
+                <div className="personal--info">
+                  <h4
+                    className={`color--${theme}`}
+                    style={{ textAlign: "start" }}
+                  >
+                    Personal Information
+                  </h4>
+                  <div className="profile--join">
+                    <p className="item--title">Join on</p>
+                    <p className={`item--value color--${theme} `}>
+                      {formattedDate}
+                    </p>
+                  </div>
+                  <div className="profile--join">
+                    <p className="item--title">Name</p>
+                    <p className={`item--value color--${theme} `}>
+                      {profile.firstname + " " + profile.lastname}
+                    </p>
+                  </div>
+                  <div className="profile--join">
+                    <p className="item--title">Municipality</p>
+                    <p className={`item--value color--${theme} `}>
+                      {profile.municipality}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="private--info">
+                  <h4
+                    className={`color--${theme}`}
+                    style={{ textAlign: "start" }}
+                  >
+                    Private Information
+                  </h4>
+                  <div className="private--info--item">
+                    <p className="item--title">Email</p>
+                    <p className={`item--value color--${theme} `}>
+                      {profile.email}
+                    </p>
+                  </div>
+                  <div className="private--info--item">
+                    <p className="item--title">Contact no.</p>
+                    <p className={`item--value color--${theme} `}>
+                      {profile.contactNumber}
+                    </p>
+                  </div>
+                  <div className="private--info--item">
+                    <p className="item--title"> Theme</p>
+                    <p className={`item--value color--${theme} `}>
+                      {profile.contactNumber}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="profile--right--info">
+                <MyAccordion />
+                <button className="logout--btn" onClick={Signout}>
+                  Log out
+                </button>
+              </div>
             </div>
           </div>
-          <div className="profile--info--container">
-            <div className="profile--left">
-              <div className="personal--info">
-                <h4
-                  className={`color--${theme}`}
-                  style={{ textAlign: "start" }}
-                >
-                  Personal Information
-                </h4>
-                <div className="profile--join">
-                  <p className="item--title">Join on</p>
-                  <p className={`item--value color--${theme} `}>
-                    {formattedDate}
-                  </p>
-                </div>
-                <div className="profile--join">
-                  <p className="item--title">Name</p>
-                  <p className={`item--value color--${theme} `}>
-                    {profile.firstname + " " + profile.lastname}
-                  </p>
-                </div>
-                <div className="profile--join">
-                  <p className="item--title">Municipality</p>
-                  <p className={`item--value color--${theme} `}>
-                    {profile.municipality}
-                  </p>
-                </div>
-              </div>
-
-              <div className="private--info">
-                <h4
-                  className={`color--${theme}`}
-                  style={{ textAlign: "start" }}
-                >
-                  Private Information
-                </h4>
-                <div className="private--info--item">
-                  <p className="item--title">Email</p>
-                  <p className={`item--value color--${theme} `}>
-                    {profile.email}
-                  </p>
-                </div>
-                <div className="private--info--item">
-                  <p className="item--title">Contact no.</p>
-                  <p className={`item--value color--${theme} `}>
-                    {profile.contactNumber}
-                  </p>
-                </div>
-                <div className="private--info--item">
-                  <p className="item--title"> Theme</p>
-                  <p className={`item--value color--${theme} `}>
-                    {profile.contactNumber}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="profile--right--info">
-              <MyAccordion />
-              <button className="logout--btn" onClick={Signout}>
+        ) : (
+          <Linear />
+        )}
+        <Dialog
+          open={openSignout}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={closeDialog}
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle>Are you sure you want to log out?</DialogTitle>
+          <DialogContent>
+            <div style={{ marginTop: "1rem", display: "flex", gap: ".5rem" }}>
+              <button
+                style={{
+                  background: "#ff9a9c",
+                  border: "none",
+                  color: "white",
+                  padding: "3px 5px",
+                  borderRadius: "3px",
+                }}
+                onClick={() => {
+                  logout();
+                }}
+              >
                 Log out
               </button>
+              <button onClick={closeDialog}>Cancel</button>
             </div>
-          </div>
-        </div>
-      ) : (
-        <Linear />
-      )}
-    </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </>
   );
 }
 

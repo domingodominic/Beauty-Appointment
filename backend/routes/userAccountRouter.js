@@ -78,8 +78,7 @@ router.post("/register", async (request, response) => {
       !request.body.middlename ||
       !request.body.gender ||
       !request.body.age ||
-      !request.body.email ||
-      !request.body.password
+      !request.body.email
     ) {
       return response
         .status(400)
@@ -95,13 +94,9 @@ router.post("/register", async (request, response) => {
       gender: request.body.gender,
     };
 
-    // Hash the password before storing it in the database
-    const saltRounds = 10; // You can adjust the number of salt rounds as needed
-    const hashedPassword = await bcrypt.hash(request.body.password, saltRounds);
+    const saltRounds = 10;
 
-    newUser.password = hashedPassword;
-
-    const createdUser = await userAccount.create(newUser); // Use UserModel instead of user
+    const createdUser = await userAccount.create(newUser);
 
     return response.status(201).send(createdUser);
   } catch (error) {

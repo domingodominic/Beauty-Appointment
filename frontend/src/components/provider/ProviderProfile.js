@@ -8,15 +8,24 @@ import { auth } from ".././../firebase-config";
 import ThemeChanger from "../customer/ThemeChanger";
 import Linear from "../../components/loaders_folder/Linear";
 import { ThemeContext } from "../../App";
+import Dialog from "@mui/material/Dialog";
 import { useNavigate } from "react-router-dom";
-import "../../scss/style.css";
+import Slide from "@mui/material/Slide";
+import { DialogTitle, DialogContent } from "@mui/material";
 
+import ChangePasswordForm from "../change password/ChangePasswordForm";
+import "../../scss/style.css";
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 function ProviderProfile() {
   const { theme, customerProfiles, providerDatas } = useContext(ThemeContext);
+  const [openSignout, setOpenSignout] = useState(false);
   const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [imageURL, setImageURL] = useState("");
+  const [forgotPassword, setForgotPassword] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
@@ -26,7 +35,9 @@ function ProviderProfile() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  console.log("is loading? ", loading);
+  const handleForgotPassOpen = (data) => {
+    setForgotPassword(data);
+  };
 
   // Converting date
   const customerJoin = userData.createdAt;
@@ -81,11 +92,18 @@ function ProviderProfile() {
       });
     }
   };
+
   const Signout = async () => {
-    await signOut(auth);
-    navigate("/");
+    setOpenSignout(true);
   };
-  console.log("loader test", loading);
+  const closeDialog = () => {
+    setOpenSignout(false);
+  };
+  const logout = async () => {
+    await signOut(auth);
+    navigate("/login");
+  };
+
   return (
     <div className="customer--profile--container">
       {loading ? <Linear /> : null}
@@ -178,15 +196,13 @@ function ProviderProfile() {
                 </div>
                 <div className="private--info--item">
                   <p className="item--title"> Theme</p>
-                  <p className={`item--value color--${theme} `}>
-                    {userData.contactNumber}
-                  </p>
+                  <p className={`item--value color--${theme} `}>{theme}</p>
                 </div>
               </div>
             </div>
             <div className="profile--right--info">
               <div>
-                <MyAccordion />
+                <MyAccordion handleForgotPassOpen={handleForgotPassOpen} />
                 <button className="logout--btn" onClick={Signout}>
                   Log out
                 </button>
@@ -197,6 +213,40 @@ function ProviderProfile() {
       ) : (
         <Linear />
       )}
+      <Dialog
+        open={openSignout}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={closeDialog}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>Are you sure you want to log out?</DialogTitle>
+        <DialogContent>
+          <div style={{ marginTop: "1rem", display: "flex", gap: ".5rem" }}>
+            <button
+              style={{
+                background: "#ff9a9c",
+                border: "none",
+                color: "white",
+                padding: "3px 5px",
+                borderRadius: "3px",
+              }}
+              onClick={() => {
+                logout();
+              }}
+            >
+              Log out
+            </button>
+            <button onClick={closeDialog}>Cancel</button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <ChangePasswordForm
+        forgotPassword={forgotPassword}
+        handleForgotPassOpen={handleForgotPassOpen}
+        userID={userData._id}
+      />
     </div>
   );
 }

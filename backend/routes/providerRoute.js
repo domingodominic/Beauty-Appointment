@@ -11,7 +11,6 @@ route.post("/signup/", async (request, response) => {
       !request.body.firstname ||
       !request.body.lastname ||
       !request.body.email ||
-      !request.body.password ||
       !request.body.birthdate ||
       !request.body.municipality ||
       !request.body.businessName ||
@@ -24,11 +23,9 @@ route.post("/signup/", async (request, response) => {
         message: "Send all required fields! ",
       });
     }
-    const hashedPassword = await bcrypt.hash(request.body.password, 12);
 
     const createdUserAcc = await userAccount.create({
       email: request.body.email,
-      password: hashedPassword,
       firstname: request.body.firstname,
       lastname: request.body.lastname,
       age: request.body.age,

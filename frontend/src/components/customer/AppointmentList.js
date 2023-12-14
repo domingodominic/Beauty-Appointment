@@ -53,7 +53,12 @@ function AppointmentList() {
               style={{ width: "200px" }}
             />
             <p style={{ color: "gray" }}>Seems you haven't booked yet?</p>
-            <button className="fadein--btn">Book now</button>
+            <button
+              className="fadein--btn"
+              onClick={() => setBookClicked(true)}
+            >
+              Book now
+            </button>
           </div>
         </div>
       ) : (
@@ -70,7 +75,7 @@ function AppointmentList() {
             </div>
 
             <div className="button">
-              <button onClick={() => setBookClicked(true)}>Book more</button>{" "}
+              <button onClick={() => setBookClicked(true)}>Book more</button>
               <IoAddCircle />
             </div>
           </div>

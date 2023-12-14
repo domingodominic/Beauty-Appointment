@@ -19,6 +19,7 @@ import { auth } from "./../../firebase-config";
 const defaultProfile =
   "https://www.ssrl-uark.com/wp-content/uploads/2014/06/no-profile-image.png";
 const role = "customer";
+
 const schema = yup.object().shape({
   firstname: yup.string().required("First Name is required"),
   lastname: yup.string().required("Last Name is required"),
@@ -68,8 +69,6 @@ function Signup() {
         lastname: data.lastname,
         age: data.age,
         birthdate: data.birthdate,
-        password: data.password,
-        confirmPassword: data.confirmPassword,
         municipality: data.municipality,
         email: data.email,
         contactNumber: data.contactNumber,

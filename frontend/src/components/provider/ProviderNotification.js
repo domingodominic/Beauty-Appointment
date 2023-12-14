@@ -1,11 +1,13 @@
 import React from "react";
 import "../../scss/style.css";
-import NoNotification from "../NoNotification";
+import noNotifImg from "../../images/notificationICON.png";
+import NoAvailableToShow from "../NoAvailableToShow";
 
 function ProviderNotification() {
+  const definition = "You have no notifications so far";
   return (
     <div>
-      <NoNotification />
+      <NoAvailableToShow definition={definition} image={noNotifImg} />
     </div>
   );
 }

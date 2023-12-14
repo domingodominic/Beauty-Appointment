@@ -8,7 +8,7 @@ import AppointmentList from "./AppointmentList";
 import CustomerProfile from "./CustomerProfile";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase-config";
-import { color } from "@mui/system";
+import CustomerHistory from "./CustomerHistory";
 import CustomerNotification from "./CustomerNotification";
 import { ThemeContext } from "../../App";
 
@@ -110,6 +110,8 @@ function HomeCustomer(props) {
               switch (currentPage) {
                 case "home":
                   return <AppointmentList data={props.sharedData} />;
+                case "history":
+                  return <CustomerHistory />;
                 case "profile":
                   return (
                     <CustomerProfile

@@ -103,7 +103,7 @@ function SelectBranch({ setStep }) {
         >
           <div>
             <img
-              src={require("../../images/think--img.png")}
+              src={require("../../images/noServices.png")}
               alt="think image"
               style={{ width: "200px" }}
             />

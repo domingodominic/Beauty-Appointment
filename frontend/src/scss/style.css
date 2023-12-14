@@ -453,6 +453,53 @@ body {
     opacity: 1;
   }
 }
+.email--loader {
+  position: relative;
+  border-style: solid;
+  box-sizing: border-box;
+  border-width: 40px 60px 30px 60px;
+  border-color: pink rgba(244, 195, 203, 0.733) rgba(250, 205, 213, 0.651);
+  animation: envFloating 1s ease-in infinite alternate;
+}
+
+.email--loader:after {
+  content: "";
+  position: absolute;
+  right: 62px;
+  top: -40px;
+  height: 70px;
+  width: 50px;
+  background-image: linear-gradient(#7a7a7a 45px, transparent 0), linear-gradient(#797979 45px, transparent 0), linear-gradient(#838383 45px, transparent 0);
+  background-repeat: no-repeat;
+  background-size: 30px 4px;
+  background-position: 0px 11px, 8px 35px, 0px 60px;
+  animation: envDropping 0.75s linear infinite;
+}
+
+@keyframes envFloating {
+  0% {
+    transform: translate(-2px, -5px);
+  }
+  100% {
+    transform: translate(0, 5px);
+  }
+}
+@keyframes envDropping {
+  0% {
+    background-position: 100px 11px, 115px 35px, 105px 60px;
+    opacity: 1;
+  }
+  50% {
+    background-position: 0px 11px, 20px 35px, 5px 60px;
+  }
+  60% {
+    background-position: -30px 11px, 0px 35px, -10px 60px;
+  }
+  75%, 100% {
+    background-position: -30px 11px, -30px 35px, -30px 60px;
+    opacity: 0;
+  }
+}
 .lds-ellipsis {
   display: inline-block;
   position: relative;
@@ -809,7 +856,11 @@ body {
 }
 
 .icon {
-  font-size: 27px;
+  font-size: 17px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   color: #191444;
   font-weight: lighter;
   cursor: pointer;
@@ -1381,6 +1432,10 @@ body {
   box-shadow: inset 0 0 0 2px #ff9a9c;
 }
 
+.providerService--mainContainer {
+  padding: 50px 70px;
+}
+
 .municipality--list {
   cursor: pointer;
 }
@@ -1505,7 +1560,7 @@ body {
     width: 40px;
   }
   .main--customer--page {
-    padding: 0 1rem;
+    padding: 0 0.7rem;
   }
   .top--content {
     align-items: center;
@@ -1518,7 +1573,8 @@ body {
   }
   .list--dark,
   .list--light {
-    padding: 0.5rem !important;
+    padding: 0.3rem !important;
+    margin-bottom: 1rem !important;
   }
   .list--dark .icon {
     display: flex;
@@ -1537,12 +1593,14 @@ body {
   .main--content--light {
     width: 100% !important;
     height: 90% !important;
+    border-radius: 7px;
     margin-top: 1.2rem;
     display: static !important;
   }
   .main--content--dark {
     width: 100% !important;
     height: 90% !important;
+    border-radius: 7px;
     margin-top: 1.2rem;
     display: static !important;
   }
@@ -1610,8 +1668,8 @@ body {
     padding: 0 5px !important;
   }
   .details img {
-    max-width: 7 a0px;
-    max-height: 70px;
+    max-width: 60px;
+    max-height: 60px;
   }
   .css-1q04gal-MuiDateCalendar-root {
     width: 280px !important;
@@ -1625,6 +1683,18 @@ body {
   .reg--bg {
     display: none;
   }
+  .addService--btn {
+    padding: 5px 10px !important;
+  }
+  .addService--btn button {
+    font-size: 12px !important;
+  }
+  .css-ptkaw2-MuiDataGrid-root {
+    width: 350px;
+  }
+  .providerService--mainContainer {
+    padding: 10px;
+  }
 }
 .mb--municipality {
   display: none;
@@ -1636,6 +1706,225 @@ body {
 .mb--municipality p {
   text-align: start;
   font-size: 10px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+.up {
+  display: flex;
+  flex-direction: row;
+  gap: 0.2em;
+}
+
+.down {
+  display: flex;
+  flex-direction: row;
+  gap: 0.2em;
+}
+
+.card1 {
+  width: 25px;
+  height: 25px;
+  outline: none;
+  border: none;
+  background: white;
+  border-radius: 10px 5px 5px 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  transition: 0.2s ease-in-out;
+}
+
+.instagram {
+  margin-top: 1.5em;
+  margin-left: 1.2em;
+  fill: green;
+}
+
+.card2 {
+  width: 25px;
+  height: 25px;
+  outline: none;
+  border: none;
+  background: white;
+  border-radius: 5px 10px 5px 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  transition: 0.2s ease-in-out;
+}
+
+.twitter {
+  margin-top: 1.5em;
+  margin-left: -0.9em;
+  fill: #03a9f4;
+}
+
+.card3 {
+  width: 25px;
+  height: 25px;
+  outline: none;
+  border: none;
+  background: white;
+  border-radius: 5px 5px 5px 10px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  transition: 0.2s ease-in-out;
+}
+
+.github {
+  margin-top: -0.6em;
+  margin-left: 1.2em;
+}
+
+.card4 {
+  width: 25px;
+  height: 25px;
+  outline: none;
+  border: none;
+  background: white;
+  border-radius: 5px 5px 10px 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  transition: 0.2s ease-in-out;
+}
+
+.discord {
+  margin-top: -0.9em;
+  margin-left: -1.2em;
+  fill: #8c9eff;
+}
+
+.card1:hover {
+  cursor: pointer;
+  scale: 1.1;
+  background-color: rgb(15, 198, 15);
+}
+
+.card1:hover .action--add {
+  fill: white;
+}
+
+.card2:hover {
+  cursor: pointer;
+  scale: 1.1;
+  background-color: #03a9f4;
+}
+
+.card2:hover .action--view {
+  color: white;
+}
+
+.card3:hover {
+  cursor: pointer;
+  scale: 1.1;
+  background-color: orange;
+}
+
+.card3:hover .action--update {
+  fill: white;
+}
+
+.card4:hover {
+  cursor: pointer;
+  scale: 1.1;
+  background-color: rgb(253, 80, 80);
+}
+
+.card4:hover .action--delete {
+  fill: white;
+}
+
+.Btn {
+  position: relative;
+  font-family: semi-bold;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100px;
+  height: 40px;
+  border: none;
+  padding: 0px 20px;
+  background-color: #ff9a9c;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 10px;
+  box-shadow: 5px 5px 0px rgba(255, 154, 156, 0.6039215686);
+  transition-duration: 0.3s;
+}
+
+.svg {
+  width: 13px;
+  position: absolute;
+  right: 0;
+  margin-right: 20px;
+  fill: white;
+  transition-duration: 0.3s;
+}
+
+.Btn:hover {
+  color: transparent;
+}
+
+.Btn:hover svg {
+  right: 43%;
+  margin: 0;
+  padding: 0;
+  color: white;
+  border: none;
+  transition-duration: 0.3s;
+}
+
+.Btn:active {
+  transform: translate(3px, 3px);
+  transition-duration: 0.3s;
+  font-weight: bold;
+  box-shadow: 5px 5px 0px rgba(255, 154, 156, 0.6039215686);
+}
+
+.customerList--provider--item--light {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+  margin-bottom: 0.7rem;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  border-radius: 7px;
+}
+
+.customerList--provider--item--dark {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+  margin-bottom: 0.7rem;
+  box-shadow: 0px 0px 7px rgba(255, 255, 255, 0.29);
+  padding: 5px;
+  border-radius: 7px;
+}
+
+.customerList--provider--details {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.4rem;
+  align-items: center;
+  text-align: start;
+}
+.customerList--provider--details img {
+  max-width: 62px;
+  max-height: 62px;
+}
+
+.customerList--provider--container {
+  margin: 0;
+  padding: 0;
+  margin-top: 2rem;
+}
+
+.customerList--provider--moreDetails p {
+  margin: 0;
+  font-size: 12px;
+  font-family: regular;
 }
 
 :root {

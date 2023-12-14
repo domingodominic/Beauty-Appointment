@@ -24,6 +24,7 @@ import RedirectSpinner from "./components/loaders_folder/RedirectSpinner";
 import ProviderServices from "./components/provider/ProviderServices";
 import SelectTime from "./components/Bookingpage/SelectTime";
 import SelectDate from "./components/Bookingpage/SelectDate";
+import EmailLoader from "./components/loaders_folder/EmailLoader";
 export const ThemeContext = createContext();
 
 function App() {
@@ -87,6 +88,7 @@ function App() {
           <Route path="/selectTime" element={<SelectDate />} />
           <Route path="/Bookingpage" element={<BookingPage />} />
           <Route path="/Provider--service" element={<ProviderServices />} />
+          <Route path="/email" element={<EmailLoader />} />
           <Route
             path="/Appointments"
             element={<AppointmentList user={userData} />}

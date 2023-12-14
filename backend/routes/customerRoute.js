@@ -12,8 +12,7 @@ const router = express.Router();
 // Route to handle user login
 router.post("/login", async (request, response) => {
   try {
-    const { email, password } = request.body;
-    console.log("Received request with username:", email);
+    const { email } = request.body;
 
     const user = await userAccount.findOne({ email });
     console.log("User found in the database:", user);
@@ -21,15 +20,6 @@ router.post("/login", async (request, response) => {
       return response
         .status(401)
         .json({ message: "Authentication failed username" });
-    }
-
-    // Compare the entered password with the stored password hash
-    const passwordMatch = await bcrypt.compare(password, user.password);
-
-    if (!passwordMatch) {
-      return response
-        .status(401)
-        .json({ message: "Authentication failed password" });
     }
 
     // If authentication succeeds, create a JWT token
@@ -143,7 +133,6 @@ router.post("/", async (request, response) => {
       !request.body.lastname ||
       !request.body.age ||
       !request.body.email ||
-      !request.body.password ||
       !request.body.birthdate ||
       !request.body.municipality ||
       !request.body.contactNumber ||
@@ -154,11 +143,9 @@ router.post("/", async (request, response) => {
         .status(400)
         .send({ message: "please send all required fields" });
     }
-    const hashedPassword = await bcrypt.hash(request.body.password, 12);
 
     const createdUserAcc = await userAccount.create({
       email: request.body.email,
-      password: hashedPassword,
       firstname: request.body.firstname,
       lastname: request.body.lastname,
       age: request.body.age,

@@ -87,7 +87,11 @@
   }
 }
 .icon {
-  font-size: 27px;
+  font-size: 17px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   color: #191444;
   font-weight: lighter;
   cursor: pointer;

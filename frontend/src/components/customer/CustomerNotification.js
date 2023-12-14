@@ -1,10 +1,14 @@
 import React from "react";
-import NoNotification from "../NoNotification";
+import NoAvailableToShow from "../NoAvailableToShow";
+import NoNotifImg from "../../images/notificationICON.png";
 
 function CustomerNotification() {
   return (
     <div>
-      <NoNotification />
+      <NoAvailableToShow
+        definition={"You have no notifications yet"}
+        image={NoNotifImg}
+      />
     </div>
   );
 }

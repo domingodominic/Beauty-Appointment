@@ -2,14 +2,13 @@ import React, { useState, useEffect, useContext } from "react";
 import { BsHouseDoor, BsJournalText, BsPersonCircle } from "react-icons/bs";
 import { IoNotificationsOutline } from "react-icons/io5";
 import "../../scss/style.css";
-import ProviderAppointment from "./ProviderAppointment";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from ".././../firebase-config";
+import NoHistory from "../NoAvailableToShow";
 import ProviderProfile from "./ProviderProfile";
 import ProviderServices from "./ProviderServices";
 import { ThemeContext } from "../../App";
 import ProviderNotification from "./ProviderNotification";
-import Datepicker from "./Datepicker";
+import ProviderAppointment from "./ProviderAppointment";
+import { BsBook } from "react-icons/bs";
 
 function ProviderHome() {
   const { theme } = useContext(ThemeContext);
@@ -50,15 +49,15 @@ function ProviderHome() {
               </li>
               <li
                 style={
-                  currentPage === "history"
+                  currentPage === "appointment"
                     ? { color: "#191444" }
                     : { color: "white" }
                 }
                 onClick={() => {
-                  setCurrentPage("history");
+                  setCurrentPage("appointment");
                 }}
               >
-                <BsJournalText />
+                <BsBook />
               </li>
               <li
                 style={
@@ -95,6 +94,8 @@ function ProviderHome() {
                   return <ProviderProfile />;
                 case "notification":
                   return <ProviderNotification />;
+                case "appointment":
+                  return <ProviderAppointment />;
                 default:
                   return <div>Page not found</div>;
               }
