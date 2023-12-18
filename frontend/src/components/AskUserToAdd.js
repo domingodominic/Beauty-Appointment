@@ -3,11 +3,11 @@ import Dialog from "@mui/material/Dialog";
 import Timepicker from "./provider/Timepicker";
 import Slide from "@mui/material/Slide";
 import Datepicker from "./provider/Datepicker";
-import config from "../../config";
 import { DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { ThemeContext } from "../App";
 import DatePickerForAddTime from "./provider/DatePickerForAddTime";
 import axios from "axios";
+import { server_url } from "../serverUrl";
 import { enqueueSnackbar } from "notistack";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -40,7 +40,7 @@ function AskUserToAdd({ dialogAddState, setDialogAddState, serviceID }) {
 
     try {
       const response = await axios.post(
-        `${config.SERVER_URL}/provider/AddDateTime/${providerID}/${serviceID}`,
+        `${server_url}/provider/AddDateTime/${providerID}/${serviceID}`,
         {
           date: selectedDate,
           time: serviceTime,

@@ -7,9 +7,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { TextField } from "@mui/material";
 import Datepicker from "./provider/Datepicker";
 import Timepicker from "./provider/Timepicker";
-import config from "../../config";
 
 import * as yup from "yup";
+import { server_url } from "../serverUrl";
 import { useSnackbar } from "notistack";
 import {
   Dialog,
@@ -78,7 +78,7 @@ function AskUserUpdateService({
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            `${config.SERVER_URL}/provider/getProvider/${providerID}`
+            `${server_url}/provider/getProvider/${providerID}`
           );
           setTimeAndDate(
             response.data.provider.services[serviceIndex].timeAndDate
@@ -169,7 +169,7 @@ function AskUserUpdateService({
       console.log("providerID ", providerID);
       // Send the update request
       const response = await axios.put(
-        `${config.SERVER_URL}/provider/updateServiceInfo/${providerID}/${serviceID}`,
+        `${server_url}/provider/updateServiceInfo/${providerID}/${serviceID}`,
         {
           updatedDetails: updatePayload,
         }

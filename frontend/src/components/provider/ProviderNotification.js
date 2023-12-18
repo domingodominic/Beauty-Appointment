@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import "../../scss/style.css";
-import config from "../../../config";
 import axios from "axios";
 import noNotifImg from "../../images/notificationICON.png";
 import NoAvailableToShow from "../NoAvailableToShow";
 import { ThemeContext } from "../../App";
+import { server_url } from "../../serverUrl";
 import { useContext } from "react";
 
 function ProviderNotification({ setNewPage }) {
@@ -18,7 +18,7 @@ function ProviderNotification({ setNewPage }) {
     const fetchNotif = async () => {
       try {
         const response = await axios.get(
-          `${config.SERVER_URL}/notification/getNotification/${providerID}`
+          `${server_url}/notification/getNotification/${providerID}`
         );
 
         if (response.status === 200) {
@@ -36,7 +36,7 @@ function ProviderNotification({ setNewPage }) {
     setNewPage("appointment");
     try {
       const response = await axios.put(
-        `${config.SERVER_URL}/notification/openNotification/${notificationID}`,
+        `${server_url}/notification/openNotification/${notificationID}`,
         {
           status: "open",
         }

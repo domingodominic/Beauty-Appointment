@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import config from "../../../config";
+import { server_url } from "../../serverUrl";
+
 function UpdateCustomer() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ function UpdateCustomer() {
   useEffect(() => {
     // Fetch the customer data based on the 'id' parameter
     axios
-      .get(`${config.SERVER_URL}/customer/${id}`)
+      .get(`${server_url}/customer/${id}`)
       .then((response) => {
         const customerData = response.data;
         setFirstname(customerData.firstname);
@@ -42,7 +43,7 @@ function UpdateCustomer() {
 
     try {
       // Send a PUT request to update the customer data
-      await axios.put(`http://localhost:5000/customer/${id}`, data);
+      await axios.put(`${server_url}/customer/${id}`, data);
 
       // Redirect to a different page after successful update
       navigate("/customers"); // You can specify the URL to navigate to

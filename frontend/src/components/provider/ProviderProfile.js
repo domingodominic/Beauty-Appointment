@@ -3,12 +3,12 @@ import axios from "axios";
 import MyAccordion from "../../components/customer/MyAccordion";
 import { BsFillCameraFill, BsPersonFillLock } from "react-icons/bs";
 import { useSnackbar } from "notistack";
-import config from "../../../config";
 import { signOut } from "firebase/auth";
 import { auth } from ".././../firebase-config";
 import ThemeChanger from "../customer/ThemeChanger";
 import Linear from "../../components/loaders_folder/Linear";
 import { ThemeContext } from "../../App";
+import { server_url } from "../../serverUrl";
 import Dialog from "@mui/material/Dialog";
 import { useNavigate } from "react-router-dom";
 import Slide from "@mui/material/Slide";
@@ -49,7 +49,7 @@ function ProviderProfile() {
   useEffect(() => {
     setUserData(customerProfiles.customerProfile);
     axios
-      .get()
+      .get(`${server_url}/customer/${customerProfiles.customerProfile._id}`)
       .then((res) => {
         setImageURL(res.data.profilePicture);
       })

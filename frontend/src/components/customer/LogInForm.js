@@ -13,6 +13,7 @@ import Slide from "@mui/material/Slide";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { server_url } from "../../serverUrl";
 import {
   signInWithEmailAndPassword,
   reauthenticateWithCredential,
@@ -85,12 +86,9 @@ function LoginForm() {
   // to check the supplied email
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(
-        `${config.SERVER_URL}/auth/accountCheck`,
-        {
-          email: data.email,
-        }
-      );
+      const response = await axios.post(`${server_url}/auth/accountCheck`, {
+        email: data.email,
+      });
 
       if (response.status === 200) {
         console.log(response.data);
@@ -120,14 +118,14 @@ function LoginForm() {
     try {
       setLoading(true);
 
-      const response = await axios.post(`${config.SERVER_URL}/customer/login`, {
+      const response = await axios.post(`${server_url}/customer/login`, {
         email,
       });
 
       if (response.status === 200) {
         try {
           const getDataResponse = await axios.get(
-            `${config.SERVER_URL}/customer/data?email=${email}`
+            `${server_url}/customer/data?email=${email}`
           );
           setUserData(getDataResponse.data);
 
@@ -169,7 +167,7 @@ function LoginForm() {
     const message =
       "Your One-time Password (OTP) is " + messageToString.toString();
     try {
-      const response = await axios.post(`${config.SERVER_URL}/sendEmail`, {
+      const response = await axios.post(`${server_url}/sendEmail`, {
         toEmail,
         subject,
         message,
@@ -321,7 +319,7 @@ function LoginForm() {
   const onChangePassword = async () => {
     try {
       const response = await axios.put(
-        `${config.SERVER_URL}/auth/changePassword/${userID}`,
+        `${server_url}/auth/changePassword/${userID}`,
         {
           newPassword,
         }

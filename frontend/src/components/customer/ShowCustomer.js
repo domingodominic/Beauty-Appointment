@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Spinner from "../loaders_folder/Spinner";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import config from "../../../config";
+import { server_url } from "../../serverUrl";
 function ShowCustomer() {
   const [customer, setCustomer] = useState({ services: [] });
   const [loading, setLoading] = useState(false);
@@ -12,7 +12,7 @@ function ShowCustomer() {
     setLoading(true);
 
     axios
-      .get(`${config.SERVER_URL}/customer/${id}`)
+      .get(`${server_url}/customer/${id}`)
       .then((response) => {
         setCustomer(response.data);
         console.log(customer.services);

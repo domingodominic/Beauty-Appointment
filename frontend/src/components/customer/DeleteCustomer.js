@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-import config from "../../../config";
 import { useParams, useNavigate } from "react-router-dom";
+import { server_url } from "../../serverUrl";
 
 function DeleteCustomer() {
   const { id } = useParams();
@@ -9,7 +9,7 @@ function DeleteCustomer() {
 
   const handleDelete = () => {
     axios
-      .delete(`${config.SERVER_URL}/customer/${id}`)
+      .delete(`${server_url}/customer/${id}`)
       .then(() => {
         navigate("/");
       })

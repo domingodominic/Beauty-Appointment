@@ -6,7 +6,6 @@ import { Button, DialogContent, Menu, MenuItem } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { IoIosArrowDown } from "react-icons/io";
 import { signOut } from "firebase/auth";
-import config from "../../../config";
 import { auth } from "../../firebase-config";
 import ThemeChanger from "./ThemeChanger";
 import Linear from "../../components/loaders_folder/Linear";
@@ -16,6 +15,7 @@ import Signout from "../Signout";
 import Dialog from "@mui/material/Dialog";
 import Slide from "@mui/material/Slide";
 import { DialogTitle } from "@mui/material";
+import { server_url } from "../../serverUrl";
 import "../../scss/style.css";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -49,7 +49,7 @@ function CustomerProfile({ profile, data }) {
 
   useEffect(() => {
     axios
-      .get(`${config.SERVER_URL}/customer/${profile._id}`)
+      .get(`${server_url}/customer/${profile._id}`)
       .then((res) => {
         setUserData(res.data);
       })
@@ -83,7 +83,7 @@ function CustomerProfile({ profile, data }) {
         profilePicture: cloudinaryResponse.data.secure_url,
       });
 
-      const res = await axios.get(`${config.SERVER_URL}/customer/${datas._id}`);
+      const res = await axios.get(`${server_url}/customer/${datas._id}`);
       setUserData(res.data);
 
       setLoading(false);

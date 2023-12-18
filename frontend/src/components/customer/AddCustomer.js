@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { server_url } from "../../serverUrl";
 import { useNavigate } from "react-router-dom";
 
 function AddCustomer() {
@@ -24,7 +25,7 @@ function AddCustomer() {
 
     try {
       // Send a POST request to your API to add the customer
-      await axios.post(`${config.SERVER_URL}/customer/`, data);
+      await axios.post(`${server_url}/customer/`, data);
 
       // Redirect to a different page after successful submission
       navigate("/"); // You can specify the URL to navigate to

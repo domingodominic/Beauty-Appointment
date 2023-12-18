@@ -12,7 +12,7 @@ import { auth } from "../../firebase-config";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import axios from "axios";
-import config from "../../../config";
+import { server_url } from "../../serverUrl";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -36,7 +36,7 @@ function ChangePasswordForm({ forgotPassword, handleForgotPassOpen, userID }) {
         console.log(user.updatePassword(data.newPassword));
         await user.updatePassword(data.newPassword);
         const response = await axios.put(
-          `${config.SERVER_URL}/auth/changePassword/${userID}`,
+          `${server_url}/auth/changePassword/${userID}`,
           {
             newPassword: data.newPassword,
           }

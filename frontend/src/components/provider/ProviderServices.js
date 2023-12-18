@@ -21,7 +21,7 @@ import AddButton from "../AddButton";
 import * as yup from "yup";
 import "../../scss/style.css";
 import axios from "axios";
-import config from "../../../config";
+import { server_url } from "../../serverUrl";
 import { useSnackbar } from "notistack";
 import { IoIosAdd } from "react-icons/io";
 import Actions from "../Actions";
@@ -78,7 +78,7 @@ function ProviderServices() {
     if (providerDatas.providerData && providerDatas.providerData._id) {
       try {
         const response = await axios.get(
-          `${config.SERVER_URL}/provider/${providerDatas.providerData._id}`
+          `${server_url}/provider/${providerDatas.providerData._id}`
         );
 
         setServiceData(response.data.data.services);
@@ -123,7 +123,7 @@ function ProviderServices() {
       );
 
       const response = await axios.post(
-        `${config.SERVER_URL}/provider/addService/${providerDatas.providerData._id}`,
+        `${server_url}/provider/addService/${providerDatas.providerData._id}`,
         {
           service_name: data.serviceName,
           service_price: data.servicePrice,
@@ -154,7 +154,7 @@ function ProviderServices() {
     setLoading(true);
     try {
       const response = await axios.delete(
-        `${config.SERVER_URL}/provider/deleteService/${providerDatas.providerData._id}/${serviceID}`
+        `${server_url}/provider/deleteService/${providerDatas.providerData._id}/${serviceID}`
       );
 
       if (response.status === 200) {

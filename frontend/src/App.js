@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import axios from "axios";
 import { auth } from "./firebase-config";
-import config from "../config";
 import UpdateCustomer from "./components/customer/UpdateCustomer";
 import DeleteCustomer from "./components/customer/DeleteCustomer";
 import ShowCustomer from "./components/customer/ShowCustomer";
@@ -26,6 +25,7 @@ import ProviderServices from "./components/provider/ProviderServices";
 import SelectTime from "./components/Bookingpage/SelectTime";
 import SelectDate from "./components/Bookingpage/SelectDate";
 import EmailLoader from "./components/loaders_folder/EmailLoader";
+import { server_url } from "./serverUrl";
 export const ThemeContext = createContext();
 
 function App() {
@@ -58,7 +58,7 @@ function App() {
 
   const findUser = async (user) => {
     const response = await axios.get(
-      `${config.SERVER_URL}/customer/get-user?email=${user.email}`
+      `${server_url}/customer/get-user?email=${user.email}`
     );
     if (response.data.foundUser.role === "customer" && providerData) {
       navigate("/Home");

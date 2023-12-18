@@ -1,9 +1,9 @@
 import React from "react";
 import axios from "axios";
 import Linear from "../loaders_folder/Linear";
-import config from "../../../config";
 import { ThemeContext } from "../../App";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { server_url } from "../../serverUrl";
 
 function CustomerAppointmentMB() {
   const [customerData, setCustomerData] = React.useState({});
@@ -15,14 +15,14 @@ function CustomerAppointmentMB() {
   const fetchService = async () => {
     try {
       const response = await axios.get(
-        `${config.SERVER_URL}/appointments/getCustomers?id=${ID}`
+        `${server_url}/appointments/getCustomers?id=${ID}`
       );
       const serviceData = response.data;
 
       const customerDataPromises = serviceData.map(async (service) => {
         try {
           const customerResponse = await axios.get(
-            `${config.SERVER_URL}/appointments/getCustomersInfo?id=${service.customerID}`
+            `${server_url}/appointments/getCustomersInfo?id=${service.customerID}`
           );
           return customerResponse.data[0];
         } catch (error) {

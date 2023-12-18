@@ -1,13 +1,13 @@
 import React, { useEffect, useContext } from "react";
 import useAppointmentStore from "../store/useAppointmentStore";
 import LoginSpinner from "../loaders_folder/LoginSpinner";
-import config from "../../../config";
 import axios from "axios";
 import { useState } from "react";
 import { ThemeContext } from "../../App";
 import { IoIosArrowForward } from "react-icons/io";
 import Linear from "../loaders_folder/Linear";
 import { useSnackbar } from "notistack";
+import { server_url } from "../../serverUrl";
 
 function SelectBranch({ setStep }) {
   const [branches, setBranch] = useState();
@@ -27,7 +27,7 @@ function SelectBranch({ setStep }) {
       }
       try {
         const response = await axios.get(
-          `${config.SERVER_URL}/user/branches/${municipality}`
+          `${server_url}/user/branches/${municipality}`
         );
 
         setBranch(response.data);

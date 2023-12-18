@@ -2,7 +2,6 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useState } from "react";
-import config from "../../../config";
 import { format } from "date-fns";
 import TextField from "@mui/material/TextField";
 import React from "react";
@@ -16,6 +15,7 @@ import LoginSpinner from "../loaders_folder/LoginSpinner";
 import axios from "axios";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./../../firebase-config";
+import { server_url } from "../../serverUrl";
 
 const defaultProfile =
   "https://www.ssrl-uark.com/wp-content/uploads/2014/06/no-profile-image.png";
@@ -65,7 +65,7 @@ function Signup() {
     try {
       setLoading(true);
 
-      const response = await axios.post(`${config.SERVER_URL}/customer`, {
+      const response = await axios.post(`${server_url}/customer`, {
         firstname: data.firstname,
         lastname: data.lastname,
         age: data.age,

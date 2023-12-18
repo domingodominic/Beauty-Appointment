@@ -11,11 +11,11 @@ import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import { useSnackbar } from "notistack";
 import "../../scss/style.css";
-import config from "../../../config";
 import LoginSpinner from "../loaders_folder/LoginSpinner";
 import axios from "axios";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase-config";
+import { server_url } from "../../serverUrl";
 
 // const bcrypt = require("bcrypt");
 const defaultProfile =
@@ -74,24 +74,21 @@ function ProviderSignup() {
     try {
       setLoading(true);
 
-      const response = await axios.post(
-        `${config.SERVER_URL}/provider/signup/`,
-        {
-          firstname: data.firstname,
-          lastname: data.lastname,
-          age: data.age,
-          birthdate: data.birthdate,
-          password: data.password,
-          municipality: data.municipality,
-          email: data.email,
-          contactNumber: data.contactNumber,
-          profilePicture: defaultProfile,
-          businessDescription: data.business_description,
-          businessEmail: data.business_email,
-          businessName: data.business_name,
-          role: role,
-        }
-      );
+      const response = await axios.post(`${server_url}/provider/signup/`, {
+        firstname: data.firstname,
+        lastname: data.lastname,
+        age: data.age,
+        birthdate: data.birthdate,
+        password: data.password,
+        municipality: data.municipality,
+        email: data.email,
+        contactNumber: data.contactNumber,
+        profilePicture: defaultProfile,
+        businessDescription: data.business_description,
+        businessEmail: data.business_email,
+        businessName: data.business_name,
+        role: role,
+      });
 
       if (response.status === 201) {
         const userCredential = await createUserWithEmailAndPassword(
