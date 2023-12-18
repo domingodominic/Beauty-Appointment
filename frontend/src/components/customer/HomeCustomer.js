@@ -37,6 +37,9 @@ function HomeCustomer(props) {
     }
   }, [props.sharedData]);
 
+  const handleNextPage = (page) => {
+    setCurrentPage(page);
+  };
   return (
     <div>
       <div className="main--customer--page">
@@ -79,6 +82,7 @@ function HomeCustomer(props) {
               >
                 <BsJournalText />
               </li>
+
               <li
                 style={
                   currentPage === "notification"
@@ -109,7 +113,12 @@ function HomeCustomer(props) {
             {(() => {
               switch (currentPage) {
                 case "home":
-                  return <AppointmentList data={props.sharedData} />;
+                  return (
+                    <AppointmentList
+                      data={props.sharedData}
+                      handleNextPage={handleNextPage}
+                    />
+                  );
                 case "history":
                   return <CustomerHistory />;
                 case "profile":
