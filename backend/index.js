@@ -15,7 +15,7 @@ import providerRouter from "./routes/providerRoute.js";
 const app = express();
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: ["http://localhost:3000", "https://GlamourEase.onrender.com"],
   methods: "PUT, POST, DELETE, GET",
   allowedHeaders: "Content-Type",
 };
