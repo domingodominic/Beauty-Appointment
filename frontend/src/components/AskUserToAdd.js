@@ -3,6 +3,7 @@ import Dialog from "@mui/material/Dialog";
 import Timepicker from "./provider/Timepicker";
 import Slide from "@mui/material/Slide";
 import Datepicker from "./provider/Datepicker";
+import config from "../../config";
 import { DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { ThemeContext } from "../App";
 import DatePickerForAddTime from "./provider/DatePickerForAddTime";
@@ -39,7 +40,7 @@ function AskUserToAdd({ dialogAddState, setDialogAddState, serviceID }) {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/provider/AddDateTime/${providerID}/${serviceID}`,
+        `${config.SERVER_URL}/provider/AddDateTime/${providerID}/${serviceID}`,
         {
           date: selectedDate,
           time: serviceTime,

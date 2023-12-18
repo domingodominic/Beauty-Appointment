@@ -6,6 +6,7 @@ import { Button, DialogContent, Menu, MenuItem } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { IoIosArrowDown } from "react-icons/io";
 import { signOut } from "firebase/auth";
+import config from "../../../config";
 import { auth } from "../../firebase-config";
 import ThemeChanger from "./ThemeChanger";
 import Linear from "../../components/loaders_folder/Linear";
@@ -48,7 +49,7 @@ function CustomerProfile({ profile, data }) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/customer/${profile._id}`)
+      .get(`${config.SERVER_URL}/customer/${profile._id}`)
       .then((res) => {
         setUserData(res.data);
       })
@@ -82,9 +83,7 @@ function CustomerProfile({ profile, data }) {
         profilePicture: cloudinaryResponse.data.secure_url,
       });
 
-      const res = await axios.get(
-        `http://localhost:5000/customer/${datas._id}`
-      );
+      const res = await axios.get(`${config.SERVER_URL}/customer/${datas._id}`);
       setUserData(res.data);
 
       setLoading(false);

@@ -24,7 +24,7 @@ function AddCustomer() {
 
     try {
       // Send a POST request to your API to add the customer
-      await axios.post("http://localhost:5000/customer/", data);
+      await axios.post(`${config.SERVER_URL}/customer/`, data);
 
       // Redirect to a different page after successful submission
       navigate("/"); // You can specify the URL to navigate to

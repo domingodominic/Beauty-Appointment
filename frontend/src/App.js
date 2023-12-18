@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import axios from "axios";
 import { auth } from "./firebase-config";
+import config from "../config";
 import UpdateCustomer from "./components/customer/UpdateCustomer";
 import DeleteCustomer from "./components/customer/DeleteCustomer";
 import ShowCustomer from "./components/customer/ShowCustomer";
@@ -57,7 +58,7 @@ function App() {
 
   const findUser = async (user) => {
     const response = await axios.get(
-      `http://localhost:5000/customer/get-user?email=${user.email}`
+      `${config.SERVER_URL}/customer/get-user?email=${user.email}`
     );
     if (response.data.foundUser.role === "customer" && providerData) {
       navigate("/Home");

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import config from "../../../config";
 
 function Branches({ selectBranch }) {
   const [branchData, setBranchData] = useState(null);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/provider/${selectBranch}`)
+      .get(`${config.SERVER_URL}/provider/${selectBranch}`)
       .then((response) => {
         setBranchData(response.data);
       })

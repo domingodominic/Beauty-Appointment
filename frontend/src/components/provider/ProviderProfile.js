@@ -3,6 +3,7 @@ import axios from "axios";
 import MyAccordion from "../../components/customer/MyAccordion";
 import { BsFillCameraFill, BsPersonFillLock } from "react-icons/bs";
 import { useSnackbar } from "notistack";
+import config from "../../../config";
 import { signOut } from "firebase/auth";
 import { auth } from ".././../firebase-config";
 import ThemeChanger from "../customer/ThemeChanger";
@@ -48,9 +49,7 @@ function ProviderProfile() {
   useEffect(() => {
     setUserData(customerProfiles.customerProfile);
     axios
-      .get(
-        `http://localhost:5000/customer/${customerProfiles.customerProfile._id}`
-      )
+      .get()
       .then((res) => {
         setImageURL(res.data.profilePicture);
       })

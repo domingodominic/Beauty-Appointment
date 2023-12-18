@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import useAppointmentStore from "../store/useAppointmentStore";
 import LoginSpinner from "../loaders_folder/LoginSpinner";
+import config from "../../../config";
 import axios from "axios";
 import { useState } from "react";
 import { ThemeContext } from "../../App";
@@ -26,7 +27,7 @@ function SelectBranch({ setStep }) {
       }
       try {
         const response = await axios.get(
-          `http://localhost:5000/user/branches/${municipality}`
+          `${config.SERVER_URL}/user/branches/${municipality}`
         );
 
         setBranch(response.data);

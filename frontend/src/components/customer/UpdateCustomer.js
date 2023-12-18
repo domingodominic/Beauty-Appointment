@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-
+import config from "../../../config";
 function UpdateCustomer() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ function UpdateCustomer() {
   useEffect(() => {
     // Fetch the customer data based on the 'id' parameter
     axios
-      .get(`http://localhost:5000/customer/${id}`)
+      .get(`${config.SERVER_URL}/customer/${id}`)
       .then((response) => {
         const customerData = response.data;
         setFirstname(customerData.firstname);

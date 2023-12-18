@@ -2,6 +2,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useState } from "react";
+import config from "../../../config";
 import { format } from "date-fns";
 import TextField from "@mui/material/TextField";
 import React from "react";
@@ -64,7 +65,7 @@ function Signup() {
     try {
       setLoading(true);
 
-      const response = await axios.post("http://localhost:5000/customer", {
+      const response = await axios.post(`${config.SERVER_URL}/customer`, {
         firstname: data.firstname,
         lastname: data.lastname,
         age: data.age,

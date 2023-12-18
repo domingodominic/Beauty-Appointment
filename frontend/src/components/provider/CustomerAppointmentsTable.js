@@ -1,4 +1,5 @@
 import * as React from "react";
+import config from "../../../config";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import Linear from "../loaders_folder/Linear";
@@ -50,7 +51,7 @@ export default function DataTable() {
   const fetchService = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/appointments/getCustomers?id=${ID}`
+        `${config.SERVER_URL}/appointments/getCustomers?id=${ID}`
       );
       const serviceData = response.data;
 
@@ -58,7 +59,7 @@ export default function DataTable() {
       const customerDataPromises = serviceData.map(async (service) => {
         try {
           const customerResponse = await axios.get(
-            `http://localhost:5000/appointments/getCustomersInfo?id=${service.customerID}`
+            `${config.SERVER_URL}/appointments/getCustomersInfo?id=${service.customerID}`
           );
           return customerResponse.data[0]; // Access the first item in the array
         } catch (error) {

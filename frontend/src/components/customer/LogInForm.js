@@ -86,7 +86,7 @@ function LoginForm() {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/auth/accountCheck",
+        `${config.SERVER_URL}/auth/accountCheck`,
         {
           email: data.email,
         }
@@ -120,17 +120,14 @@ function LoginForm() {
     try {
       setLoading(true);
 
-      const response = await axios.post(
-        "http://localhost:5000/customer/login",
-        {
-          email,
-        }
-      );
+      const response = await axios.post(`${config.SERVER_URL}/customer/login`, {
+        email,
+      });
 
       if (response.status === 200) {
         try {
           const getDataResponse = await axios.get(
-            `http://localhost:5000/customer/data?email=${email}`
+            `${config.SERVER_URL}/customer/data?email=${email}`
           );
           setUserData(getDataResponse.data);
 
@@ -172,7 +169,7 @@ function LoginForm() {
     const message =
       "Your One-time Password (OTP) is " + messageToString.toString();
     try {
-      const response = await axios.post("http://localhost:5000/sendEmail", {
+      const response = await axios.post(`${config.SERVER_URL}/sendEmail`, {
         toEmail,
         subject,
         message,
@@ -324,7 +321,7 @@ function LoginForm() {
   const onChangePassword = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/auth/changePassword/${userID}`,
+        `${config.SERVER_URL}/auth/changePassword/${userID}`,
         {
           newPassword,
         }

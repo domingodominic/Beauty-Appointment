@@ -13,6 +13,7 @@ import ReviewAppointment from "./ReviewAppointment";
 import SelectDate from "./SelectDate";
 import { ThemeContext } from "../../App";
 import { useSnackbar } from "notistack";
+import config from "../../../config";
 import useAppointmentStore from "../store/useAppointmentStore";
 import axios from "axios";
 import LoginSpinner from "../loaders_folder/LoginSpinner";
@@ -71,7 +72,7 @@ export default function HorizontalLinearStepper({ handleNextPage }) {
     const message =
       "Good day, this is to notify that someone's booked at you, thank you.";
     try {
-      const response = await axios.post("http://localhost:5000/sendEmail", {
+      const response = await axios.post(`${config.SERVER_URL}/sendEmail`, {
         toEmail,
         subject,
         message,
@@ -90,7 +91,7 @@ export default function HorizontalLinearStepper({ handleNextPage }) {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/notification/newNotification/",
+        `${config.SERVER_URL}/notification/newNotification/`,
         {
           recipient_id: branchID,
           sender_id: customerID,
@@ -115,7 +116,7 @@ export default function HorizontalLinearStepper({ handleNextPage }) {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/appointments/schedulingAppointment",
+        `${config.SERVER_URL}/appointments/schedulingAppointment`,
         {
           serviceName,
           serviceDescription,

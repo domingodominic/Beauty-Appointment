@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import Linear from "../loaders_folder/Linear";
+import config from "../../../config";
 import { ThemeContext } from "../../App";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
@@ -14,14 +15,14 @@ function CustomerAppointmentMB() {
   const fetchService = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/appointments/getCustomers?id=${ID}`
+        `${config.SERVER_URL}/appointments/getCustomers?id=${ID}`
       );
       const serviceData = response.data;
 
       const customerDataPromises = serviceData.map(async (service) => {
         try {
           const customerResponse = await axios.get(
-            `http://localhost:5000/appointments/getCustomersInfo?id=${service.customerID}`
+            `${config.SERVER_URL}/appointments/getCustomersInfo?id=${service.customerID}`
           );
           return customerResponse.data[0];
         } catch (error) {

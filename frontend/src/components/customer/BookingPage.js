@@ -7,6 +7,7 @@ import AppointmentList from "./AppointmentList";
 import { color } from "@mui/system";
 import Branches from "./Branches";
 import axios from "axios";
+import config from "../../../config";
 import FetchMunicipality from "./FetchMunicipality";
 function BookingPage() {
   const [loading, setLoading] = useState(true);
@@ -21,7 +22,7 @@ function BookingPage() {
     setSelectedBranch(branchData);
   };
   try {
-    axios.get("http://localhost:5000/provider").then((response) => {
+    axios.get(`${config.SERVER_URL}/provider`).then((response) => {
       setData(response.data.data);
       setLoading(false);
     });

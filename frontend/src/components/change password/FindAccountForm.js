@@ -3,6 +3,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import TextField from "@mui/material/TextField";
 import { Controller } from "react-hook-form";
 import { useSnackbar } from "notistack";
+import config from "../../../config";
 import axios from "axios";
 
 function FindAccountForm({
@@ -23,7 +24,7 @@ function FindAccountForm({
     console.log("Submitting form...");
     try {
       const response = await axios.post(
-        "http://localhost:5000/auth/accountCheck",
+        `${config.SERVER_URL}/auth/accountCheck`,
         {
           email: data.email,
         }

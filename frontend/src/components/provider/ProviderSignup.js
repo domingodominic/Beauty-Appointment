@@ -11,6 +11,7 @@ import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import { useSnackbar } from "notistack";
 import "../../scss/style.css";
+import config from "../../../config";
 import LoginSpinner from "../loaders_folder/LoginSpinner";
 import axios from "axios";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -74,7 +75,7 @@ function ProviderSignup() {
       setLoading(true);
 
       const response = await axios.post(
-        "http://localhost:5000/provider/signup/",
+        `${config.SERVER_URL}/provider/signup/`,
         {
           firstname: data.firstname,
           lastname: data.lastname,
