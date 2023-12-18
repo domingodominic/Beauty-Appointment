@@ -5,11 +5,11 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import dayjs from "dayjs";
 import "../../scss/style.css";
 
-export default function Datepicker({ selectDate }) {
+export default function DatePickerForAddTime({ selectDate, dateSelected }) {
   // Calculate the current date
   const currentDate = dayjs();
   const handleDateChange = (date) => {
-    selectDate(date.format("MM/DD/YYYY"));
+    dateSelected(date.format("MM/DD/YYYY"));
   };
 
   return (

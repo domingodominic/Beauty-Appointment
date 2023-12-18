@@ -7,7 +7,7 @@ import Linear from "../loaders_folder/Linear";
 import { ThemeContext } from "../../App";
 import HorizontalLinearStepper from "../Bookingpage/Stepper";
 
-function AppointmentList() {
+function AppointmentList({ handleNextPage }) {
   const { theme, userDatas } = useContext(ThemeContext);
   const [userData, setUserData] = useState({});
   const [userAppointmentData, setUserAppointmentData] = useState({});
@@ -36,7 +36,7 @@ function AppointmentList() {
       {appointedService ? null : <Linear />}
 
       {bookIsClicked ? (
-        <HorizontalLinearStepper />
+        <HorizontalLinearStepper handleNextPage={handleNextPage} />
       ) : appointedService && appointedService.length === 0 ? (
         <div
           style={{

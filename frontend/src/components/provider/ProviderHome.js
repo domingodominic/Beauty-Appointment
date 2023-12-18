@@ -17,6 +17,10 @@ function ProviderHome() {
   const [data, setData] = useState({});
   const [customerProfile, setCustomerProfile] = useState({});
 
+  const setNewPage = (page) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div>
       <div className="main--customer--page">
@@ -69,6 +73,15 @@ function ProviderHome() {
                   setCurrentPage("notification");
                 }}
               >
+                <span
+                  style={{
+                    position: "absolute",
+                    fontSize: "10px",
+                    fontWeight: "bolder",
+                  }}
+                >
+                  {2}
+                </span>
                 <IoNotificationsOutline />
               </li>
               <li
@@ -93,7 +106,7 @@ function ProviderHome() {
                 case "profile":
                   return <ProviderProfile />;
                 case "notification":
-                  return <ProviderNotification />;
+                  return <ProviderNotification setNewPage={setNewPage} />;
                 case "appointment":
                   return <ProviderAppointment />;
                 default:

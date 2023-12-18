@@ -1,6 +1,6 @@
 import { providermodel } from "../model/providermodel.js";
 import { userAccount } from "../model/userAccountModel.js";
-import express from "express";
+import express, { request } from "express";
 import bcrypt from "bcrypt";
 const route = express.Router();
 
@@ -85,7 +85,6 @@ route.post("/addService/:id", async (req, res) => {
     );
 
     res.status(201).json(provider); // Return the updated provider
-    console.log(provider);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error inserting service." });
@@ -191,4 +190,130 @@ route.delete("/:id", async (request, response) => {
     console.log(error);
   }
 });
+
+// Delete specific service
+route.delete("/deleteService/:providerId/:serviceId", async (req, res) => {
+  const { providerId, serviceId } = req.params;
+
+  try {
+    const updatedProvider = await providermodel.findByIdAndUpdate(
+      providerId,
+      { $pull: { services: { _id: serviceId } } },
+      { new: true }
+    );
+
+    if (!updatedProvider) {
+      return res.status(404).json({ message: "Provider not found" });
+    }
+
+    res.json({ message: "Service deleted successfully", updatedProvider });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
+  }
+});
+
+//update specific service item information
+route.put(
+  `/updateServiceInfo/:providerID/:serviceID`,
+  async (request, response) => {
+    const { providerID, serviceID } = request.params;
+
+    const { updatedDetails } = request.body;
+    console.log("the updated details is", updatedDetails);
+
+    try {
+      const provider = await providermodel.findOne({ _id: providerID });
+
+      if (!provider) {
+        console.log("Provider not found");
+        return response.status(404).json({ message: "Provider not found" });
+      }
+
+      // Check if provider.services is an array before using findIndex
+      if (!Array.isArray(provider.services)) {
+        return response
+          .status(500)
+          .json({ message: "Invalid data structure for services" });
+      }
+
+      const serviceIndex = provider.services.findIndex((service) => {
+        return service._id.equals(serviceID);
+      });
+
+      if (serviceIndex === -1) {
+        return response.status(404).json({ message: "Service not found" });
+      }
+
+      const updatedService = {
+        ...provider.services[serviceIndex].toObject(),
+        ...updatedDetails,
+      };
+
+      provider.services[serviceIndex] = updatedService;
+      await provider.save();
+
+      response.json(updatedService);
+    } catch (error) {
+      console.log(error);
+      response.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
+
+//additional time and date sa service
+route.post("/addDateTime/:providerID/:serviceID", async (request, response) => {
+  const { providerID, serviceID } = request.params;
+  const { date, time } = request.body;
+
+  console.log(serviceID);
+  try {
+    const provider = await providermodel.findOne({ _id: providerID });
+
+    if (!provider) {
+      console.log("Provider not found");
+      return response.status(404).json({ message: "Provider not found" });
+    }
+
+    const serviceIndex = provider.services.findIndex((service) => {
+      return service._id.equals(serviceID);
+    });
+
+    if (serviceIndex === -1) {
+      return response.status(404).json({ message: "Service not found" });
+    }
+
+    // Assuming timeAndDate is an array, pushing the new date and time
+    provider.services[serviceIndex].timeAndDate.push({
+      service_date: date,
+      availability_time: time,
+    });
+
+    await provider.save();
+
+    response.json({ date, time });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Internal Server Error" });
+  }
+});
+//get the provider data using ID
+route.get("/getProvider/:providerID", async (req, res) => {
+  try {
+    const { providerID } = req.params;
+
+    const provider = await providermodel.findOne({ _id: providerID });
+
+    if (provider) {
+      return res.status(200).json({ provider });
+    } else {
+      return res.status(404).json({ message: "Provider not found" });
+    }
+  } catch (error) {
+    console.error("Error in getProvider route:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 export default route;

@@ -44,6 +44,7 @@ function ProviderServices() {
   const { theme, customerProfiles, providerDatas } = useContext(ThemeContext);
   const [serviceData, setServiceData] = useState([]);
   const [serviceImage, setserviceImage] = useState(null);
+  const [functionDone, setFuctionDone] = useState(false);
   const [serviceTime, setServicetime] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -71,14 +72,18 @@ function ProviderServices() {
   };
 
   const getUpdatedData = async () => {
-    console.log(providerDatas.providerData._id);
+    console.log("work");
+    setLoading(true);
     if (providerDatas.providerData && providerDatas.providerData._id) {
       try {
         const response = await axios.get(
           `http://localhost:5000/provider/${providerDatas.providerData._id}`
         );
-        console.log("this is the updated date", response.data);
+
         setServiceData(response.data.data.services);
+        if (response.status === 200) {
+          setLoading(false);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -87,7 +92,6 @@ function ProviderServices() {
   useEffect(() => {
     getUpdatedData();
   }, [providerDatas.providerData]);
-  console.log(providerDatas.providerData);
 
   const {
     control,
@@ -97,7 +101,6 @@ function ProviderServices() {
     resolver: yupResolver(schema),
   });
   const preset_key = "qlg1jfrx";
-  console.log("this is the current service data available", serviceData);
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -111,8 +114,6 @@ function ProviderServices() {
 
   //post request to insert service in the database
   const onSubmit = async (data) => {
-    console.table(data);
-    console.log("this is the preset key", formdata);
     try {
       setLoading(true);
       const cloudinaryResponse = await axios.post(
@@ -148,12 +149,31 @@ function ProviderServices() {
     }
   };
 
+  const handleDeleteDialog = async (serviceID) => {
+    setLoading(true);
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/provider/deleteService/${providerDatas.providerData._id}/${serviceID}`
+      );
+
+      if (response.status === 200) {
+        setLoading(false);
+        setFuctionDone(true);
+      }
+    } catch (error) {
+      console.error("An error occurred while deleting the service:", error);
+      setLoading(false);
+      setFuctionDone(true);
+    }
+  };
+
   return (
     <div>
       {loading && <LoginSpinner />}
       <div className="service--header">
         {serviceData ? null : <Linear />}
-        {serviceData && !serviceData ? (
+
+        {serviceData && serviceData.length <= 0 ? (
           <div
             className="no--services"
             style={{
@@ -239,7 +259,14 @@ function ProviderServices() {
                         </div>
                       </div>
                       <div className={`icon color--${theme}`}>
-                        <Actions />
+                        <Actions
+                          serviceData={service}
+                          serviceID={service._id}
+                          serviceIndex={index}
+                          onDelete={handleDeleteDialog}
+                          getUpdatedData={getUpdatedData}
+                          functionDone={functionDone}
+                        />
                       </div>
                     </div>
                   </li>
@@ -406,10 +433,6 @@ function ProviderServices() {
               <button className="simple--fadein--btn" type="submit">
                 Save
               </button>
-
-              {/* <div style={{ display: "flex", justifyContent: "center" }}>
-              
-              </div> */}
             </form>
           </DialogContent>
         </Dialog>

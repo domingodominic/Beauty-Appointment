@@ -1695,6 +1695,13 @@ body {
   .providerService--mainContainer {
     padding: 10px;
   }
+  .notification--main--container {
+    padding: 0 0.7rem !important;
+  }
+  .notification--main--container .notification--content {
+    font-style: italic;
+    font-size: 13px;
+  }
 }
 .mb--municipality {
   display: none;
@@ -1925,6 +1932,29 @@ body {
   margin: 0;
   font-size: 12px;
   font-family: regular;
+}
+
+.notification--main--container {
+  margin: 0;
+  padding: 0 3rem;
+}
+.notification--main--container .notification--list--conatiner {
+  text-align: start;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  list-style: none;
+  margin-bottom: 0.8rem;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  padding: 20px 20px;
+  border-radius: 7px;
+}
+.notification--main--container .notification--list--conatiner .notification--content {
+  font-style: italic;
+}
+.notification--main--container .notification--list--conatiner .notification--icon {
+  font-size: 30px;
 }
 
 :root {

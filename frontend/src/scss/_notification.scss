@@ -1,0 +1,22 @@
+.notification--main--container {
+  margin: 0;
+  padding: 0 3rem;
+  .notification--list--conatiner {
+    text-align: start;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    list-style: none;
+    margin-bottom: 0.8rem;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px 20px;
+    border-radius: 7px;
+    .notification--content {
+      font-style: italic;
+    }
+    .notification--icon {
+      font-size: 30px;
+    }
+  }
+}

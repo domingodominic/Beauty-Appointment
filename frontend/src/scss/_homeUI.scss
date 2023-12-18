@@ -174,10 +174,17 @@
   .providerService--mainContainer {
     padding: 10px;
   }
-  //accordion for selecting actions in provider services
-  // .css-o4b71y-MuiAccordionSummary-content {
-  //   display: none !important;
-  // }
+
+  //notifivcation in provider
+
+  .notification--main--container {
+    padding: 0 0.7rem !important;
+
+    .notification--content {
+      font-style: italic;
+      font-size: 13px;
+    }
+  }
 }
 
 .mb--municipality {

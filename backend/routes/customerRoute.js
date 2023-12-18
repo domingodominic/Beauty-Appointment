@@ -70,7 +70,6 @@ router.get("/get-user", async (request, response) => {
     if (!foundUser) {
       return response.status(404).json({ message: "User not found" });
     }
-    console.log(foundUser.role);
 
     if (foundUser.role === "customer") {
       const customerData = await customer.findOne({
@@ -91,7 +90,7 @@ router.get("/get-user", async (request, response) => {
           .status(404)
           .json({ message: "Provider data not found" });
       }
-      response.status(200).json(providerData);
+      response.status(200).json({ foundUser, providerData });
     }
   } catch (error) {
     console.error("Error:", error);
@@ -260,7 +259,15 @@ router.delete("/:id", async (request, response) => {
 
 router.put("/updateProfile/:id", async (req, res) => {
   const { id } = req.params;
-  const { firstname, lastname, age, birthdate, municipality, contactNumber, profilePicture } = req.body;
+  const {
+    firstname,
+    lastname,
+    age,
+    birthdate,
+    municipality,
+    contactNumber,
+    profilePicture,
+  } = req.body;
 
   try {
     const updatedUser = await userAccount.findByIdAndUpdate(id, {
@@ -279,7 +286,9 @@ router.put("/updateProfile/:id", async (req, res) => {
 
     res.json({ message: "Profile information updated successfully" });
   } catch (error) {
-    res.status(500).json({ message: "An error occurred", error: error.message });
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
   }
 });
 
@@ -302,9 +311,10 @@ router.put("/updatePassword/:id", async (req, res) => {
 
     res.json({ message: "Password updated successfully" });
   } catch (error) {
-    res.status(500).json({ message: "An error occurred", error: error.message });
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
   }
 });
-
 
 export default router;

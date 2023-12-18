@@ -56,19 +56,17 @@ function App() {
   }, [navigate]);
 
   const findUser = async (user) => {
-    const response = await axios
-      .get(`http://localhost:5000/customer/get-user?email=${user.email}`)
-      .then((res) => {
-        if (res.data.foundUser.role === "customer" && providerData) {
-          navigate("/Home");
-        } else if (res.data.foundUser.role === "provider" && providerData) {
-          navigate("/provider--home");
-        }
-        setProviderData(res.data.providerData);
-        setUserData(res.data.customerData);
-        console.log("the data fetch is ", res.data);
-        setCustomerProfile(res.data.foundUser);
-      });
+    const response = await axios.get(
+      `http://localhost:5000/customer/get-user?email=${user.email}`
+    );
+    if (response.data.foundUser.role === "customer" && providerData) {
+      navigate("/Home");
+    } else if (response.data.foundUser.role === "provider" && providerData) {
+      navigate("/provider--home");
+    }
+    setProviderData(response.data.providerData);
+    setUserData(response.data.customerData);
+    setCustomerProfile(response.data.foundUser);
   };
 
   return (

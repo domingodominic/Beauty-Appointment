@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import { userAccount } from "../model/userAccountModel.js";
 import { customer } from "../model/customerModel.js";
 import { providermodel } from "../model/providermodel.js";
-import { admin } from "firebase-admin";
 
 const router = express.Router();
 

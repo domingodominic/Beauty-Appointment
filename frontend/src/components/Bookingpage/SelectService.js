@@ -35,7 +35,7 @@ function SelectService({ setStep }) {
               key={index}
               onClick={() => handleClick(service)}
             >
-              <di v className="details--container">
+              <div className="details--container">
                 <div className="details">
                   <img
                     src={service.service_image}
@@ -81,7 +81,7 @@ function SelectService({ setStep }) {
                 <div className={`icon color--${theme}`}>
                   <PiEyeThin />
                 </div>
-              </di>
+              </div>
             </li>
           ))}
       </ul>

@@ -25,11 +25,12 @@ const steps = [
   "Review",
 ];
 
-export default function HorizontalLinearStepper() {
+export default function HorizontalLinearStepper({ handleNextPage }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const [isLoading, setLoading] = React.useState(false);
-  const { branchID, chosenService, date, time } = useAppointmentStore();
+  const { branchID, chosenService, date, time, branchEmail } =
+    useAppointmentStore();
   const { theme, customerProfiles } = React.useContext(ThemeContext);
   const serviceName = chosenService.service_name;
   const serviceImage = chosenService.service_image;
@@ -65,10 +66,10 @@ export default function HorizontalLinearStepper() {
     setActiveStep(0);
   };
   const handleSendEmail = async () => {
-    const toEmail = "dominicpunladomingo120@gmail.com";
-    const subject = "Scheduled Appointment";
+    const toEmail = branchEmail;
+    const subject = "New customer";
     const message =
-      "Good day, This is to remind you with you scheduled appointment is tomorrow at 9:00 AM. Thank you.";
+      "Good day, this is to notify that someone's booked at you, thank you.";
     try {
       const response = await axios.post("http://localhost:5000/sendEmail", {
         toEmail,
@@ -83,6 +84,30 @@ export default function HorizontalLinearStepper() {
     } catch (error) {
       console.error("Error:", error);
       alert("Error sending email");
+    }
+  };
+  const sendingNotification = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/notification/newNotification/",
+        {
+          recipient_id: branchID,
+          sender_id: customerID,
+          content: "Hola, you got new customers booked at you!",
+          status: "unopen",
+        }
+      );
+
+      if (response.status === 200) {
+        return console.log(response.data);
+        setLoading(false);
+      } else {
+        return console.log("Can't push the notification");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
     }
   };
 
@@ -103,6 +128,7 @@ export default function HorizontalLinearStepper() {
           customerID,
         }
       );
+      sendingNotification();
 
       if (response.status === 201) {
         enqueueSnackbar("successfuly booked your appointment!", {
@@ -110,6 +136,7 @@ export default function HorizontalLinearStepper() {
         });
         handleSendEmail();
         setLoading(false);
+        handleNextPage("history");
       } else if (response.status === 500) {
         enqueueSnackbar("Something went wrong, please try again.", {
           variant: "error",

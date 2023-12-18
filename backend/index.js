@@ -4,6 +4,7 @@ import customerRoute from "./routes/customerRoute.js";
 import changePassword from "./routes/changepasswordRoute.js";
 import appointment from "./routes/appointmentRoute.js";
 import userAccountRouter from "./routes/userAccountRouter.js";
+import notificationRoute from "./routes/notificationRoute.js";
 import mongoose from "mongoose";
 import cors from "cors";
 import multer from "multer";
@@ -27,6 +28,7 @@ app.use("/user", userAccountRouter);
 app.use("/provider", providerRouter);
 app.use("/appointments", appointment);
 app.use("/auth", changePassword);
+app.use("/notification", notificationRoute);
 
 mongoose
   .connect(mongoDBURL)
@@ -49,8 +51,8 @@ app.post("/sendEmail", async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "burat3307@gmail.com",
-        pass: "xxtr quza kltv domi",
+        user: "glamourease@gmail.com",
+        pass: "vuew eavy gzcy qwrq",
       },
     });
 

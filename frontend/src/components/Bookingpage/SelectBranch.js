@@ -11,7 +11,8 @@ import { useSnackbar } from "notistack";
 function SelectBranch({ setStep }) {
   const [branches, setBranch] = useState();
   const [loading, isLoading] = useState(false);
-  const { municipality, setBranchID, setServices } = useAppointmentStore();
+  const { municipality, setBranchID, setServices, setBranchEmail } =
+    useAppointmentStore();
   const { theme } = useContext(ThemeContext);
   const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
@@ -39,9 +40,10 @@ function SelectBranch({ setStep }) {
     fetchData();
   }, []);
 
-  const handleNext = (services, branchID) => {
+  const handleNext = (services, branchID, email) => {
     setServices(services);
     setBranchID(branchID);
+    setBranchEmail(email);
   };
 
   return (
@@ -69,7 +71,7 @@ function SelectBranch({ setStep }) {
               className={`list--${theme} municipality--list`}
               key={i}
               onClick={() => {
-                handleNext(branch.services, branch._id);
+                handleNext(branch.services, branch._id, branch.businessEmail);
                 setStep(2);
               }}
             >

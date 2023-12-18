@@ -87,7 +87,7 @@ export default function DataTable() {
         };
       });
 
-      setServiceData(combinedData);
+      setServiceData(combinedData.reverse());
     } catch (error) {
       console.error("Error fetching service data:", error);
     }
