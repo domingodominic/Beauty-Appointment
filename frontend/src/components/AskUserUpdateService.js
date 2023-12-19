@@ -58,7 +58,7 @@ function AskUserUpdateService({
   const [formdata, setFormdata] = useState(new FormData());
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
-  const servicename = serviceData.service_name;
+
   //control from yup to validate form
   const {
     control,
