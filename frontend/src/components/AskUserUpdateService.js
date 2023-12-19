@@ -243,7 +243,7 @@ function AskUserUpdateService({
               <Controller
                 name="serviceName"
                 control={control}
-                defaultValue={servicename}
+                defaultValue={serviceData.serviceName}
                 render={({ field }) => (
                   <TextField
                     {...field}
