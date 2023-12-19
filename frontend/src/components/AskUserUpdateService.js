@@ -45,7 +45,7 @@ function AskUserUpdateService({
   setDialogUpdateOption,
 }) {
   //states
-  const { theme, customerProfiles, providerDatas } = useContext(ThemeContext);
+  const { theme, providerDatas } = useContext(ThemeContext);
   const [serviceData, setServiceData] = useState([]);
   const [serviceImage, setserviceImage] = useState(null);
   const [functionDone, setFuctionDone] = useState(false);
@@ -100,7 +100,6 @@ function AskUserUpdateService({
 
   useEffect(() => {
     try {
-      fetchNewData();
       setTimeAndDate(
         providerDatas.providerData.services[serviceIndex].timeAndDate
       );
@@ -243,7 +242,7 @@ function AskUserUpdateService({
               <Controller
                 name="serviceName"
                 control={control}
-                defaultValue={serviceData.serviceName}
+                defaultValue=""
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -280,7 +279,7 @@ function AskUserUpdateService({
               <Controller
                 name="servicePrice"
                 control={control}
-                defaultValue={serviceData.service_price}
+                defaultValue=""
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -317,7 +316,7 @@ function AskUserUpdateService({
               <Controller
                 name="serviceDescription"
                 control={control}
-                defaultValue={serviceData.service_description}
+                defaultValue=""
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -355,7 +354,13 @@ function AskUserUpdateService({
             </div>
             <div>
               <img
-                src={serviceImage ? serviceImage : serviceData.service_image}
+                src={
+                  serviceImage
+                    ? serviceImage
+                    : serviceData.service_image === undefined
+                    ? `https://th.bing.com/th/id/OIP.6kEev2FT9fMgGqWhNJSfPgHaE6?w=252&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7`
+                    : serviceData.service_image
+                }
                 alt="service image"
                 width="100%"
               />
