@@ -75,9 +75,12 @@ function ProviderProfile() {
       setImageURL(cloudinaryResponse.data.secure_url);
 
       // Send the updated data to the backend
-      await axios.put(`/provider/updateProfilePicture/${userData._id}`, {
-        profilePicture: cloudinaryResponse.data.secure_url,
-      });
+      await axios.put(
+        `${server_url}/provider/updateProfilePicture/${userData._id}`,
+        {
+          profilePicture: cloudinaryResponse.data.secure_url,
+        }
+      );
 
       setLoading(false);
       enqueueSnackbar("You have updated your profile picture", {

@@ -79,9 +79,12 @@ function CustomerProfile({ profile, data }) {
       setImageURL(cloudinaryResponse.data.secure_url);
 
       // Send the updated data to the backend
-      await axios.put(`/customer/updateProfilePicture/${profile._id}`, {
-        profilePicture: cloudinaryResponse.data.secure_url,
-      });
+      await axios.put(
+        `${server_url}/customer/updateProfilePicture/${profile._id}`,
+        {
+          profilePicture: cloudinaryResponse.data.secure_url,
+        }
+      );
 
       const res = await axios.get(`${server_url}/customer/${datas._id}`);
       setUserData(res.data);
