@@ -1651,6 +1651,9 @@ body {
   .css-m5vj9m-MuiStepper-root {
     display: none !important;
   }
+  .css-u4p24i {
+    display: none !important;
+  }
   .stepper--container {
     max-height: 500px;
     min-height: 500px;
