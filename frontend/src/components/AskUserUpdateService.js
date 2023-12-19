@@ -105,21 +105,20 @@ function AskUserUpdateService({
         providerDatas.providerData.services[serviceIndex].timeAndDate
       );
       setServiceData(providerDatas.providerData.services[serviceIndex]);
+
+      // Reset the form with default values after the asynchronous calls
+      const defaultValues = {
+        serviceName:
+          providerDatas.providerData.services[serviceIndex].service_name,
+        servicePrice:
+          providerDatas.providerData.services[serviceIndex].service_price,
+        serviceDescription:
+          providerDatas.providerData.services[serviceIndex].service_description,
+      };
+      reset(defaultValues);
     } catch (error) {
       console.log(error);
     }
-
-    // Reset the form with default values after the asynchronous calls
-    const defaultValues = {
-      serviceName:
-        providerDatas.providerData.services[serviceIndex].service_name,
-      servicePrice:
-        providerDatas.providerData.services[serviceIndex].service_price,
-      serviceDescription:
-        providerDatas.providerData.services[serviceIndex].service_description,
-    };
-
-    reset(defaultValues);
   }, [serviceIndex, providerDatas.providerData.services, reset]);
 
   //to close the dialog
