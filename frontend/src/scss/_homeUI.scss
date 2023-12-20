@@ -188,6 +188,17 @@
       font-size: 13px;
     }
   }
+  //open calendar in booking page select time and date
+  .open--calendar {
+    color: #ff9a9c;
+    text-align: end;
+    padding-right: 1rem;
+    margin-bottom: 0;
+  }
+  .time--available--container {
+    padding: 0 !important;
+    flex-wrap: wrap;
+  }
 }
 
 .mb--municipality {

@@ -1373,6 +1373,13 @@ body {
   font-family: regular;
 }
 
+.open--calendar {
+  color: #ff9a9c;
+  text-align: end;
+  padding-right: 3rem;
+  margin-bottom: 0;
+}
+
 .dialog--container {
   overflow-y: scroll;
 }
@@ -1704,6 +1711,16 @@ body {
   .notification--main--container .notification--content {
     font-style: italic;
     font-size: 13px;
+  }
+  .open--calendar {
+    color: #ff9a9c;
+    text-align: end;
+    padding-right: 1rem;
+    margin-bottom: 0;
+  }
+  .time--available--container {
+    padding: 0 !important;
+    flex-wrap: wrap;
   }
 }
 .mb--municipality {

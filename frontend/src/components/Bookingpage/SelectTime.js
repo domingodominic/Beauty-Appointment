@@ -5,6 +5,7 @@ import { GoSun } from "react-icons/go";
 import { WiSunset } from "react-icons/wi";
 import "../../scss/style.css";
 import { ThemeContext } from "../../App";
+import OpenCalendar from "./OpenCalendar";
 
 function SelectTime({ setStep }) {
   const today = new Date();
@@ -14,6 +15,21 @@ function SelectTime({ setStep }) {
   const [dateElements, setDateElements] = useState([]);
   const { chosenService, setTime, setDate } = useAppointmentStore();
   const { theme } = useContext(ThemeContext);
+  const [calendarState, setCalendarState] = useState(false);
+  const [selectedDateinCalendar, setSelectedDateinCalendar] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const generateDates = () => {
@@ -77,6 +93,7 @@ function SelectTime({ setStep }) {
         const afternoon = data.availability_time.filter((time) =>
           time.includes("PM")
         );
+
         updatedAmTime.push(...morning);
         updatedPmTime.push(...afternoon);
       }
@@ -86,6 +103,36 @@ function SelectTime({ setStep }) {
     setPmTime(updatedPmTime);
   };
 
+  const compareDateInCalendarDialog = (date) => {
+    setSelectedDateinCalendar(date);
+    console.log("the data is ", date);
+    const updatedAmTime = [];
+    const updatedPmTime = [];
+
+    chosenService.timeAndDate.forEach((data) => {
+      const serviceDate = new Date(data.service_date);
+      const formattedServiceDate = serviceDate.toLocaleDateString("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+        year: "2-digit",
+      });
+
+      if (formattedServiceDate === date) {
+        const morning = data.availability_time.filter((time) =>
+          time.includes("AM")
+        );
+        console.log("morning time is", morning);
+        const afternoon = data.availability_time.filter((time) =>
+          time.includes("PM")
+        );
+        updatedAmTime.push(...morning);
+        updatedPmTime.push(...afternoon);
+      }
+    });
+
+    setAmTime(updatedAmTime);
+    setPmTime(updatedPmTime);
+  };
   const handleChosenTime = (time) => {
     setTime(time);
     setStep(4);
@@ -93,6 +140,11 @@ function SelectTime({ setStep }) {
   const handleChosenDate = (date) => {
     setDate(date);
   };
+
+  const handleOpenCalendar = () => {
+    setCalendarState(true);
+  };
+  const getSelectedDate = (data) => {};
   return (
     <div>
       <div>
@@ -104,10 +156,19 @@ function SelectTime({ setStep }) {
             Please select date & time.
           </p>
         </div>
+        <p onClick={() => handleOpenCalendar()} className="open--calendar">
+          Open calendar
+        </p>
+        <OpenCalendar
+          calendarState={calendarState}
+          getSelectedDate={getSelectedDate}
+          setCalendarState={setCalendarState}
+          compareDateInCalendarDialog={compareDateInCalendarDialog}
+        />
         <Swiper
           watchSlidesProgress={true}
-          slidesPerView={5}
-          spaceBetween={10}
+          slidesPerView={isMobile ? 3 : 5}
+          spaceBetween={isMobile ? 5 : 10}
           className="mySwiper swipe"
         >
           {dateElements.map((dateObject, index) => (

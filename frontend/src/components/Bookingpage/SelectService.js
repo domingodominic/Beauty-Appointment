@@ -29,7 +29,7 @@ function SelectService({ setStep }) {
         /> */}
         </div>
         {services &&
-          services.map((service, index) => (
+          services.reverse().map((service, index) => (
             <li
               className={`list--${theme} available--service`}
               key={index}
