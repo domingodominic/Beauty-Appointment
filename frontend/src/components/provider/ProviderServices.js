@@ -214,7 +214,7 @@ function ProviderServices() {
 
             <ul className="service--lists">
               {serviceData &&
-                serviceData.reverse().map((service, index) => (
+                [...serviceData].reverse().map((service, index) => (
                   <li className={`list--${theme}`} key={index}>
                     <div className="details--container">
                       <div className="details">

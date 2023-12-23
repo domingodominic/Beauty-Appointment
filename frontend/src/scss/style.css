@@ -1977,6 +1977,45 @@ body {
   font-size: 30px;
 }
 
+.dialog--service--container {
+  display: flex;
+  border-bottom: 1px dashed gray;
+  margin: 0;
+}
+.dialog--service--container .dialog--details--title--light {
+  font-weight: bold;
+  font-size: 20px;
+  margin: 0;
+}
+.dialog--service--container p {
+  margin: 10px;
+  font-size: 13px;
+}
+.dialog--service--container .dialog--servicename--light,
+.dialog--service--container .dialog--description--light,
+.dialog--service--container .dialog--serviceprice--light {
+  font-weight: bold;
+}
+
+.timelist--container {
+  display: flex;
+  align-items: start;
+  flex-wrap: wrap;
+  width: 100%;
+  border-bottom: 1px dashed gray;
+  padding-bottom: 1rem;
+  justify-content: start;
+}
+
+.timelist--items {
+  list-style: none;
+  padding: 5px 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  background-color: #ff9a9c;
+}
+
 :root {
   --background-color: #ffff;
   --color: #ff9a9c;

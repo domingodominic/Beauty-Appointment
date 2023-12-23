@@ -7,6 +7,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import AskUserDialog from "./AskUserDeleteService";
 import AskUserUpdateService from "./AskUserUpdateService";
 import AskUserToAdd from "./AskUserToAdd";
+import DisplayServiceInfo from "./provider/DisplayServiceInfo";
 
 function Actions({
   onDelete,
@@ -23,6 +24,7 @@ function Actions({
   const [dialogState, setDialogState] = useState(false);
   const [dialogAddState, setDialogAddState] = useState(false);
   const [dialogUpdateOption, setDialogUpdateOption] = useState(false);
+  const [DisplayServiceDialog, setDisplayServiceDialog] = useState(false);
 
   // handle Delete
   const handleDelete = async () => {
@@ -31,6 +33,10 @@ function Actions({
     if (functionDone) {
       getUpdatedData();
     }
+  };
+
+  const openDisplayDialog = () => {
+    setDisplayServiceDialog(true);
   };
 
   const openDialogDelete = () => {
@@ -56,7 +62,7 @@ function Actions({
         <button className="card1" onClick={() => openDialogAdd()}>
           <IoIosAdd className="action--add" />
         </button>
-        <button className="card2">
+        <button className="card2" onClick={() => openDisplayDialog()}>
           <IoEyeOutline className="action--view" />
         </button>
       </div>
@@ -93,6 +99,11 @@ function Actions({
         serviceID={serviceID}
         dialogAddState={dialogAddState}
         setDialogAddState={setDialogAddState}
+      />
+      <DisplayServiceInfo
+        serviceData={serviceData}
+        setDisplayServiceDialog={setDisplayServiceDialog}
+        DisplayServiceState={DisplayServiceDialog}
       />
     </div>
   );

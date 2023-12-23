@@ -72,7 +72,9 @@ function AskUserUpdateService({
   const fetchNewData = () => {
     try {
       setLoading(true);
-      setServiceData(providerDatas.providerData.services[serviceIndex]);
+      setServiceData(
+        [...providerDatas.providerData.services].reverse()[serviceIndex]
+      );
       const providerID = providerDatas.providerData._id;
 
       const fetchData = async () => {
@@ -81,7 +83,8 @@ function AskUserUpdateService({
             `${server_url}/provider/getProvider/${providerID}`
           );
           setTimeAndDate(
-            response.data.provider.services[serviceIndex].timeAndDate
+            [...response.data.provider.services].reverse()[serviceIndex]
+              .timeAndDate
           );
 
           if (response.status === 200) {
@@ -103,16 +106,21 @@ function AskUserUpdateService({
       setTimeAndDate(
         providerDatas.providerData.services[serviceIndex].timeAndDate
       );
-      setServiceData(providerDatas.providerData.services[serviceIndex]);
+      setServiceData(
+        [...providerDatas.providerData.services].reverse()[serviceIndex]
+      );
 
       // Reset the form with default values after the asynchronous calls
       const defaultValues = {
-        serviceName:
-          providerDatas.providerData.services[serviceIndex].service_name,
-        servicePrice:
-          providerDatas.providerData.services[serviceIndex].service_price,
-        serviceDescription:
-          providerDatas.providerData.services[serviceIndex].service_description,
+        serviceName: [...providerDatas.providerData.services].reverse()[
+          serviceIndex
+        ].service_name,
+        servicePrice: [...providerDatas.providerData.services].reverse()[
+          serviceIndex
+        ].service_price,
+        serviceDescription: [...providerDatas.providerData.services].reverse()[
+          serviceIndex
+        ].service_description,
       };
       reset(defaultValues);
     } catch (error) {
