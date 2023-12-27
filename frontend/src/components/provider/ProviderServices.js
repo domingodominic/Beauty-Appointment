@@ -401,15 +401,23 @@ function ProviderServices() {
                 />
               </div>
               <div>
-                <img
-                  src={
-                    serviceImage
-                      ? serviceImage
-                      : `https://th.bing.com/th/id/OIP.AuvfA6gcdoIC3Drlq9w75wHaHa?pid=ImgDet&rs=1`
-                  }
-                  alt="service image"
-                  width="200px"
-                />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <img
+                    src={
+                      serviceImage
+                        ? serviceImage
+                        : `https://th.bing.com/th/id/OIP.AuvfA6gcdoIC3Drlq9w75wHaHa?pid=ImgDet&rs=1`
+                    }
+                    alt="service image"
+                    width="200px"
+                  />
+                </div>
                 <input type="file" onChange={handleFileChange} />
               </div>
               <div>
@@ -431,9 +439,18 @@ function ProviderServices() {
                   </div>
                 </div>
               </div>
-              <button className="simple--fadein--btn" type="submit">
-                Save
-              </button>
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <button className="simple--fadein--btn" type="submit">
+                  Save
+                </button>
+              </div>
             </form>
           </DialogContent>
         </Dialog>

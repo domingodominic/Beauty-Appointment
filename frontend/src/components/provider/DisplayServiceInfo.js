@@ -35,17 +35,15 @@ function DisplayServiceInfo({
           />
           <p className={`dialog--details--title--${theme}`}>Details :</p>
           <div className={`dialog--service--container`}>
-            <p className={`dialog--servicename--${theme}`}>Service name : </p>
+            <p className={`dialog--service--${theme}`}>Name : </p>
             <p>{serviceData.service_name}</p>
           </div>
           <div className={`dialog--service--container`}>
-            <p className={`dialog--description--${theme}`}>
-              Service description
-            </p>
+            <p className={`dialog--service--${theme}`}>Description :</p>
             <p>{serviceData.service_description}</p>
           </div>
           <div className={`dialog--service--container`}>
-            <p className={`dialog--serviceprice--${theme}`}>Service price : </p>
+            <p className={`dialog--service--${theme}`}>Price : </p>
             <p>{serviceData.service_price}</p>
           </div>
           <div>
@@ -55,7 +53,11 @@ function DisplayServiceInfo({
 
             {serviceData.timeAndDate.map((date, i) => (
               <div key={i}>
-                <p> {date.service_date}</p>
+                <p>
+                  <span style={{ fontWeight: "bold" }}>Date :</span>{" "}
+                  {date.service_date}
+                </p>
+                <div>TIME :</div>
                 <ul className="timelist--container">
                   {date.availability_time.map((time, i) => (
                     <li key={i} className="timelist--items">

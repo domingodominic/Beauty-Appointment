@@ -239,7 +239,9 @@ function ProviderProfile() {
             >
               Log out
             </button>
-            <button onClick={closeDialog}>Cancel</button>
+            <button onClick={closeDialog} style={{ border: "lightgray solid" }}>
+              Cancel
+            </button>
           </div>
         </DialogContent>
       </Dialog>

@@ -34,7 +34,16 @@ export default function Timepicker({ addTime, removeTime, serviceTime }) {
         sx={{ width: "100%" }}
       />
       <div style={{ marginTop: "1rem" }}>
-        <button type="button" onClick={addSelectedTime}>
+        <button
+          type="button"
+          onClick={addSelectedTime}
+          style={{
+            border: "none",
+            backgroundColor: "#ff9a9c",
+            color: "white",
+            fontSize: "13px",
+          }}
+        >
           Add Time
         </button>
       </div>

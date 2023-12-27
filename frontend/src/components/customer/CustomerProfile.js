@@ -206,9 +206,7 @@ function CustomerProfile({ profile, data }) {
                   </div>
                   <div className="private--info--item">
                     <p className="item--title"> Theme</p>
-                    <p className={`item--value color--${theme} `}>
-                      {profile.contactNumber}
-                    </p>
+                    <p className={`item--value color--${theme} `}>{theme}</p>
                   </div>
                 </div>
               </div>
@@ -247,7 +245,12 @@ function CustomerProfile({ profile, data }) {
               >
                 Log out
               </button>
-              <button onClick={closeDialog}>Cancel</button>
+              <button
+                onClick={closeDialog}
+                style={{ border: "lightgray solid" }}
+              >
+                Cancel
+              </button>
             </div>
           </DialogContent>
         </Dialog>
