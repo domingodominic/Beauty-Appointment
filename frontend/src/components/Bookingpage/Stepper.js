@@ -26,7 +26,10 @@ const steps = [
   "Review",
 ];
 
-export default function HorizontalLinearStepper({ handleNextPage }) {
+export default function HorizontalLinearStepper({
+  handleNextPage,
+  setBookState,
+}) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const [isLoading, setLoading] = React.useState(false);
@@ -137,7 +140,7 @@ export default function HorizontalLinearStepper({ handleNextPage }) {
         });
         handleSendEmail();
         setLoading(false);
-        handleNextPage("history");
+        setBookState(false);
       } else if (response.status === 500) {
         enqueueSnackbar("Something went wrong, please try again.", {
           variant: "error",

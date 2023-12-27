@@ -6,6 +6,8 @@ import BookedDetails from "./BookedDetails";
 import Linear from "../loaders_folder/Linear";
 import { ThemeContext } from "../../App";
 import HorizontalLinearStepper from "../Bookingpage/Stepper";
+import { server_url } from "../../serverUrl";
+import axios from "axios";
 
 function AppointmentList({ handleNextPage }) {
   const { theme, userDatas } = useContext(ThemeContext);
@@ -14,11 +16,34 @@ function AppointmentList({ handleNextPage }) {
   const [appointedService, setAppointedService] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [serviceData, setServiceData] = useState({});
+  const [loading, setLoading] = useState(false);
   const [bookIsClicked, setBookClicked] = useState(false);
 
+  const setBookState = (data) => {
+    setBookClicked(data);
+  };
   useEffect(() => {
-    setAppointedService(userDatas.userData.selected_service);
-  }, [userDatas.userData]);
+    const id = userDatas.userData.userAccount;
+    console.log("the user account id is ", id);
+
+    const getData = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `${server_url}/appointments/getBookedService/${id}`
+        );
+
+        if (response.status === 200) {
+          setAppointedService(response.data);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
+    getData();
+  }, []);
   const closeModal = (setModalStatus) => {
     setModalOpen(setModalStatus);
   };
@@ -34,10 +59,14 @@ function AppointmentList({ handleNextPage }) {
         />
       ) : null}
       {appointedService ? null : <Linear />}
-
       {bookIsClicked ? (
-        <HorizontalLinearStepper handleNextPage={handleNextPage} />
-      ) : appointedService && appointedService.length === 0 ? (
+        <HorizontalLinearStepper
+          handleNextPage={handleNextPage}
+          setBookState={setBookState}
+        />
+      ) : loading ? (
+        <Linear />
+      ) : appointedService.length === 0 ? (
         <div
           style={{
             display: "flex",
@@ -86,7 +115,7 @@ function AppointmentList({ handleNextPage }) {
                   <div className="details--container">
                     <div className="details">
                       <img
-                        src={require("../../images/hair.jpg")}
+                        src={service.serviceImage}
                         alt="service image"
                         style={{ width: "100px", borderRadius: "10px" }}
                       />
@@ -97,9 +126,9 @@ function AppointmentList({ handleNextPage }) {
                               fontFamily: "semi-bold",
                             }}
                           >
-                            Service provider:
+                            Date and Time :
                           </span>
-                          {"  " + service.service_provider}
+                          {"  " + service.serviceDate + service.serviceTime}
                         </p>
                         <p className={`color--${theme}`}>
                           <span
@@ -109,7 +138,7 @@ function AppointmentList({ handleNextPage }) {
                           >
                             Appointed service:
                           </span>
-                          {"  " + service.appointed_service}
+                          {"  " + service.serviceName}
                         </p>
                         <p>
                           <span
@@ -121,7 +150,7 @@ function AppointmentList({ handleNextPage }) {
                             Price:
                           </span>
                           <span style={{ color: "#C9B81A" }}>
-                            {"   $" + service.appointed_price}
+                            {"   $" + service.servicePrice}
                           </span>
                         </p>
                       </div>

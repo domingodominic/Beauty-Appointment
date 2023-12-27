@@ -70,4 +70,16 @@ router.get("/getCustomersInfo", async (request, response) => {
   }
 });
 
+router.get("/getBookedService/:id", async (request, response) => {
+  const { id } = request.params;
+
+  try {
+    const services = await scheduledAppointment.find({ customerID: id });
+
+    response.json(services);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 export default router;
