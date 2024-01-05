@@ -17,6 +17,8 @@ import useAppointmentStore from "../store/useAppointmentStore";
 import axios from "axios";
 import { server_url } from "../../serverUrl";
 import LoginSpinner from "../loaders_folder/LoginSpinner";
+import useBookingPageClass from "../store/useBookingPageClass";
+import useServicesStore from "../store/useServicesStore";
 
 const steps = [
   "Select Municipality",
@@ -35,7 +37,9 @@ export default function HorizontalLinearStepper({
   const [isLoading, setLoading] = React.useState(false);
   const { branchID, chosenService, date, time, branchEmail } =
     useAppointmentStore();
-  const { theme, customerProfiles } = React.useContext(ThemeContext);
+  const { setCurrentClassname } = useBookingPageClass();
+  const { theme, customerProfiles, providerDatas } =
+    React.useContext(ThemeContext);
   const serviceName = chosenService.service_name;
   const serviceImage = chosenService.service_image;
   const servicePrice = chosenService.service_price;
@@ -43,6 +47,7 @@ export default function HorizontalLinearStepper({
   const customerID = customerProfiles.customerProfile._id;
   const referenceNo = "ASVXFGQ23RQ1VGSFA";
   const { enqueueSnackbar } = useSnackbar();
+  const { setCurrentServices } = useServicesStore();
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
@@ -57,6 +62,25 @@ export default function HorizontalLinearStepper({
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
+    setCurrentClassname("classname--rightslide");
+  };
+
+  const getUpdatedData = async () => {
+    setLoading(true);
+    if (providerDatas.providerData && providerDatas.providerData._id) {
+      try {
+        const response = await axios.get(
+          `${server_url}/provider/${providerDatas.providerData._id}`
+        );
+        setCurrentServices(response.data.data.services);
+        if (response.status === 200) {
+          setLoading(false);
+          setBookState(false);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
 
   const CallbackStep = (step) => {
@@ -64,6 +88,7 @@ export default function HorizontalLinearStepper({
   };
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setCurrentClassname("classname--leftslide");
   };
 
   const handleReset = () => {
@@ -139,8 +164,8 @@ export default function HorizontalLinearStepper({
           variant: "success",
         });
         handleSendEmail();
+        getUpdatedData();
         setLoading(false);
-        setBookState(false);
       } else if (response.status === 500) {
         enqueueSnackbar("Something went wrong, please try again.", {
           variant: "error",

@@ -5,9 +5,6 @@ import Slide from "@mui/material/Slide";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { TextField } from "@mui/material";
-import Datepicker from "./provider/Datepicker";
-import Timepicker from "./provider/Timepicker";
-
 import * as yup from "yup";
 import { server_url } from "../serverUrl";
 import { useSnackbar } from "notistack";
@@ -17,6 +14,8 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
+import Linear from "./loaders_folder/Linear";
+import LoginSpinner from "./loaders_folder/LoginSpinner";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -35,11 +34,9 @@ const schema = yup.object().shape({
 });
 function AskUserUpdateService({
   dialogTitle,
-  actions,
-  actionTitle,
-  serviceInfo,
   serviceIndex,
   serviceID,
+  serviceInfo,
   getUpdatedData,
   dialogUpdateOption,
   setDialogUpdateOption,
@@ -86,8 +83,54 @@ function AskUserUpdateService({
             [...response.data.provider.services].reverse()[serviceIndex]
               .timeAndDate
           );
+          console.log(
+            [...response.data.provider.services].reverse()[serviceIndex]
+          );
+          setServiceData(
+            [...response.data.provider.services].reverse()[serviceIndex]
+          );
 
           if (response.status === 200) {
+            setLoading(false);
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+
+      fetchData();
+    } catch (error) {
+      console.error("Error", error);
+    }
+  };
+
+  const fetchNewDataForService = () => {
+    try {
+      setLoading(true);
+      setServiceData(
+        [...providerDatas.providerData.services].reverse()[serviceIndex]
+      );
+      const providerID = providerDatas.providerData._id;
+
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            `${server_url}/provider/getProvider/${providerID}`
+          );
+          setTimeAndDate(
+            [...response.data.provider.services].reverse()[serviceIndex]
+              .timeAndDate
+          );
+          console.log(
+            [...response.data.provider.services].reverse()[serviceIndex]
+          );
+          setServiceData(
+            [...response.data.provider.services].reverse()[serviceIndex]
+          );
+
+          if (response.status === 200) {
+            updateFormValues();
+            openDetailsDialog();
             setLoading(false);
           }
         } catch (error) {
@@ -112,12 +155,8 @@ function AskUserUpdateService({
 
       // Reset the form with default values after the asynchronous calls
       const defaultValues = {
-        serviceName: [...providerDatas.providerData.services].reverse()[
-          serviceIndex
-        ].service_name,
-        servicePrice: [...providerDatas.providerData.services].reverse()[
-          serviceIndex
-        ].service_price,
+        serviceName: serviceInfo.service_name,
+        servicePrice: serviceInfo.serviceData_price,
         serviceDescription: [...providerDatas.providerData.services].reverse()[
           serviceIndex
         ].service_description,
@@ -128,6 +167,15 @@ function AskUserUpdateService({
     }
   }, [serviceIndex, providerDatas.providerData.services, reset]);
 
+  const updateFormValues = () => {
+    // Reset the form with default values after the asynchronous calls
+    const defaultValues = {
+      serviceName: serviceInfo.service_name,
+      servicePrice: serviceInfo.service_price,
+      serviceDescription: serviceInfo.service_description,
+    };
+    reset(defaultValues);
+  };
   //to close the dialog
   const handleClose = () => {
     setDialogUpdateOption(false);
@@ -204,9 +252,28 @@ function AskUserUpdateService({
   const openTimeDateDialog = () => {
     setopenDateTime(true);
   };
+  const handleDateDelete = (dateId) => {
+    const deleteDate = async () => {
+      try {
+        const response = await axios.delete(
+          `${server_url}/provider/services/${providerDatas.providerData._id}/dates/${dateId}`
+        );
+
+        if (response.status === 200 || response.status === 201) {
+          enqueueSnackbar("Succesfuly deleted", { variant: "info" });
+        }
+        handleClose();
+      } catch (error) {
+        console.error("Error deleting date:", error.message);
+      }
+    };
+
+    deleteDate();
+  };
 
   return (
     <>
+      {loading && <LoginSpinner />}
       <Dialog
         open={dialogUpdateOption}
         TransitionComponent={Transition}
@@ -219,8 +286,7 @@ function AskUserUpdateService({
         <DialogContent>
           <button
             onClick={() => {
-              openDetailsDialog();
-              fetchNewData();
+              fetchNewDataForService();
             }}
           >
             Service details
@@ -363,15 +429,14 @@ function AskUserUpdateService({
             <div>
               <img
                 src={
-                  serviceImage
-                    ? serviceImage
-                    : serviceData.service_image === undefined
-                    ? `https://th.bing.com/th/id/OIP.6kEev2FT9fMgGqWhNJSfPgHaE6?w=252&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7`
-                    : serviceData.service_image
+                  serviceData?.service_image
+                    ? serviceData.service_image
+                    : "https://th.bing.com/th/id/OIP.6kEev2FT9fMgGqWhNJSfPgHaE6?w=252&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7"
                 }
                 alt="service image"
                 width="100%"
               />
+
               <input type="file" onChange={handleFileChange} />
             </div>
             <button className="simple--fadein--btn" type="submit">
@@ -398,7 +463,11 @@ function AskUserUpdateService({
             <h4>
               Date:
               {timeAndDate.map((data, i) => (
-                <div className="title" key={i}>
+                <div
+                  className="title"
+                  key={i}
+                  onClick={() => handleDateDelete(data._id)}
+                >
                   {data.service_date}
                   <ul>
                     {data.availability_time.map((time, j) => (

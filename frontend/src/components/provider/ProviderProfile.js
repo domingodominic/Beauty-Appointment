@@ -204,7 +204,10 @@ function ProviderProfile() {
             </div>
             <div className="profile--right--info">
               <div>
-                <MyAccordion handleForgotPassOpen={handleForgotPassOpen} />
+                <MyAccordion
+                  handleForgotPassOpen={handleForgotPassOpen}
+                  email={userData.email}
+                />
                 <button className="logout--btn" onClick={Signout}>
                   Log out
                 </button>

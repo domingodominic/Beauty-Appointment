@@ -8,56 +8,67 @@ import { ThemeContext } from "../../App";
 import HorizontalLinearStepper from "../Bookingpage/Stepper";
 import { server_url } from "../../serverUrl";
 import axios from "axios";
+import BookedDetailsDialog from "./BookedDetailsDialog";
+import useBookingPageClass from "../store/useBookingPageClass";
 
 function AppointmentList({ handleNextPage }) {
   const { theme, userDatas } = useContext(ThemeContext);
-  const [userData, setUserData] = useState({});
   const [userAppointmentData, setUserAppointmentData] = useState({});
   const [appointedService, setAppointedService] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
   const [serviceData, setServiceData] = useState({});
+  const [isOpen, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { setCurrentClassname } = useBookingPageClass();
   const [bookIsClicked, setBookClicked] = useState(false);
 
   const setBookState = (data) => {
     setBookClicked(data);
   };
+  const userId = userDatas.userData.userAccount;
+  // Fetching data
   useEffect(() => {
-    const id = userDatas.userData.userAccount;
-    console.log("the user account id is ", id);
+    if (userId) {
+      const fetchData = async () => {
+        setLoading(true);
+        try {
+          const response = await axios.get(
+            `${server_url}/appointments/getBookedService/${userId}`
+          );
+          console.log(response);
+          if (response.status === 200) {
+            const currentDate = new Date();
+            const filteredAppointments = response.data.filter((data) => {
+              const serviceDate = new Date(data.serviceDate);
+              return currentDate.getTime() <= serviceDate.getTime();
+            });
 
-    const getData = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `${server_url}/appointments/getBookedService/${id}`
-        );
-
-        if (response.status === 200) {
-          setAppointedService(response.data);
+            setAppointedService(filteredAppointments);
+          }
+        } catch (error) {
+          console.error(error);
+          setLoading(false);
+        } finally {
           setLoading(false);
         }
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
-      }
-    };
-    getData();
-  }, []);
-  const closeModal = (setModalStatus) => {
-    setModalOpen(setModalStatus);
+      };
+
+      fetchData();
+    }
+    console.log(appointedService.length);
+  }, [userId, appointedService.length]);
+
+  const setDialogClose = (data) => {
+    setOpen(data);
   };
   return (
     <div>
-      {modalOpen ? (
-        <BookedDetails
-          closeModal={closeModal}
-          data={serviceData}
-          onClick={() => {
-            setModalOpen(false);
-          }}
+      {
+        <BookedDetailsDialog
+          isOpen={isOpen}
+          setDialogClose={setDialogClose}
+          serviceData={serviceData}
         />
-      ) : null}
+      }
       {appointedService ? null : <Linear />}
       {bookIsClicked ? (
         <HorizontalLinearStepper
@@ -81,10 +92,15 @@ function AppointmentList({ handleNextPage }) {
               alt="think image"
               style={{ width: "200px" }}
             />
-            <p style={{ color: "gray" }}>Seems you haven't booked yet?</p>
+            <p style={{ color: "gray" }}>
+              Seems you don't have active appointments.
+            </p>
             <button
               className="fadein--btn"
-              onClick={() => setBookClicked(true)}
+              onClick={() => {
+                setBookClicked(true);
+                setCurrentClassname("classname--rightslide");
+              }}
             >
               Book now
             </button>
@@ -104,68 +120,86 @@ function AppointmentList({ handleNextPage }) {
             </div>
 
             <div className="button">
-              <button onClick={() => setBookClicked(true)}>Book more</button>
+              <button
+                onClick={() => {
+                  setBookClicked(true);
+                  setCurrentClassname("classname--rightslide");
+                }}
+              >
+                Book more
+              </button>
               <IoAddCircle />
             </div>
           </div>
           <ul className="service--lists">
             {appointedService &&
-              appointedService.map((service, index) => (
-                <li className={`list--${theme}`} key={index}>
-                  <div className="details--container">
-                    <div className="details">
-                      <img
-                        src={service.serviceImage}
-                        alt="service image"
-                        style={{ width: "100px", borderRadius: "10px" }}
-                      />
-                      <div className="service--details">
-                        <p className={`color--${theme}`}>
-                          <span
-                            style={{
-                              fontFamily: "semi-bold",
-                            }}
-                          >
-                            Date and Time :
-                          </span>
-                          {"  " + service.serviceDate + service.serviceTime}
-                        </p>
-                        <p className={`color--${theme}`}>
-                          <span
-                            style={{
-                              fontFamily: "semi-bold",
-                            }}
-                          >
-                            Appointed service:
-                          </span>
-                          {"  " + service.serviceName}
-                        </p>
-                        <p>
-                          <span
-                            className={`color--${theme}`}
-                            style={{
-                              fontFamily: "semi-bold",
-                            }}
-                          >
-                            Price:
-                          </span>
-                          <span style={{ color: "#C9B81A" }}>
-                            {"   $" + service.servicePrice}
-                          </span>
-                        </p>
+              appointedService
+                .filter((data) => {
+                  const currentDate = new Date();
+                  const serviceDate = new Date(data.serviceDate);
+
+                  return currentDate.getTime() <= serviceDate.getTime();
+                })
+                .reverse()
+                .map((service, index) => (
+                  <li className={`list--${theme}`} key={index}>
+                    <div className="details--container">
+                      <div className="details">
+                        <img
+                          src={service.serviceImage}
+                          alt="service image"
+                          style={{ width: "100px", borderRadius: "10px" }}
+                        />
+                        <div className="service--details">
+                          <p className={`color--${theme}`}>
+                            <span
+                              style={{
+                                fontFamily: "semi-bold",
+                              }}
+                            >
+                              Date and Time :
+                            </span>
+                            {` ` +
+                              new Date(service.serviceDate).toDateString() +
+                              ` ` +
+                              service.serviceTime}
+                          </p>
+                          <p className={`color--${theme}`}>
+                            <span
+                              style={{
+                                fontFamily: "semi-bold",
+                              }}
+                            >
+                              Appointed service:
+                            </span>
+                            {"  " + service.serviceName}
+                          </p>
+                          <p>
+                            <span
+                              className={`color--${theme}`}
+                              style={{
+                                fontFamily: "semi-bold",
+                              }}
+                            >
+                              Price:
+                            </span>
+                            <span style={{ color: "#C9B81A" }}>
+                              {"   $" + service.servicePrice}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                      <div className={`icon color--${theme}`}>
+                        <PiEyeThin
+                          onClick={() => {
+                            setServiceData(service);
+                            setOpen(true);
+                          }}
+                        />
                       </div>
                     </div>
-                    <div className={`icon color--${theme}`}>
-                      <PiEyeThin
-                        onClick={() => {
-                          setServiceData(service);
-                          setModalOpen(true);
-                        }}
-                      />
-                    </div>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                ))}
           </ul>
         </div>
       )}

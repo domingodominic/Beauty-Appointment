@@ -8,12 +8,15 @@ import { IoIosArrowForward } from "react-icons/io";
 import Linear from "../loaders_folder/Linear";
 import { useSnackbar } from "notistack";
 import { server_url } from "../../serverUrl";
+import useBookingPageClass from "../store/useBookingPageClass";
+import { IoLocationOutline } from "react-icons/io5";
 
 function SelectBranch({ setStep }) {
   const [branches, setBranch] = useState();
   const [loading, isLoading] = useState(false);
   const { municipality, setBranchID, setServices, setBranchEmail } =
     useAppointmentStore();
+  const { currentClassname, setCurrentClassname } = useBookingPageClass();
   const { theme } = useContext(ThemeContext);
   const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
@@ -31,6 +34,7 @@ function SelectBranch({ setStep }) {
         );
 
         setBranch(response.data);
+        console.log(response.data);
       } catch (error) {
         console.log(error);
       } finally {
@@ -45,12 +49,13 @@ function SelectBranch({ setStep }) {
     setServices(services);
     setBranchID(branchID);
     setBranchEmail(email);
+    setCurrentClassname("classname--rightslide");
   };
 
   return (
-    <div>
+    <div className={!loading ? currentClassname : null}>
       {loading ? (
-        <LoginSpinner />
+        <Linear />
       ) : branches && branches[0]?.branches && branches[0]?.user ? (
         <ul className="service--lists service--list">
           <div className={`mb--municipality`}>
@@ -79,18 +84,39 @@ function SelectBranch({ setStep }) {
               <div className="details--container">
                 <div>
                   {
-                    <h3 style={{ margin: "0" }} className={`color--${theme}`}>
+                    <h4 style={{ margin: "0" }} className={`color--${theme}`}>
                       {branch.businessName}
-                    </h3>
+                    </h4>
                   }
                   <p
-                    style={{ margin: "0", fontSize: "12px" }}
+                    style={{
+                      margin: "0",
+                      fontSize: "10px",
+                      color: "gray !important",
+                    }}
                     className={`color--${theme}`}
                   >
                     {branch.businessDescription}
                   </p>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginTop: "4px",
+                    }}
+                  >
+                    <IoLocationOutline />
+                    <p
+                      className={`color--${theme}`}
+                      style={{ fontSize: "10px", margin: "0" }}
+                    >
+                      {branch.businessAddress}
+                    </p>
+                  </div>
                 </div>
-                <IoIosArrowForward />
+                <div className={`color--${theme}`}>
+                  <IoIosArrowForward />
+                </div>
               </div>
             </li>
           ))}

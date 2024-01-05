@@ -56,22 +56,22 @@ function ProviderNotification({ setNewPage }) {
           <h5>Notifications</h5>
           <ul className={`notification--main--container`}>
             {notifications.map((data, i) => (
-              <li
-                key={i}
-                className={`notification--list--conatiner`}
-                onClick={() => handleClickedNotif(data._id)}
-              >
-                <div className={`notification--content`}>{data.content}</div>
-                <Icon
-                  icon="simple-icons:go"
-                  className="notification--icon"
-                  style={
-                    data.status === "unopen"
-                      ? { color: "#ff9a9c" }
-                      : { color: "gray" }
-                  }
-                />
-              </li>
+              <div className={`notification--list--conatiner`}>
+                <li key={i} onClick={() => handleClickedNotif(data._id)}>
+                  {console.log("the data from notif ", data)}
+                  <div className={`notification--content`}>{data.content}</div>
+                  <Icon
+                    icon="simple-icons:go"
+                    className="notification--icon"
+                    style={
+                      data.status === "unopen"
+                        ? { color: "#ff9a9c" }
+                        : { color: "gray" }
+                    }
+                  />
+                </li>
+                <p>{new Date(data.createdAt).toDateString()}</p>
+              </div>
             ))}
           </ul>
         </div>

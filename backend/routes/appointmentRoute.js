@@ -6,6 +6,14 @@ const router = express.Router();
 
 router.post("/schedulingAppointment", async (request, response) => {
   try {
+    console.log(request.body.serviceName);
+    console.log(request.body.serviceDate);
+    console.log(request.body.serviceDescription);
+    console.log(request.body.serviceImage);
+    console.log(request.body.serviceTime);
+    console.log(request.body.customerID);
+    console.log(request.body.servicePrice);
+    console.log(request.body.branchID);
     if (
       !request.body.serviceName ||
       !request.body.serviceDescription ||
@@ -14,8 +22,7 @@ router.post("/schedulingAppointment", async (request, response) => {
       !request.body.time ||
       !request.body.serviceImage ||
       !request.body.customerID ||
-      !request.body.branchID ||
-      !request.body.referenceNo
+      !request.body.branchID
     ) {
       console.log("Please supply all the data needed");
     } else {

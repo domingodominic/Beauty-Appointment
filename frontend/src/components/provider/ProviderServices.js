@@ -21,6 +21,7 @@ import AddButton from "../AddButton";
 import * as yup from "yup";
 import "../../scss/style.css";
 import axios from "axios";
+import useServicesStore from "../store/useServicesStore.js";
 import { server_url } from "../../serverUrl";
 import { useSnackbar } from "notistack";
 import { IoIosAdd } from "react-icons/io";
@@ -51,8 +52,9 @@ function ProviderServices() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [formdata, setFormdata] = useState(new FormData());
   const [loading, setLoading] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
+  const { currentServices, setCurrentServices } = useServicesStore();
 
+  const { enqueueSnackbar } = useSnackbar();
   const dateSelected = (date) => {
     setSelectedDate(date);
   };
@@ -73,7 +75,6 @@ function ProviderServices() {
   };
 
   const getUpdatedData = async () => {
-    console.log("work");
     setLoading(true);
     if (providerDatas.providerData && providerDatas.providerData._id) {
       try {
@@ -82,6 +83,7 @@ function ProviderServices() {
         );
 
         setServiceData(response.data.data.services);
+        setCurrentServices(response.data.data.services);
         if (response.status === 200) {
           setLoading(false);
         }
@@ -138,6 +140,7 @@ function ProviderServices() {
         enqueueSnackbar("Service Added successful", { variant: "success" });
         getUpdatedData();
         setserviceImage(null);
+        // window.location.reload();
       } else {
         enqueueSnackbar("Failed occured please try again", {
           variant: "error",
@@ -160,6 +163,7 @@ function ProviderServices() {
       if (response.status === 200) {
         setLoading(false);
         setFuctionDone(true);
+        getUpdatedData();
       }
     } catch (error) {
       console.error("An error occurred while deleting the service:", error);

@@ -6,6 +6,7 @@ import { WiSunset } from "react-icons/wi";
 import "../../scss/style.css";
 import { ThemeContext } from "../../App";
 import OpenCalendar from "./OpenCalendar";
+import useBookingPageClass from "../store/useBookingPageClass";
 
 function SelectTime({ setStep }) {
   const today = new Date();
@@ -15,6 +16,7 @@ function SelectTime({ setStep }) {
   const [dateElements, setDateElements] = useState([]);
   const { chosenService, setTime, setDate } = useAppointmentStore();
   const { theme } = useContext(ThemeContext);
+  const { currentClassname } = useBookingPageClass();
   const [calendarState, setCalendarState] = useState(false);
   const [selectedDateinCalendar, setSelectedDateinCalendar] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -146,7 +148,7 @@ function SelectTime({ setStep }) {
   };
   const getSelectedDate = (data) => {};
   return (
-    <div>
+    <div className={currentClassname}>
       <div>
         <div className={`mb--municipality`}>
           <h4 className={`title color--${theme} municipality--page--title`}>

@@ -17,7 +17,7 @@ function DisplayServiceInfo({
   const handleClose = () => {
     setDisplayServiceDialog(false);
   };
-  console.log("service data are : ", serviceData);
+
   return (
     <>
       <Dialog

@@ -100,3 +100,27 @@ $primary_color: #191444;
     color: gray;
   }
 }
+
+.classname--rightslide {
+  animation-name: rightslide;
+  animation-fill-mode: forwards;
+  animation-duration: 0.5s;
+  transition-timing-function: ease-in;
+}
+@keyframes rightslide {
+  from {
+    transform: translateX(1000px);
+  }
+}
+
+.classname--leftslide {
+  animation-name: leftslide;
+  animation-fill-mode: forwards;
+  animation-duration: 0.5s;
+  transition-timing-function: ease-in;
+}
+@keyframes leftslide {
+  from {
+    transform: translateX(-1000px);
+  }
+}

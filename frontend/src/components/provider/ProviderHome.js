@@ -79,9 +79,7 @@ function ProviderHome() {
                     fontSize: "10px",
                     fontWeight: "bolder",
                   }}
-                >
-                  {2}
-                </span>
+                ></span>
                 <IoNotificationsOutline />
               </li>
               <li

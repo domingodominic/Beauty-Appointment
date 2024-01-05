@@ -16,10 +16,10 @@ function ReviewAppointment() {
     const referenceNumber = `${timestamp}${randomChar}${Math.floor(
       Math.random() * 1000
     )}`;
-
-    console.log(referenceNumber);
   };
   const chosenDate = new Date(date);
+
+  console.log("chosen date is ", date);
   const formattedDate = chosenDate.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",

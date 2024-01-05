@@ -3,7 +3,7 @@ import { ThemeContext } from "../../App";
 import { IoIosArrowForward } from "react-icons/io";
 import useAppointmentStore from "../store/useAppointmentStore";
 import "../../scss/style.css";
-
+import useBookingPageClass from "../store/useBookingPageClass";
 const municipalityList = [
   "Dinalupihan",
   "Balanga",
@@ -15,10 +15,11 @@ const municipalityList = [
 function SelectMunicipality({ setStep }) {
   const { theme, userDatas } = useContext(ThemeContext);
   const { setMunicipality } = useAppointmentStore();
+  const { currentClassname, setCurrentClassname } = useBookingPageClass();
   const [municipality, setCurrentMunicipality] = useState("");
 
   return (
-    <div>
+    <div className={currentClassname}>
       <div className={`mb--municipality`}>
         <h4 className={`title color--${theme} municipality--page--title`}>
           Select Municipality
@@ -45,11 +46,14 @@ function SelectMunicipality({ setStep }) {
               onClick={() => {
                 setMunicipality(item);
                 setStep(1);
+                setCurrentClassname("classname--rightslide");
               }}
             >
               <div className="details--container">
                 <h4 className={`color--${theme}`}> {item}</h4>
-                <IoIosArrowForward />
+                <div className={`color--${theme}`}>
+                  <IoIosArrowForward />
+                </div>
               </div>
             </li>
           </ul>

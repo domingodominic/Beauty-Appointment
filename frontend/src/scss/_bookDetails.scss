@@ -27,9 +27,24 @@
   }
 }
 
+.details--container--service--light {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: dashed gray 1px;
+  .details--title {
+    color: #191444;
+    font-weight: bold;
+    font-size: 0.8rem;
+  }
+  .details--value {
+    font-size: 0.7rem;
+    color: rgb(0, 0, 0);
+  }
+}
+
 @keyframes BookDetails {
   from {
     transform: scale(0);
-    // transform: translateY(-200px);
   }
 }

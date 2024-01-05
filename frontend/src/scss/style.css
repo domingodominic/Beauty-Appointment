@@ -203,7 +203,7 @@ li a:hover::after {
 }
 
 .swiper {
-  width: 90%;
+  width: 100%;
   padding-top: 50px;
   padding-bottom: 50px;
 }
@@ -963,6 +963,30 @@ body {
   color: gray;
 }
 
+.classname--rightslide {
+  animation-name: rightslide;
+  animation-fill-mode: forwards;
+  animation-duration: 0.5s;
+  transition-timing-function: ease-in;
+}
+
+@keyframes rightslide {
+  from {
+    transform: translateX(1000px);
+  }
+}
+.classname--leftslide {
+  animation-name: leftslide;
+  animation-fill-mode: forwards;
+  animation-duration: 0.5s;
+  transition-timing-function: ease-in;
+}
+
+@keyframes leftslide {
+  from {
+    transform: translateX(-1000px);
+  }
+}
 .customer--profile--container {
   height: 100%;
 }
@@ -1074,6 +1098,22 @@ body {
   border-bottom: dashed;
   border-color: gray;
   color: #191444;
+}
+
+.details--container--service--light {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: dashed gray 1px;
+}
+.details--container--service--light .details--title {
+  color: #191444;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+.details--container--service--light .details--value {
+  font-size: 0.7rem;
+  color: rgb(0, 0, 0);
 }
 
 @keyframes BookDetails {
@@ -1312,7 +1352,7 @@ body {
 .time--available--container {
   position: absolute;
   padding-left: 1rem;
-  bottom: 25%;
+  bottom: -300px;
   display: flex;
   gap: 1rem;
 }
@@ -1468,6 +1508,7 @@ body {
   max-height: 400px;
   min-height: 400px;
   overflow-y: scroll;
+  overflow-x: hidden;
   padding: 10px;
 }
 .stepper--container::-webkit-scrollbar {
@@ -1959,9 +2000,6 @@ body {
   padding: 0 3rem;
 }
 .notification--main--container .notification--list--conatiner {
-  text-align: start;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
   margin: 0;
   list-style: none;
@@ -1969,6 +2007,20 @@ body {
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   padding: 20px 20px;
   border-radius: 7px;
+}
+.notification--main--container .notification--list--conatiner li {
+  display: flex;
+  text-align: start;
+  justify-content: space-between;
+  align-items: center;
+}
+.notification--main--container .notification--list--conatiner p {
+  text-align: start;
+  margin: 0;
+  margin-top: 5px;
+  font-style: italic;
+  font-size: 10px;
+  color: gray;
 }
 .notification--main--container .notification--list--conatiner .notification--content {
   font-style: italic;
@@ -2026,6 +2078,38 @@ body {
   font-weight: bold;
   font-size: 12px;
   background-color: #ff9a9c;
+}
+
+.flex {
+  display: flex;
+}
+
+.gap-2 {
+  gap: 2px;
+}
+
+.gap-3 {
+  gap: 3px;
+}
+
+.justify--content--c {
+  justify-content: center;
+  align-items: center;
+}
+
+.justify--content--spacebet {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.field--title--light {
+  font-weight: bold;
+  color: #191444;
+}
+
+.field--title--dark {
+  font-weight: bold;
+  color: white;
 }
 
 :root {

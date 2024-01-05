@@ -31,9 +31,6 @@ function ProviderAppointment() {
 
   return (
     <div className="providerService--mainContainer">
-      <h4 className={`color--${theme}`} style={{ textAlign: "start" }}>
-        Scheduled Customers
-      </h4>
       {isMobile ? <CustomerAppointmentMB /> : <CustomerAppointmentsTable />}
       {/* <NoAvailableToShow definition={definition} image={image} /> */}
     </div>

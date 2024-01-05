@@ -53,6 +53,7 @@ const schema = yup.object().shape({
     .string()
     .email("Invalid Email")
     .required("Business email is required"),
+  business_address: yup.string().required("Business address is required"),
   business_description: yup
     .string()
     .required("Business description is required"),
@@ -87,6 +88,7 @@ function ProviderSignup() {
         businessDescription: data.business_description,
         businessEmail: data.business_email,
         businessName: data.business_name,
+        businessAddress: data.business_address,
         role: role,
       });
 
@@ -580,6 +582,47 @@ function ProviderSignup() {
                         helperText={
                           errors.business_email
                             ? errors.business_email.message
+                            : ""
+                        }
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "& fieldset": {
+                              borderColor: "#ff9a9c", // Border color for the default state
+                            },
+                            "&:hover fieldset": {
+                              borderColor: "#fdcfcf", // Border color when hovered
+                            },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "#fdcfcf", // Border color when focused
+                            },
+                          },
+                          "& label.Mui-focused": {
+                            color: "#fdcfcf", // Text color when focused
+                          },
+                          marginBottom: 1,
+                          padding: 0.1,
+                          width: "100%",
+                        }}
+                      />
+                    )}
+                  />
+                </div>
+              </div>
+              <div className="input--divider">
+                <div style={{ flex: 1 }}>
+                  <Controller
+                    name="business_address"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label="Business address"
+                        variant="outlined"
+                        error={!!errors.business_email}
+                        helperText={
+                          errors.business_address
+                            ? errors.business_address.message
                             : ""
                         }
                         sx={{

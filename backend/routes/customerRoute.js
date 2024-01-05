@@ -66,7 +66,6 @@ router.get("/get-user", async (request, response) => {
     const foundUser = await userAccount.findOne({
       email: { $regex: new RegExp(email, "i") },
     });
-    console.log("the found user is", foundUser);
     if (!foundUser) {
       return response.status(404).json({ message: "User not found" });
     }
@@ -82,6 +81,7 @@ router.get("/get-user", async (request, response) => {
       }
       response.status(200).json({ foundUser, customerData });
     } else if (foundUser.role === "provider") {
+      console.log("the provider id is", foundUser._id);
       const providerData = await providermodel.findOne({
         userAccount: foundUser._id,
       });

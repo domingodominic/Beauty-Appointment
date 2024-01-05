@@ -211,7 +211,7 @@ function CustomerProfile({ profile, data }) {
                 </div>
               </div>
               <div className="profile--right--info">
-                <MyAccordion />
+                <MyAccordion email={profile.email} />
                 <button className="logout--btn" onClick={Signout}>
                   Log out
                 </button>

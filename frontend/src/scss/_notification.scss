@@ -2,9 +2,6 @@
   margin: 0;
   padding: 0 3rem;
   .notification--list--conatiner {
-    text-align: start;
-    display: flex;
-    justify-content: space-between;
     align-items: center;
     margin: 0;
     list-style: none;
@@ -12,6 +9,20 @@
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
     padding: 20px 20px;
     border-radius: 7px;
+    li {
+      display: flex;
+      text-align: start;
+      justify-content: space-between;
+      align-items: center;
+    }
+    p {
+      text-align: start;
+      margin: 0;
+      margin-top: 5px;
+      font-style: italic;
+      font-size: 10px;
+      color: gray;
+    }
     .notification--content {
       font-style: italic;
     }

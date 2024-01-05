@@ -2,17 +2,20 @@ import React, { useContext, useEffect } from "react";
 import { PiEyeThin } from "react-icons/pi";
 import useAppointmentStore from "../store/useAppointmentStore";
 import { ThemeContext } from "../../App";
+import useBookingPageClass from "../store/useBookingPageClass";
 
 function SelectService({ setStep }) {
   const { services, setChosenService, chosenService } = useAppointmentStore();
   const { theme } = useContext(ThemeContext);
+  const { currentClassname, setCurrentClassname } = useBookingPageClass();
   const handleClick = (service) => {
     setChosenService(service);
     setStep(3);
+    setCurrentClassname("classname--rightslide");
   };
 
   return (
-    <div>
+    <div className={currentClassname}>
       <ul className="service--lists service--list">
         <div className={`mb--municipality`}>
           <h4 className={`title color--${theme} municipality--page--title`}>

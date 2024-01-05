@@ -17,6 +17,7 @@ route.post("/signup/", async (request, response) => {
       !request.body.businessEmail ||
       !request.body.contactNumber ||
       !request.body.businessDescription ||
+      !request.body.businessAddress ||
       !request.body.role
     ) {
       return response.status(400).send({
@@ -42,6 +43,7 @@ route.post("/signup/", async (request, response) => {
       businessDescription: request.body.businessDescription,
       businessEmail: request.body.businessEmail,
       businessName: request.body.businessName,
+      businessAddress: request.body.businessAddress,
     };
     const providerAcc = await providermodel.create(newProvider);
     return response.status(201).send(newProvider);
@@ -313,6 +315,58 @@ route.get("/getProvider/:providerID", async (req, res) => {
   } catch (error) {
     console.error("Error in getProvider route:", error);
     return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+route.delete("/services/:userId/dates/:dateId", async (req, res) => {
+  try {
+    const { userId, dateId } = req.params;
+
+    // Find the provider by ID
+    const provider = await providermodel.findById(userId);
+
+    // Check if the provider is found
+    if (!provider) {
+      return res.status(404).json({ error: "Provider not found" });
+    }
+
+    // Check if 'services' is defined and is an array
+    if (!provider.services || !Array.isArray(provider.services)) {
+      return res
+        .status(404)
+        .json({ error: "Invalid 'services' property for the provider" });
+    }
+
+    // Iterate through each service to find the date
+    let dateFound = false;
+    provider.services.forEach((service) => {
+      // Check if 'timeAndDate' is defined and is an array
+      if (service.timeAndDate && Array.isArray(service.timeAndDate)) {
+        const dateIndex = service.timeAndDate.findIndex(
+          (d) => d._id.toString() === dateId
+        );
+
+        // If the date is found, remove it and set the flag to true
+        if (dateIndex !== -1) {
+          service.timeAndDate.splice(dateIndex, 1);
+          dateFound = true;
+        }
+      }
+    });
+
+    // Check if the date exists in any service
+    if (!dateFound) {
+      return res.status(404).json({ error: "Date not found for the service" });
+    }
+
+    // Save the updated provider
+    await provider.save();
+
+    // Respond with success message
+    res.json({ message: "Date deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

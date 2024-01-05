@@ -13,6 +13,10 @@ const providerSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    businessAddress: {
+      type: String,
+      required: true,
+    },
     services: [
       {
         service_name: { type: String },

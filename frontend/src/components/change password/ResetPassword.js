@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContentText from "@mui/material/DialogContentText";
 import Slide from "@mui/material/Slide";
@@ -10,19 +10,21 @@ import { useSnackbar } from "notistack";
 import { auth } from "../../firebase-config";
 import { signOut } from "firebase/auth";
 import { sendPasswordResetEmail } from "firebase/auth";
+import { ThemeContext } from "../../App";
 
 //transition
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function ResetPassword({ isDialogOpen, setDialogOpen }) {
+function ResetPassword({ isDialogOpen, setDialogOpen, email }) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const { providerDatas, userDatas } = useContext(ThemeContext);
   const closeDialog = () => {
     setDialogOpen(false);
   };
-  const email = "dominicpunladomingo120@gmail.com";
+
   const changePassword = async () => {
     console.log("click");
     sendPasswordResetEmail(auth, email).then(() => {

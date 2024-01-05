@@ -15,7 +15,7 @@ import { signOut } from "firebase/auth";
 import { sendPasswordResetEmail } from "firebase/auth";
 import ResetPassword from "../change password/ResetPassword";
 import axios from "axios";
-export default function MyAccordion({ handleForgotPassOpen }) {
+export default function MyAccordion({ handleForgotPassOpen, email }) {
   const { theme, updateThemeState } = useContext(ThemeContext);
   const [isDialogOpen, setDialogOpen] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -26,7 +26,7 @@ export default function MyAccordion({ handleForgotPassOpen }) {
   const openResetDialog = (data) => {
     setDialogOpen(data);
   };
-  const email = "dominicpunladomingo120@gmail.com";
+
   const changePassword = async () => {
     sendPasswordResetEmail(auth, email).then(() => {
       enqueueSnackbar("We have sent the reset password in your email", {
@@ -66,6 +66,7 @@ export default function MyAccordion({ handleForgotPassOpen }) {
         </AccordionDetails>
       </Accordion>
       <ResetPassword
+        email={email}
         isDialogOpen={isDialogOpen}
         setDialogOpen={setDialogOpen}
       />

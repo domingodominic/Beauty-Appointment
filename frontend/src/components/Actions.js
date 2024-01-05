@@ -35,7 +35,8 @@ function Actions({
     }
   };
 
-  const openDisplayDialog = () => {
+  const openDisplayDialog = async () => {
+    await getUpdatedData();
     setDisplayServiceDialog(true);
   };
 
@@ -67,7 +68,13 @@ function Actions({
         </button>
       </div>
       <div className="down">
-        <button className="card3" onClick={() => openDialogUpdate()}>
+        <button
+          className="card3"
+          onClick={() => {
+            openDialogUpdate();
+            getUpdatedData();
+          }}
+        >
           <CiEdit className="action--update" />
         </button>
         <button

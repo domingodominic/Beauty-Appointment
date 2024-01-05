@@ -1,0 +1,27 @@
+.flex {
+  display: flex;
+}
+.gap-2 {
+  gap: 2px;
+}
+.gap-3 {
+  gap: 3px;
+}
+.justify--content--c {
+  justify-content: center;
+  align-items: center;
+}
+.justify--content--spacebet {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.field--title--light {
+  font-weight: bold;
+  color: #191444;
+}
+
+.field--title--dark {
+  font-weight: bold;
+  color: white;
+}
