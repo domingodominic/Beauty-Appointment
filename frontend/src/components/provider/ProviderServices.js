@@ -84,6 +84,7 @@ function ProviderServices() {
 
         setServiceData(response.data.data.services);
         setCurrentServices(response.data.data.services);
+
         if (response.status === 200) {
           setLoading(false);
         }
@@ -140,7 +141,6 @@ function ProviderServices() {
         enqueueSnackbar("Service Added successful", { variant: "success" });
         getUpdatedData();
         setserviceImage(null);
-        // window.location.reload();
       } else {
         enqueueSnackbar("Failed occured please try again", {
           variant: "error",
@@ -174,112 +174,115 @@ function ProviderServices() {
 
   return (
     <div>
-      {loading && <LoginSpinner />}
-      <div className="service--header">
-        {serviceData ? null : <Linear />}
+      {loading ? (
+        <Linear />
+      ) : (
+        <div className="service--header">
+          {serviceData ? null : <Linear />}
 
-        {serviceData && serviceData.length <= 0 ? (
-          <div
-            className="no--services"
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: "4.5rem",
-            }}
-          >
-            <div>
-              <img
-                src={require("../../images/think--img.png")}
-                alt="think image"
-                width="200px"
-              />
-              <p style={{ color: "gray" }}>
-                Seems you haven't set your services
-              </p>
-              <button className="fadein--btn" onClick={handleClickOpen}>
-                Set now
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div
-            style={{ padding: "0px 60px 0px 60px" }}
-            className={`service--item--container`}
-          >
-            <div className="service--list--header">
-              <h4 className={`service--title--header  color--${theme}`}>
-                Service items
-              </h4>
-              <div onClick={handleClickOpen}>
-                <AddButton />
+          {serviceData && serviceData.length <= 0 ? (
+            <div
+              className="no--services"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "4.5rem",
+              }}
+            >
+              <div>
+                <img
+                  src={require("../../images/think--img.png")}
+                  alt="think image"
+                  width="200px"
+                />
+                <p style={{ color: "gray" }}>
+                  Seems you haven't set your services
+                </p>
+                <button className="fadein--btn" onClick={handleClickOpen}>
+                  Set now
+                </button>
               </div>
             </div>
+          ) : (
+            <div
+              style={{ padding: "0px 60px 0px 60px" }}
+              className={`service--item--container`}
+            >
+              <div className="service--list--header">
+                <h4 className={`service--title--header  color--${theme}`}>
+                  Service items
+                </h4>
+                <div onClick={handleClickOpen}>
+                  <AddButton />
+                </div>
+              </div>
 
-            <ul className="service--lists">
-              {serviceData &&
-                [...serviceData].reverse().map((service, index) => (
-                  <li className={`list--${theme}`} key={index}>
-                    <div className="details--container">
-                      <div className="details">
-                        <img
-                          src={service.service_image}
-                          alt="service image"
-                          style={{ width: "100px", borderRadius: "10px" }}
-                        />
-                        <div className="service--details">
-                          <p className={`color--${theme}`}>
-                            <span
-                              style={{
-                                fontFamily: "semi-bold",
-                              }}
-                            >
-                              Service name:
-                            </span>
-                            {"  " + service.service_name}
-                          </p>
-                          <p className={`color--${theme}`}>
-                            <span
-                              style={{
-                                fontFamily: "semi-bold",
-                              }}
-                            >
-                              Service description:
-                            </span>
-                            {"  " + service.service_description}
-                          </p>
-                          <p>
-                            <span
-                              className={`color--${theme}`}
-                              style={{
-                                fontFamily: "semi-bold",
-                              }}
-                            >
-                              Price:
-                            </span>
-                            <span style={{ color: "#C9B81A" }}>
-                              {"   $" + service.service_price}
-                            </span>
-                          </p>
+              <ul className="service--lists">
+                {serviceData &&
+                  [...serviceData].reverse().map((service, index) => (
+                    <li className={`list--${theme}`} key={index}>
+                      <div className="details--container">
+                        <div className="details">
+                          <img
+                            src={service.service_image}
+                            alt="service image"
+                            style={{ width: "100px", borderRadius: "10px" }}
+                          />
+                          <div className="service--details">
+                            <p className={`color--${theme}`}>
+                              <span
+                                style={{
+                                  fontFamily: "semi-bold",
+                                }}
+                              >
+                                Service name:
+                              </span>
+                              {"  " + service.service_name}
+                            </p>
+                            <p className={`color--${theme}`}>
+                              <span
+                                style={{
+                                  fontFamily: "semi-bold",
+                                }}
+                              >
+                                Service description:
+                              </span>
+                              {"  " + service.service_description}
+                            </p>
+                            <p>
+                              <span
+                                className={`color--${theme}`}
+                                style={{
+                                  fontFamily: "semi-bold",
+                                }}
+                              >
+                                Price:
+                              </span>
+                              <span style={{ color: "#C9B81A" }}>
+                                {"   $" + service.service_price}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                        <div className={`icon color--${theme}`}>
+                          <Actions
+                            serviceData={service}
+                            serviceID={service._id}
+                            serviceIndex={index}
+                            onDelete={handleDeleteDialog}
+                            getUpdatedData={getUpdatedData}
+                            functionDone={functionDone}
+                          />
                         </div>
                       </div>
-                      <div className={`icon color--${theme}`}>
-                        <Actions
-                          serviceData={service}
-                          serviceID={service._id}
-                          serviceIndex={index}
-                          onDelete={handleDeleteDialog}
-                          getUpdatedData={getUpdatedData}
-                          functionDone={functionDone}
-                        />
-                      </div>
-                    </div>
-                  </li>
-                ))}
-            </ul>
-          </div>
-        )}
-      </div>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
       {open ? (
         <Dialog
           open={open}

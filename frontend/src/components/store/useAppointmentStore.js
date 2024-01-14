@@ -11,6 +11,7 @@ const useAppointmentStore = create((set) => ({
   time: "",
   branchID: "",
   branchEmail: "",
+  currentAppointments: {},
 
   setMunicipality: (municipality) => set({ municipality }),
   setBranch: (branch) => set({ branch }),
@@ -22,6 +23,7 @@ const useAppointmentStore = create((set) => ({
   setBranchID: (branchID) => set({ branchID }),
   setAvailableTime: (availableTime) => set({ availableTime }),
   setDate: (date) => set({ date }),
+  setCurrentAppointments: (currentAppointments) => set({ currentAppointments }),
 }));
 
 export default useAppointmentStore;

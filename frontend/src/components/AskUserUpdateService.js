@@ -220,7 +220,7 @@ function AskUserUpdateService({
         updatePayload.service_image = cloudinaryResponse.data.secure_url;
       }
       const providerID = providerDatas.providerData._id;
-      console.log("providerID ", providerID);
+
       // Send the update request
       const response = await axios.put(
         `${server_url}/provider/updateServiceInfo/${providerID}/${serviceID}`,
@@ -231,7 +231,9 @@ function AskUserUpdateService({
 
       if (response.status === 200) {
         enqueueSnackbar("Service Updated successfully", { variant: "success" });
+        handleClose();
         getUpdatedData();
+
         if (cloudinaryResponse) {
           setserviceImage(null);
         }
@@ -429,7 +431,9 @@ function AskUserUpdateService({
             <div>
               <img
                 src={
-                  serviceData?.service_image
+                  serviceImage
+                    ? serviceImage
+                    : serviceData?.service_image
                     ? serviceData.service_image
                     : "https://th.bing.com/th/id/OIP.6kEev2FT9fMgGqWhNJSfPgHaE6?w=252&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7"
                 }

@@ -4,51 +4,124 @@ import axios from "axios";
 import Linear from "../loaders_folder/Linear";
 import { server_url } from "../../serverUrl";
 import { ThemeContext } from "../../App";
-
-const columns = [
-  { field: "firstname", headerName: "First name", width: 130 },
-  { field: "lastname", headerName: "Last name", width: 130 },
-  {
-    field: "age",
-    headerName: "Age",
-    type: "number",
-    width: 90,
-  },
-
-  {
-    field: "serviceName",
-    headerName: "Selected Service",
-    width: 130,
-  },
-  {
-    field: "servicePrice",
-    headerName: "Price",
-    width: 90,
-  },
-  {
-    field: "serviceDate",
-    headerName: "Date",
-    width: 130,
-  },
-  {
-    field: "serviceTime",
-    headerName: "Time",
-    width: 130,
-  },
-  {
-    field: "status",
-    headerName: "Status",
-    width: 130,
-  },
-];
+import NoAvailableToShow from "../NoAvailableToShow";
+import img from "../../images/noappointment.png";
+import { GoPeople } from "react-icons/go";
+import Actions from "../Actions";
+import { BsEnvelopeAt } from "react-icons/bs";
+import EmailLoader from "../loaders_folder/EmailLoader";
+import { enqueueSnackbar, useSnackbar } from "notistack";
 
 export default function DataTable() {
   const [customerData, setCustomerData] = React.useState({});
   const [customerID, setCustomerID] = React.useState("");
   const [serviceData, setServiceData] = React.useState({});
-  const { providerDatas } = React.useContext(ThemeContext);
+  const [loading, setLoading] = React.useState(false);
+  const [loadingEmail, setLoadingEmail] = React.useState(false);
+  const { providerDatas, theme } = React.useContext(ThemeContext);
+  const { enqueueSnackbar } = useSnackbar();
+  const columns = [
+    { field: "firstname", headerName: "First name", width: 130 },
+    { field: "lastname", headerName: "Last name", width: 130 },
+    {
+      field: "age",
+      headerName: "Age",
+      type: "number",
+      width: 90,
+    },
+
+    {
+      field: "serviceName",
+      headerName: "Selected Service",
+      width: 180,
+    },
+    {
+      field: "servicePrice",
+      headerName: "Price",
+      width: 90,
+    },
+    {
+      field: "serviceDate",
+      headerName: "Date",
+      width: 130,
+    },
+    {
+      field: "serviceTime",
+      headerName: "Time",
+      width: 130,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 130,
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 130,
+      renderCell: (params) => (
+        <button
+          onClick={() => handleEmail(params.row)}
+          className="flex justify--content--c gap-3"
+          style={{
+            border: "none",
+            color: "white",
+            backgroundColor: "#00a6ff",
+            borderRadius: "5px",
+          }}
+        >
+          <p style={{ margin: "0", padding: "5px 5px", cursor: "pointer" }}>
+            {" "}
+            remind
+          </p>{" "}
+          <BsEnvelopeAt />
+        </button>
+      ),
+    },
+  ];
+  const handleEmail = async (row) => {
+    const toEmail = row.email;
+    const subject = "Appointments reminder";
+    const message = `
+    Dear ${row.firstname},
+  
+    We hope this message finds you well. This is a gentle reminder of your upcoming appointment with us.
+  
+    Appointment Details:
+    - Service: ${row.serviceName}
+    - Price: ${row.servicePrice}
+    - Date: ${row.serviceDate}
+    - Time: ${row.serviceTime}
+  
+    If you have any questions or need to reschedule, please feel free to contact us on email. We appreciate your business and look forward to serving you.
+  
+    Thank you
+    `;
+
+    try {
+      setLoadingEmail(true);
+      const response = await axios.post(`${server_url}/sendEmail`, {
+        toEmail,
+        subject,
+        message,
+      });
+
+      if (response.status === 200) {
+        setLoadingEmail(false);
+        enqueueSnackbar("Email sent successfuly", { variant: "info" });
+      } else {
+        console.error("Error:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error sending email");
+    }
+  };
+
   const ID = providerDatas.providerData._id;
+
   const fetchService = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
         `${server_url}/appointments/getCustomers?id=${ID}`
@@ -61,10 +134,12 @@ export default function DataTable() {
           const customerResponse = await axios.get(
             `${server_url}/appointments/getCustomersInfo?id=${service.customerID}`
           );
+
           return customerResponse.data[0]; // Access the first item in the array
         } catch (error) {
+          setLoading(false);
           console.error("Error fetching customer data:", error);
-          return {}; // Provide a fallback if there's an error fetching customer data
+          return {};
         }
       });
 
@@ -79,16 +154,23 @@ export default function DataTable() {
         // Check if the service date is today
         const isToday =
           serviceDate.toDateString() === currentDate.toDateString();
+        const passDate = serviceDate.getDay() < currentDate.getDay();
 
         return {
           ...service,
           ...customerData,
+          serviceDate: serviceDate.toDateString(),
           id: service._id || index.toString(),
-          status: isToday ? "Today" : "Upcoming", // Add a status based on the date condition
+          action: <p>Delete</p>,
+          status: isToday ? "Today" : passDate ? "History" : "Upcoming",
         };
       });
 
       setServiceData(combinedData.reverse());
+
+      if (serviceData.length > 0) {
+        setLoading(false);
+      }
     } catch (error) {
       console.error("Error fetching service data:", error);
     }
@@ -97,24 +179,56 @@ export default function DataTable() {
   React.useEffect(() => {
     fetchService();
   }, [ID]);
-  console.log(serviceData);
 
   return (
-    <div className="scheduled--customerList--PP">
-      {serviceData && serviceData.length > 0 ? (
-        <DataGrid
-          rows={serviceData}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-        />
-      ) : (
+    <>
+      {loadingEmail && <EmailLoader />}
+      {loading ? (
         <Linear />
+      ) : serviceData && serviceData.length > 0 ? (
+        <div className="scheduled--customerList--PP">
+          <>
+            <div className="flex justify--content--s">
+              <div
+                className="flex justify--content--c gap-5"
+                style={{
+                  textAlign: "end",
+                  marginTop: "0px",
+                  padding: "10px 5px",
+                  backgroundColor: "#ff9a9c",
+                  color: "white",
+                }}
+              >
+                <h5
+                  style={{
+                    textAlign: "end",
+                    margin: "0px",
+                  }}
+                >
+                  Scheduled Customers
+                </h5>
+                <GoPeople />
+              </div>
+            </div>
+
+            <DataGrid
+              rows={serviceData}
+              columns={columns}
+              initialState={{
+                pagination: {
+                  paginationModel: { page: 0, pageSize: 10 },
+                },
+              }}
+              pageSizeOptions={[5, 10]}
+            />
+          </>
+        </div>
+      ) : (
+        <NoAvailableToShow
+          definition={"You don't have customers yet."}
+          image={img}
+        />
       )}
-    </div>
+    </>
   );
 }

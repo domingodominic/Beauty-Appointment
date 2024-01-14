@@ -19,26 +19,34 @@ import { server_url } from "../../serverUrl";
 import LoginSpinner from "../loaders_folder/LoginSpinner";
 import useBookingPageClass from "../store/useBookingPageClass";
 import useServicesStore from "../store/useServicesStore";
+import Spinner from "../loaders_folder/Spinner";
 
 const steps = [
   "Select Municipality",
-  "Select provider",
+  "Select branch",
   "Select service",
   "Select Date & Time",
   "Review",
 ];
 
 export default function HorizontalLinearStepper({
-  handleNextPage,
   setBookState,
+  handleNextPage,
 }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const [isLoading, setLoading] = React.useState(false);
-  const { branchID, chosenService, date, time, branchEmail } =
-    useAppointmentStore();
+  const {
+    branchID,
+    chosenService,
+    date,
+    time,
+    branch,
+    branchEmail,
+    setCurrentAppointments,
+  } = useAppointmentStore();
   const { setCurrentClassname } = useBookingPageClass();
-  const { theme, customerProfiles, providerDatas } =
+  const { theme, customerProfiles, providerDatas, userDatas } =
     React.useContext(ThemeContext);
   const serviceName = chosenService.service_name;
   const serviceImage = chosenService.service_image;
@@ -54,31 +62,40 @@ export default function HorizontalLinearStepper({
   };
 
   const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
+    if (activeStep === 1) {
+      if (!branch) {
+        enqueueSnackbar("Please select a branch to proceed.", {
+          variant: "info",
+        });
+      } else {
+        let newSkipped = skipped;
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
-    setCurrentClassname("classname--rightslide");
-  };
-
-  const getUpdatedData = async () => {
-    setLoading(true);
-    if (providerDatas.providerData && providerDatas.providerData._id) {
-      try {
-        const response = await axios.get(
-          `${server_url}/provider/${providerDatas.providerData._id}`
-        );
-        setCurrentServices(response.data.data.services);
-        if (response.status === 200) {
-          setLoading(false);
-          setBookState(false);
+        if (isStepSkipped(activeStep)) {
+          newSkipped = new Set(newSkipped.values());
+          newSkipped.delete(activeStep);
         }
-      } catch (error) {
-        console.error(error);
+
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setSkipped(newSkipped);
+        setCurrentClassname("classname--rightslide");
+      }
+    }
+    if (activeStep === 2) {
+      if (!chosenService || !chosenService.service_name) {
+        enqueueSnackbar("Please select a service to proceed.", {
+          variant: "info",
+        });
+      } else {
+        let newSkipped = skipped;
+
+        if (isStepSkipped(activeStep)) {
+          newSkipped = new Set(newSkipped.values());
+          newSkipped.delete(activeStep);
+        }
+
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setSkipped(newSkipped);
+        setCurrentClassname("classname--rightslide");
       }
     }
   };
@@ -123,7 +140,7 @@ export default function HorizontalLinearStepper({
         {
           recipient_id: branchID,
           sender_id: customerID,
-          content: "Hola, you got new customers booked at you!",
+          content: "Hello, you have new customers scheduled to book with you!",
           status: "unopen",
         }
       );
@@ -137,6 +154,35 @@ export default function HorizontalLinearStepper({
     } catch (error) {
       setLoading(false);
       console.log(error);
+    }
+  };
+
+  const fetchNewAppointments = async () => {
+    const userId = userDatas.userData.userAccount;
+    console.log("rorks");
+    if (userId) {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `${server_url}/appointments/getBookedService/${userId}`
+        );
+        console.log("response status is ", response.status);
+        if (response.status === 200) {
+          const currentDate = new Date();
+          const filteredAppointments = response.data.filter((data) => {
+            const serviceDate = new Date(data.serviceDate);
+            return currentDate.getTime() <= serviceDate.getTime();
+          });
+
+          setCurrentAppointments(filteredAppointments);
+          setBookState(false);
+        }
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -163,9 +209,11 @@ export default function HorizontalLinearStepper({
         enqueueSnackbar("successfuly booked your appointment!", {
           variant: "success",
         });
+
         handleSendEmail();
-        getUpdatedData();
+        fetchNewAppointments();
         setLoading(false);
+        handleNextPage("home");
       } else if (response.status === 500) {
         enqueueSnackbar("Something went wrong, please try again.", {
           variant: "error",
@@ -175,9 +223,10 @@ export default function HorizontalLinearStepper({
       console.log(error);
     }
   };
+
   return (
     <Box sx={{ padding: " 30px 40px", maxHeight: "100vh" }}>
-      {isLoading ? <LoginSpinner /> : null}
+      {isLoading ? <Spinner /> : null}
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
@@ -214,24 +263,26 @@ export default function HorizontalLinearStepper({
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-              className={`stepper-backBtn--${theme}`}
-            >
-              Back
-            </Button>
-            <Box sx={{ flex: "1 1 auto" }} />
+          {!isLoading && (
+            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+              <Button
+                color="inherit"
+                onClick={handleBack}
+                sx={{ mr: 1 }}
+                disabled={activeStep === 0}
+                className={`stepper-backBtn--${theme}`}
+              >
+                Back
+              </Button>
+              <Box sx={{ flex: "1 1 auto" }} />
 
-            {activeStep === steps.length - 1 ? (
-              <button onClick={schedulingAppointment}>BOOK</button>
-            ) : (
-              <Button onClick={handleNext}>Next</Button>
-            )}
-          </Box>
+              {activeStep === steps.length - 1 ? (
+                <button onClick={schedulingAppointment}>BOOK</button>
+              ) : (
+                <Button onClick={handleNext}>Next</Button>
+              )}
+            </Box>
+          )}
         </React.Fragment>
       )}
     </Box>

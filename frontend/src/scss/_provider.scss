@@ -58,5 +58,13 @@
   }
 }
 .providerService--mainContainer {
-  padding: 50px 70px;
+  padding: 10px 50px;
+}
+
+.css-gl260s-MuiDataGrid-columnHeadersInner {
+  background-color: #fdcfcf;
+}
+.MuiDataGrid-columnHeader {
+  border: 1px solid rgb(0, 0, 0);
+  padding: 0px 20px;
 }

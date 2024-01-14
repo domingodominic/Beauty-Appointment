@@ -3,6 +3,7 @@ import useAppointmentStore from "../store/useAppointmentStore";
 import LoginSpinner from "../loaders_folder/LoginSpinner";
 import axios from "axios";
 import { useState } from "react";
+import Rating from "@mui/material/Rating";
 import { ThemeContext } from "../../App";
 import { IoIosArrowForward } from "react-icons/io";
 import Linear from "../loaders_folder/Linear";
@@ -12,9 +13,9 @@ import useBookingPageClass from "../store/useBookingPageClass";
 import { IoLocationOutline } from "react-icons/io5";
 
 function SelectBranch({ setStep }) {
-  const [branches, setBranch] = useState();
+  const [branches, setBranchs] = useState();
   const [loading, isLoading] = useState(false);
-  const { municipality, setBranchID, setServices, setBranchEmail } =
+  const { municipality, setBranchID, setServices, setBranchEmail, setBranch } =
     useAppointmentStore();
   const { currentClassname, setCurrentClassname } = useBookingPageClass();
   const { theme } = useContext(ThemeContext);
@@ -33,7 +34,7 @@ function SelectBranch({ setStep }) {
           `${server_url}/user/branches/${municipality}`
         );
 
-        setBranch(response.data);
+        setBranchs(response.data);
         console.log(response.data);
       } catch (error) {
         console.log(error);
@@ -45,10 +46,11 @@ function SelectBranch({ setStep }) {
     fetchData();
   }, []);
 
-  const handleNext = (services, branchID, email) => {
+  const handleNext = (services, branchID, email, branchName) => {
     setServices(services);
     setBranchID(branchID);
     setBranchEmail(email);
+    setBranch(branchName);
     setCurrentClassname("classname--rightslide");
   };
 
@@ -77,17 +79,35 @@ function SelectBranch({ setStep }) {
               className={`list--${theme} municipality--list`}
               key={i}
               onClick={() => {
-                handleNext(branch.services, branch._id, branch.businessEmail);
+                handleNext(
+                  branch.services,
+                  branch._id,
+                  branch.businessEmail,
+                  branch.businessName
+                );
                 setStep(2);
               }}
             >
               <div className="details--container">
                 <div>
-                  {
+                  <div>
                     <h4 style={{ margin: "0" }} className={`color--${theme}`}>
                       {branch.businessName}
                     </h4>
-                  }
+                    <div className="flex justify--content--s gap-5">
+                      <Rating
+                        name="half-rating-read"
+                        size="small"
+                        value={branch.ratings}
+                        precision={0.5}
+                        readOnly
+                      />
+                      <p
+                        style={{ margin: "0", color: "gray", fontSize: "12px" }}
+                      >{`${branch.ratings} / 5 `}</p>
+                    </div>
+                  </div>
+
                   <p
                     style={{
                       margin: "0",

@@ -10,6 +10,7 @@ import { server_url } from "../../serverUrl";
 import axios from "axios";
 import BookedDetailsDialog from "./BookedDetailsDialog";
 import useBookingPageClass from "../store/useBookingPageClass";
+import useAppointmentStore from "../store/useAppointmentStore";
 
 function AppointmentList({ handleNextPage }) {
   const { theme, userDatas } = useContext(ThemeContext);
@@ -20,11 +21,65 @@ function AppointmentList({ handleNextPage }) {
   const [loading, setLoading] = useState(false);
   const { setCurrentClassname } = useBookingPageClass();
   const [bookIsClicked, setBookClicked] = useState(false);
+  const { currentAppointments, setCurrentAppointments } = useAppointmentStore();
+  const userId = userDatas.userData.userAccount;
 
   const setBookState = (data) => {
     setBookClicked(data);
   };
-  const userId = userDatas.userData.userAccount;
+  const goToBookingPage = () => {
+    handleNextPage("book");
+  };
+
+  //check the date of the appointments every 1min if it is greater than to the current date then change it
+  useEffect(() => {
+    let intervalId;
+
+    const checkPastAppointments = async () => {
+      if (userId) {
+        try {
+          const response = await axios.get(
+            `${server_url}/appointments/getBookedService/${userId}`
+          );
+
+          if (response.status === 200) {
+            const currentDate = new Date();
+
+            await Promise.all(
+              response.data.map(async (appointment) => {
+                if (
+                  new Date(appointment.serviceDate).getDate() <
+                    currentDate.getDate() &&
+                  !appointment.isRated
+                ) {
+                  try {
+                    await axios.put(
+                      `${server_url}/appointments/setToBeRated/${appointment._id}`
+                    );
+                    console.log(`Marked as toBeRated: ${appointment._id}`);
+                  } catch (error) {
+                    console.error(
+                      `Error marking as toBeRated: ${error.message}`
+                    );
+                  }
+                }
+              })
+            );
+          }
+        } catch (error) {
+          console.error(`Error fetching appointments: ${error.message}`);
+        }
+      }
+    };
+
+    // Execute the function initially and then every 1 minute
+    checkPastAppointments();
+    intervalId = setInterval(checkPastAppointments, 30000);
+
+    // Clear the interval when the component is unmounted
+    return () => clearInterval(intervalId);
+  }, [userId]);
+
   // Fetching data
   useEffect(() => {
     if (userId) {
@@ -34,15 +89,18 @@ function AppointmentList({ handleNextPage }) {
           const response = await axios.get(
             `${server_url}/appointments/getBookedService/${userId}`
           );
-          console.log(response);
+
           if (response.status === 200) {
             const currentDate = new Date();
+
             const filteredAppointments = response.data.filter((data) => {
+              console.log(new Date(data.serviceDate).getDate());
               const serviceDate = new Date(data.serviceDate);
-              return currentDate.getTime() <= serviceDate.getTime();
+              return serviceDate.getDate() >= currentDate.getDate();
             });
 
             setAppointedService(filteredAppointments);
+            setCurrentAppointments(filteredAppointments);
           }
         } catch (error) {
           console.error(error);
@@ -54,7 +112,6 @@ function AppointmentList({ handleNextPage }) {
 
       fetchData();
     }
-    console.log(appointedService.length);
   }, [userId, appointedService.length]);
 
   const setDialogClose = (data) => {
@@ -122,7 +179,7 @@ function AppointmentList({ handleNextPage }) {
             <div className="button">
               <button
                 onClick={() => {
-                  setBookClicked(true);
+                  goToBookingPage();
                   setCurrentClassname("classname--rightslide");
                 }}
               >
@@ -132,74 +189,66 @@ function AppointmentList({ handleNextPage }) {
             </div>
           </div>
           <ul className="service--lists">
-            {appointedService &&
-              appointedService
-                .filter((data) => {
-                  const currentDate = new Date();
-                  const serviceDate = new Date(data.serviceDate);
-
-                  return currentDate.getTime() <= serviceDate.getTime();
-                })
-                .reverse()
-                .map((service, index) => (
-                  <li className={`list--${theme}`} key={index}>
-                    <div className="details--container">
-                      <div className="details">
-                        <img
-                          src={service.serviceImage}
-                          alt="service image"
-                          style={{ width: "100px", borderRadius: "10px" }}
-                        />
-                        <div className="service--details">
-                          <p className={`color--${theme}`}>
-                            <span
-                              style={{
-                                fontFamily: "semi-bold",
-                              }}
-                            >
-                              Date and Time :
-                            </span>
-                            {` ` +
-                              new Date(service.serviceDate).toDateString() +
-                              ` ` +
-                              service.serviceTime}
-                          </p>
-                          <p className={`color--${theme}`}>
-                            <span
-                              style={{
-                                fontFamily: "semi-bold",
-                              }}
-                            >
-                              Appointed service:
-                            </span>
-                            {"  " + service.serviceName}
-                          </p>
-                          <p>
-                            <span
-                              className={`color--${theme}`}
-                              style={{
-                                fontFamily: "semi-bold",
-                              }}
-                            >
-                              Price:
-                            </span>
-                            <span style={{ color: "#C9B81A" }}>
-                              {"   $" + service.servicePrice}
-                            </span>
-                          </p>
-                        </div>
-                      </div>
-                      <div className={`icon color--${theme}`}>
-                        <PiEyeThin
-                          onClick={() => {
-                            setServiceData(service);
-                            setOpen(true);
-                          }}
-                        />
+            {currentAppointments &&
+              currentAppointments.reverse().map((service, index) => (
+                <li className={`list--${theme}`} key={index}>
+                  <div className="details--container">
+                    <div className="details">
+                      <img
+                        src={service.serviceImage}
+                        alt="service image"
+                        style={{ width: "100px", borderRadius: "10px" }}
+                      />
+                      <div className="service--details">
+                        <p className={`color--${theme}`}>
+                          <span
+                            style={{
+                              fontFamily: "semi-bold",
+                            }}
+                          >
+                            Date and Time :
+                          </span>
+                          {` ` +
+                            new Date(service.serviceDate).toDateString() +
+                            ` ` +
+                            service.serviceTime}
+                        </p>
+                        <p className={`color--${theme}`}>
+                          <span
+                            style={{
+                              fontFamily: "semi-bold",
+                            }}
+                          >
+                            Appointed service:
+                          </span>
+                          {"  " + service.serviceName}
+                        </p>
+                        <p>
+                          <span
+                            className={`color--${theme}`}
+                            style={{
+                              fontFamily: "semi-bold",
+                            }}
+                          >
+                            Price:
+                          </span>
+                          <span style={{ color: "#C9B81A" }}>
+                            {"   $" + service.servicePrice}
+                          </span>
+                        </p>
                       </div>
                     </div>
-                  </li>
-                ))}
+                    <div className={`icon color--${theme}`}>
+                      <PiEyeThin
+                        onClick={() => {
+                          setServiceData(service);
+                          setOpen(true);
+                        }}
+                      />
+                    </div>
+                  </div>
+                </li>
+              ))}
           </ul>
         </div>
       )}

@@ -1,6 +1,6 @@
 import { providermodel } from "../model/providermodel.js";
 import { userAccount } from "../model/userAccountModel.js";
-import express, { request } from "express";
+import express, { request, response } from "express";
 import bcrypt from "bcrypt";
 const route = express.Router();
 
@@ -367,6 +367,35 @@ route.delete("/services/:userId/dates/:dateId", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+//update the ratings base on customer rating
+route.put("/setRating/:providerID", async (request, response) => {
+  try {
+    const { providerID } = request.params;
+    const { rating } = request.body;
+    console.log("rating is ", rating);
+
+    const findProvider = await providermodel.findById({ _id: providerID });
+
+    if (!findProvider) {
+      return response.status(404).json({ error: "Provider not found" });
+    }
+
+    const updatedRatings = (rating + findProvider.ratings) / 2;
+    const updatedRatingCount = findProvider.ratingsCount + 1;
+    console.log("update trating count will be ", updatedRatingCount);
+    console.log("update rating value will be ", updatedRatings);
+    await providermodel.updateOne(
+      { _id: providerID },
+      { $set: { ratings: updatedRatings, ratingsCount: updatedRatingCount } }
+    );
+
+    return response.status(200).json({ success: true });
+  } catch (error) {
+    console.error(error);
+    return response.status(500).json({ error: "Internal Server Error" });
   }
 });
 

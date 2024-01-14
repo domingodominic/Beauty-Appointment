@@ -6,14 +6,6 @@ const router = express.Router();
 
 router.post("/schedulingAppointment", async (request, response) => {
   try {
-    console.log(request.body.serviceName);
-    console.log(request.body.serviceDate);
-    console.log(request.body.serviceDescription);
-    console.log(request.body.serviceImage);
-    console.log(request.body.serviceTime);
-    console.log(request.body.customerID);
-    console.log(request.body.servicePrice);
-    console.log(request.body.branchID);
     if (
       !request.body.serviceName ||
       !request.body.serviceDescription ||
@@ -87,6 +79,54 @@ router.get("/getBookedService/:id", async (request, response) => {
   } catch (error) {
     console.log(error);
   }
+});
+
+router.get("/getToBeRatedAppointments/:id", async (request, response) => {
+  const { id } = request.params;
+  try {
+    const getAppointments = await scheduledAppointment.find({ customerID: id });
+
+    const toBeRatedAppointments = getAppointments
+      .filter((appointments) => appointments.isRated === false)
+      .filter((appointments) => appointments.readyToRate === true);
+
+    response.json(toBeRatedAppointments);
+  } catch (error) {
+    console.log("internal server error ", error);
+  }
+});
+router.put("/setToBeRated/:id", async (request, response) => {
+  const { id } = request.params;
+
+  try {
+    const result = await scheduledAppointment.updateOne(
+      { _id: id },
+      { $set: { readyToRate: true } }
+    );
+
+    if (result.nModified > 0) {
+      // The update was successful
+      response.json({ message: "Service is ready to be rated" });
+    } else {
+      // No document was modified, meaning the document with the provided ID wasn't found
+      response.status(404).json({ error: "Appointment not found" });
+    }
+  } catch (error) {
+    console.error("Error updating appointment:", error);
+    response.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.put("/setRated/:id", async (request, response) => {
+  const { id } = request.params;
+  console.log("supplied appointment id is ", id);
+
+  await scheduledAppointment.updateOne(
+    { _id: id },
+    { $set: { isRated: true } }
+  );
+
+  response.json("updated rating state successfuly");
 });
 
 export default router;

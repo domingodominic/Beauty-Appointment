@@ -107,7 +107,7 @@ function SelectTime({ setStep }) {
 
   const compareDateInCalendarDialog = (date) => {
     setSelectedDateinCalendar(date);
-    console.log("the data is ", date);
+
     const updatedAmTime = [];
     const updatedPmTime = [];
 
@@ -123,7 +123,7 @@ function SelectTime({ setStep }) {
         const morning = data.availability_time.filter((time) =>
           time.includes("AM")
         );
-        console.log("morning time is", morning);
+
         const afternoon = data.availability_time.filter((time) =>
           time.includes("PM")
         );

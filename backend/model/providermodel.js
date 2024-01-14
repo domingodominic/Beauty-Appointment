@@ -17,6 +17,14 @@ const providerSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    ratings: {
+      type: Number,
+      default: 5,
+    },
+    ratingsCount: {
+      type: Number,
+      default: 0,
+    },
     services: [
       {
         service_name: { type: String },

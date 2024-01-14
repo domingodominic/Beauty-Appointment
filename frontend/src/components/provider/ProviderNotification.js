@@ -7,15 +7,18 @@ import NoAvailableToShow from "../NoAvailableToShow";
 import { ThemeContext } from "../../App";
 import { server_url } from "../../serverUrl";
 import { useContext } from "react";
+import Linear from "../loaders_folder/Linear";
 
 function ProviderNotification({ setNewPage }) {
-  const { providerDatas } = useContext(ThemeContext);
+  const { providerDatas, theme } = useContext(ThemeContext);
   const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
   const definition = "You have no notifications so far";
   const providerID = providerDatas.providerData._id;
 
   useEffect(() => {
     const fetchNotif = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `${server_url}/notification/getNotification/${providerID}`
@@ -23,6 +26,7 @@ function ProviderNotification({ setNewPage }) {
 
         if (response.status === 200) {
           setNotifications(response.data.res.reverse());
+          setLoading(false);
         }
       } catch (error) {
         console.log(error);
@@ -41,25 +45,26 @@ function ProviderNotification({ setNewPage }) {
           status: "open",
         }
       );
-
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
   };
   return (
     <div>
-      {notifications && notifications.length <= 0 ? (
+      {loading ? (
+        <Linear />
+      ) : notifications && notifications.length <= 0 ? (
         <NoAvailableToShow definition={definition} image={noNotifImg} />
       ) : (
         <div>
-          <h5>Notifications</h5>
+          <h5 className={`color--${theme}`}>Notifications</h5>
           <ul className={`notification--main--container`}>
             {notifications.map((data, i) => (
-              <div className={`notification--list--conatiner`}>
+              <div className={`notification--list--conatiner--${theme}`}>
                 <li key={i} onClick={() => handleClickedNotif(data._id)}>
-                  {console.log("the data from notif ", data)}
-                  <div className={`notification--content`}>{data.content}</div>
+                  <div className={`notification--content color--${theme}`}>
+                    {data.content}
+                  </div>
                   <Icon
                     icon="simple-icons:go"
                     className="notification--icon"

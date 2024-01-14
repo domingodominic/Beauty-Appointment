@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "../scss/style.css";
 import { IoIosAdd } from "react-icons/io";
 import { IoEyeOutline } from "react-icons/io5";
@@ -8,7 +8,10 @@ import AskUserDialog from "./AskUserDeleteService";
 import AskUserUpdateService from "./AskUserUpdateService";
 import AskUserToAdd from "./AskUserToAdd";
 import DisplayServiceInfo from "./provider/DisplayServiceInfo";
-
+import { ThemeContext } from "../App";
+import { server_url } from "../serverUrl";
+import axios from "axios";
+import { async } from "@firebase/util";
 function Actions({
   onDelete,
   serviceID,
@@ -25,7 +28,30 @@ function Actions({
   const [dialogAddState, setDialogAddState] = useState(false);
   const [dialogUpdateOption, setDialogUpdateOption] = useState(false);
   const [DisplayServiceDialog, setDisplayServiceDialog] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { providerDatas } = useContext(ThemeContext);
+  const [servicesData, setServicesData] = useState([]);
 
+  //function to get the updated data
+
+  // const getUpdatedData = async () => {
+  //   setLoading(true);
+  //   if (providerDatas.providerData && providerDatas.providerData._id) {
+  //     try {
+  //       const response = await axios.get(
+  //         `${server_url}/provider/${providerDatas.providerData._id}`
+  //       );
+
+  //       setServicesData(response.data.data.services);
+
+  //       if (response.status === 200) {
+  //         setLoading(false);
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  // };
   // handle Delete
   const handleDelete = async () => {
     await onDelete(serviceID);
@@ -36,7 +62,6 @@ function Actions({
   };
 
   const openDisplayDialog = async () => {
-    await getUpdatedData();
     setDisplayServiceDialog(true);
   };
 
@@ -53,7 +78,7 @@ function Actions({
     setDialogAddState(true);
   };
 
-  const openDialogUpdate = () => {
+  const openDialogUpdate = async () => {
     setDialogUpdateOption(true);
   };
 
@@ -72,7 +97,6 @@ function Actions({
           className="card3"
           onClick={() => {
             openDialogUpdate();
-            getUpdatedData();
           }}
         >
           <CiEdit className="action--update" />
@@ -104,6 +128,7 @@ function Actions({
       />
       <AskUserToAdd
         serviceID={serviceID}
+        getUpdatedData={getUpdatedData}
         dialogAddState={dialogAddState}
         setDialogAddState={setDialogAddState}
       />

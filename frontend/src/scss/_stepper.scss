@@ -7,10 +7,10 @@
   font-family: semi-bold !important;
 }
 .stepper--container {
-  max-height: 400px;
-  min-height: 400px;
   overflow-y: scroll;
   overflow-x: hidden;
+  min-height: 565px;
+  max-height: 565px;
   padding: 10px;
 
   &::-webkit-scrollbar {

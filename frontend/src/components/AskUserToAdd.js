@@ -13,7 +13,12 @@ import { enqueueSnackbar } from "notistack";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-function AskUserToAdd({ dialogAddState, setDialogAddState, serviceID }) {
+function AskUserToAdd({
+  dialogAddState,
+  setDialogAddState,
+  serviceID,
+  getUpdatedData,
+}) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [serviceTime, setServicetime] = useState([]);
   const { providerDatas } = useContext(ThemeContext);
@@ -47,6 +52,7 @@ function AskUserToAdd({ dialogAddState, setDialogAddState, serviceID }) {
         }
       );
       if (response.status === 200) {
+        await getUpdatedData();
         enqueueSnackbar("Succesfully added time and date", {
           variant: "success",
         });

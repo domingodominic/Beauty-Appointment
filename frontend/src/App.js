@@ -60,7 +60,7 @@ function App() {
     const response = await axios.get(
       `${server_url}/customer/get-user?email=${user.email}`
     );
-    console.log("response", response);
+
     if (response.data.foundUser.role === "customer" && providerData) {
       navigate("/Home");
     } else if (response.data.foundUser.role === "provider" && providerData) {

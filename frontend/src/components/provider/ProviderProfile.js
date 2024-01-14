@@ -13,9 +13,10 @@ import Dialog from "@mui/material/Dialog";
 import { useNavigate } from "react-router-dom";
 import Slide from "@mui/material/Slide";
 import { DialogTitle, DialogContent } from "@mui/material";
-
 import ChangePasswordForm from "../change password/ChangePasswordForm";
 import "../../scss/style.css";
+
+//transition
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -94,6 +95,7 @@ function ProviderProfile() {
       });
     }
   };
+  console.log("userdata fetch", providerDatas.providerData);
 
   const Signout = async () => {
     setOpenSignout(true);
@@ -125,7 +127,7 @@ function ProviderProfile() {
                   width: "150px",
                   height: "150px",
                   borderRadius: "100%",
-                  boxShadow: "5px 5px  15px rgba(,0,0,0,0.2)",
+                  boxShadow: "4px 7px  10px rgba(,0,0,0,0.3)",
                 }}
               />
 
@@ -144,9 +146,6 @@ function ProviderProfile() {
               {userData.firstname + " " + userData.lastname}
             </div>
             <div className="customer--email">{userData.email}</div>
-            <div style={{ position: "absolute", top: "5%", right: "5%" }}>
-              <ThemeChanger />
-            </div>
           </div>
           <div className="profile--info--container">
             <div className="profile--left">
@@ -167,6 +166,12 @@ function ProviderProfile() {
                   <p className="item--title">Name</p>
                   <p className={`item--value color--${theme} `}>
                     {userData.firstname + " " + userData.lastname}
+                  </p>
+                </div>
+                <div className="profile--join">
+                  <p className="item--title">Business name</p>
+                  <p className={`item--value color--${theme} `}>
+                    {providerDatas.providerData.businessName}
                   </p>
                 </div>
                 <div className="profile--join">
@@ -194,6 +199,13 @@ function ProviderProfile() {
                   <p className="item--title">Contact no.</p>
                   <p className={`item--value color--${theme} `}>
                     {userData.contactNumber}
+                  </p>
+                </div>
+
+                <div className="private--info--item">
+                  <p className="item--title">Business address</p>
+                  <p className={`item--value color--${theme} `}>
+                    {providerDatas.providerData.businessAddress}
                   </p>
                 </div>
                 <div className="private--info--item">
@@ -235,6 +247,7 @@ function ProviderProfile() {
                 color: "white",
                 padding: "3px 5px",
                 borderRadius: "3px",
+                cursor: "pointer",
               }}
               onClick={() => {
                 logout();

@@ -5,7 +5,7 @@ import "../../scss/style.css";
 
 function ReviewAppointment() {
   const { theme, customerProfiles } = useContext(ThemeContext);
-  const { chosenService, time, date } = useAppointmentStore();
+  const { chosenService, time, date, branch } = useAppointmentStore();
   const email = customerProfiles.customerProfile.email;
   const contact_no = customerProfiles.customerProfile.contactNumber;
   const generateRefNo = () => {
@@ -19,7 +19,6 @@ function ReviewAppointment() {
   };
   const chosenDate = new Date(date);
 
-  console.log("chosen date is ", date);
   const formattedDate = chosenDate.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
@@ -33,6 +32,10 @@ function ReviewAppointment() {
         Please double check your entries before booking.
       </p>
       <div className="review--divider">
+        <p className={`review--service--${theme}`}>Branch name:</p>
+        <p className={`review--serviceinfo--${theme}`}>{branch}</p>
+      </div>
+      <div className="review--divider">
         <p className={`review--service--${theme}`}>Selected Service:</p>
         <p className={`review--serviceinfo--${theme}`}>
           {chosenService.service_name}{" "}
@@ -41,6 +44,7 @@ function ReviewAppointment() {
           {chosenService.service_description}
         </p>
       </div>
+
       <div className="review--divider">
         <p className={`review--service--${theme}`}> Selected Date & Time:</p>
         <p className={`review--serviceinfo--${theme}`}>

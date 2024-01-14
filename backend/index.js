@@ -1,6 +1,7 @@
 import express from "express";
 import { PORT, mongoDBURL } from "./config.js";
 import customerRoute from "./routes/customerRoute.js";
+import ratingRoute from "./routes/ratingsRoute.js";
 import changePassword from "./routes/changepasswordRoute.js";
 import appointment from "./routes/appointmentRoute.js";
 import userAccountRouter from "./routes/userAccountRouter.js";
@@ -32,6 +33,7 @@ app.use("/provider", providerRouter);
 app.use("/appointments", appointment);
 app.use("/auth", changePassword);
 app.use("/notification", notificationRoute);
+app.use("/ratings", ratingRoute);
 
 mongoose
   .connect(mongoDBURL)

@@ -3,9 +3,12 @@ import { PiEyeThin } from "react-icons/pi";
 import useAppointmentStore from "../store/useAppointmentStore";
 import { ThemeContext } from "../../App";
 import useBookingPageClass from "../store/useBookingPageClass";
+import NoAvailableToShow from "../NoAvailableToShow";
+import img from "../../images/noServices.png";
 
 function SelectService({ setStep }) {
-  const { services, setChosenService, chosenService } = useAppointmentStore();
+  const { services, setChosenService, chosenService, branch } =
+    useAppointmentStore();
   const { theme } = useContext(ThemeContext);
   const { currentClassname, setCurrentClassname } = useBookingPageClass();
   const handleClick = (service) => {
@@ -31,7 +34,15 @@ function SelectService({ setStep }) {
           onChange={(e) => setCurrentMunicipality(e.target.value)}
         /> */}
         </div>
-        {services &&
+        {console.log(branch)}
+
+        {services.length <= 0 ? (
+          <NoAvailableToShow
+            definition={`This branch ${branch} has not yet begun providing services.`}
+            image={img}
+          />
+        ) : (
+          services &&
           services.reverse().map((service, index) => (
             <li
               className={`list--${theme} available--service`}
@@ -76,7 +87,7 @@ function SelectService({ setStep }) {
                         Price:
                       </span>
                       <span style={{ color: "#C9B81A" }}>
-                        {"   $" + service.service_price}
+                        {"   ₱" + service.service_price}
                       </span>
                     </p>
                   </div>
@@ -86,7 +97,8 @@ function SelectService({ setStep }) {
                 </div>
               </div>
             </li>
-          ))}
+          ))
+        )}
       </ul>
     </div>
   );
