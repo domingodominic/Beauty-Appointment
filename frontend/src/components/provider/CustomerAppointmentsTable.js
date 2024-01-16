@@ -20,6 +20,10 @@ export default function DataTable() {
   const [loadingEmail, setLoadingEmail] = React.useState(false);
   const { providerDatas, theme } = React.useContext(ThemeContext);
   const { enqueueSnackbar } = useSnackbar();
+  const today = new Date().getDate();
+
+  console.log("today date ", today);
+
   const columns = [
     { field: "firstname", headerName: "First name", width: 130 },
     { field: "lastname", headerName: "Last name", width: 130 },
@@ -60,32 +64,56 @@ export default function DataTable() {
       headerName: "Action",
       width: 130,
       renderCell: (params) => (
-        <button
-          onClick={() => handleEmail(params.row)}
-          className="flex justify--content--c gap-3"
-          style={{
-            border: "none",
-            color: "white",
-            backgroundColor: "#00a6ff",
-            borderRadius: "5px",
-          }}
-        >
-          <p style={{ margin: "0", padding: "5px 5px", cursor: "pointer" }}>
-            {" "}
-            remind
-          </p>{" "}
-          <BsEnvelopeAt />
-        </button>
+        <div>
+          {today <= new Date(params.row.serviceDate).getDate() && (
+            <button
+              onClick={() => handleEmail(params.row)}
+              className="flex justify--content--c gap-3"
+              style={{
+                border: "none",
+                color: "white",
+                backgroundColor: "#00a6ff",
+                borderRadius: "5px",
+              }}
+            >
+              <p style={{ margin: "0", padding: "5px 5px", cursor: "pointer" }}>
+                remind
+              </p>{" "}
+              <BsEnvelopeAt />
+            </button>
+          )}
+
+          {today > new Date(params.row.serviceDate).getDate() && (
+            <button
+              onClick={() => handleInfo(params.row)}
+              className="flex justify--content--c gap-3"
+              style={{
+                border: "none",
+                color: "white",
+                backgroundColor: "#00a6ff",
+                borderRadius: "5px",
+              }}
+            >
+              <p style={{ margin: "0", padding: "5px 5px", cursor: "pointer" }}>
+                No Show
+              </p>
+              <BsEnvelopeAt />
+            </button>
+          )}
+        </div>
       ),
     },
   ];
+  const handleInfo = (row) => {
+    console.log(row);
+  };
   const handleEmail = async (row) => {
     const toEmail = row.email;
     const subject = "Appointments reminder";
     const message = `
     Dear ${row.firstname},
   
-    We hope this message finds you well. This is a gentle reminder of your upcoming appointment with us.
+  We hope this message finds you well. This is a gentle reminder of your upcoming appointment with us.
   
     Appointment Details:
     - Service: ${row.serviceName}
@@ -93,7 +121,7 @@ export default function DataTable() {
     - Date: ${row.serviceDate}
     - Time: ${row.serviceTime}
   
-    If you have any questions or need to reschedule, please feel free to contact us on email. We appreciate your business and look forward to serving you.
+    If you have any questions, please feel free to contact us on email. We appreciate your business and look forward to serving you.
   
     Thank you
     `;
@@ -154,7 +182,7 @@ export default function DataTable() {
         // Check if the service date is today
         const isToday =
           serviceDate.toDateString() === currentDate.toDateString();
-        const passDate = serviceDate.getDay() < currentDate.getDay();
+        const passDate = serviceDate.getDate() < currentDate.getDate();
 
         return {
           ...service,
@@ -165,6 +193,7 @@ export default function DataTable() {
           status: isToday ? "Today" : passDate ? "History" : "Upcoming",
         };
       });
+      console.log("service data ", serviceData);
 
       setServiceData(combinedData.reverse());
 

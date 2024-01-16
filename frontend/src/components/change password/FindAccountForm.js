@@ -21,7 +21,6 @@ function FindAccountForm({
   const { enqueueSnackbar } = useSnackbar();
   // to check the supplied email
   const onSubmit = async (data) => {
-    console.log("Submitting form...");
     try {
       const response = await axios.post(`${server_url}/auth/accountCheck`, {
         email: data.email,
@@ -31,7 +30,6 @@ function FindAccountForm({
         if (response.data.exist === true) {
           handleSendEmail();
           setCurrentAuth("submitBtn");
-          console.log("finding user ID", response.data);
           setUserID(response.data);
         } else {
           enqueueSnackbar(
@@ -95,7 +93,6 @@ function FindAccountForm({
               )}
             />
           </div>
-
           <button type="submit">Find my account</button>
         </form>
       ) : (

@@ -19,7 +19,11 @@ const providerSchema = mongoose.Schema(
     },
     ratings: {
       type: Number,
-      default: 5,
+      default: 0,
+    },
+    ratingsTotal: {
+      type: Number,
+      default: 0,
     },
     ratingsCount: {
       type: Number,

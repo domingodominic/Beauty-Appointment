@@ -95,6 +95,7 @@ router.get("/getToBeRatedAppointments/:id", async (request, response) => {
     console.log("internal server error ", error);
   }
 });
+
 router.put("/setToBeRated/:id", async (request, response) => {
   const { id } = request.params;
 
@@ -119,8 +120,6 @@ router.put("/setToBeRated/:id", async (request, response) => {
 
 router.put("/setRated/:id", async (request, response) => {
   const { id } = request.params;
-  console.log("supplied appointment id is ", id);
-
   await scheduledAppointment.updateOne(
     { _id: id },
     { $set: { isRated: true } }

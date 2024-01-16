@@ -5,7 +5,6 @@ import { onAuthStateChanged } from "firebase/auth";
 import axios from "axios";
 import { auth } from "./firebase-config";
 import UpdateCustomer from "./components/customer/UpdateCustomer";
-import DeleteCustomer from "./components/customer/DeleteCustomer";
 import ShowCustomer from "./components/customer/ShowCustomer";
 import HomeCustomer from "./components/customer/HomeCustomer";
 import AddCustomer from "./components/customer/AddCustomer";
@@ -117,7 +116,6 @@ function App() {
 
           <Route path="/add" element={<AddCustomer />} />
           <Route path="/edit/:id" element={<UpdateCustomer />} />
-          <Route path="/delete/:id" element={<DeleteCustomer />} />
           <Route path="/show/:id" element={<ShowCustomer />} />
         </Routes>
       </ThemeContext.Provider>

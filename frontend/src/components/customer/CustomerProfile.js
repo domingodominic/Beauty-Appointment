@@ -152,9 +152,6 @@ function CustomerProfile({ profile, data }) {
                 {profile.firstname + " " + profile.lastname}
               </div>
               <div className="customer--email">{profile.email}</div>
-              <div style={{ position: "absolute", top: "5%", right: "5%" }}>
-                <ThemeChanger />
-              </div>
             </div>
             <div className="profile--info--container">
               <div className="profile--left">

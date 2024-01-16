@@ -1518,7 +1518,7 @@ body {
   overflow-x: hidden;
   min-height: 565px;
   max-height: 565px;
-  padding: 10px;
+  padding: 20px 10px;
 }
 .stepper--container::-webkit-scrollbar {
   padding: 2rem;
@@ -2172,6 +2172,10 @@ body {
   align-items: center;
 }
 
+.center-flex {
+  align-items: center;
+}
+
 .justify--content--e {
   justify-content: end;
   align-items: center;
@@ -2190,6 +2194,19 @@ body {
 .field--title--light {
   font-weight: bold;
   color: #191444;
+}
+
+.margin-b-5 {
+  margin-bottom: 15px;
+}
+
+.margin-0 {
+  margin: 0;
+  padding-left: 5px;
+}
+
+.margin-00 {
+  margin: 0;
 }
 
 .field--title--dark {
@@ -2233,6 +2250,15 @@ body {
 
 .pink {
   color: #ff9a9c;
+}
+
+.rating--container {
+  padding-bottom: 5px;
+  border-bottom: 1px solid gray;
+}
+
+.rating--container > p:first-child {
+  color: gray;
 }
 
 @media (min-width: 800px) {

@@ -11,10 +11,14 @@ import { useSnackbar } from "notistack";
 import { server_url } from "../../serverUrl";
 import useBookingPageClass from "../store/useBookingPageClass";
 import { IoLocationOutline } from "react-icons/io5";
+import BranchDetailsDialog from "./BranchDetailsDialog";
 
 function SelectBranch({ setStep }) {
   const [branches, setBranchs] = useState();
   const [loading, isLoading] = useState(false);
+  const [isOpen, setOpen] = useState(false);
+  const [ratingDetails, setRatingDetails] = useState([]);
+  const [branchDialogStates, setBranchDialogStates] = useState({});
   const { municipality, setBranchID, setServices, setBranchEmail, setBranch } =
     useAppointmentStore();
   const { currentClassname, setCurrentClassname } = useBookingPageClass();
@@ -35,7 +39,6 @@ function SelectBranch({ setStep }) {
         );
 
         setBranchs(response.data);
-        console.log(response.data);
       } catch (error) {
         console.log(error);
       } finally {
@@ -45,6 +48,17 @@ function SelectBranch({ setStep }) {
 
     fetchData();
   }, []);
+
+  const fetchRatingInformation = async (providerID) => {
+    const res = await axios.get(
+      `${server_url}/ratings/ratingInformation/${providerID}`
+    );
+
+    setRatingDetails(res.data);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleNext = (services, branchID, email, branchName) => {
     setServices(services);
@@ -75,25 +89,29 @@ function SelectBranch({ setStep }) {
         /> */}
           </div>
           {branches[0].branches.map((branch, i) => (
-            <li
-              className={`list--${theme} municipality--list`}
-              key={i}
-              onClick={() => {
-                handleNext(
-                  branch.services,
-                  branch._id,
-                  branch.businessEmail,
-                  branch.businessName
-                );
-                setStep(2);
-              }}
-            >
+            <li className={`list--${theme} municipality--list`} key={i}>
+              <BranchDetailsDialog
+                handleClose={handleClose}
+                isOpen={isOpen}
+                Details={branch}
+                ratingDetails={ratingDetails}
+              />
               <div className="details--container">
                 <div>
                   <div>
                     <h4 style={{ margin: "0" }} className={`color--${theme}`}>
                       {branch.businessName}
                     </h4>
+                    <p
+                      style={{
+                        margin: "0",
+                        fontSize: "10px",
+                        color: "gray !important",
+                      }}
+                      className={`color--${theme}`}
+                    >
+                      {branch.businessDescription}
+                    </p>
                     <div className="flex justify--content--s gap-5">
                       <Rating
                         name="half-rating-read"
@@ -111,30 +129,33 @@ function SelectBranch({ setStep }) {
                   <p
                     style={{
                       margin: "0",
-                      fontSize: "10px",
-                      color: "gray !important",
+                      color: "skyblue",
+                      fontWeight: "bold",
+                      fontStyle: "italic",
+                      fontSize: "12px",
+                      paddingBottom: "3px",
                     }}
-                    className={`color--${theme}`}
+                    onClick={async () => {
+                      await fetchRatingInformation(branch._id);
+                      setOpen(true);
+                    }}
                   >
-                    {branch.businessDescription}
+                    view full details
                   </p>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginTop: "4px",
-                    }}
-                  >
-                    <IoLocationOutline />
-                    <p
-                      className={`color--${theme}`}
-                      style={{ fontSize: "10px", margin: "0" }}
-                    >
-                      {branch.businessAddress}
-                    </p>
-                  </div>
                 </div>
-                <div className={`color--${theme}`}>
+                <div
+                  className={`color--${theme}`}
+                  onClick={() => {
+                    setOpen(false);
+                    handleNext(
+                      branch.services,
+                      branch._id,
+                      branch.businessEmail,
+                      branch.businessName
+                    );
+                    setStep(2);
+                  }}
+                >
                   <IoIosArrowForward />
                 </div>
               </div>

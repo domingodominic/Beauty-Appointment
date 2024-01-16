@@ -7,6 +7,7 @@ import appointment from "./routes/appointmentRoute.js";
 import userAccountRouter from "./routes/userAccountRouter.js";
 import notificationRoute from "./routes/notificationRoute.js";
 import mongoose from "mongoose";
+import cron from "node-cron";
 import cors from "cors";
 import multer from "multer";
 import nodemailer from "nodemailer";

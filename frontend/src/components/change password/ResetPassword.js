@@ -26,7 +26,6 @@ function ResetPassword({ isDialogOpen, setDialogOpen, email }) {
   };
 
   const changePassword = async () => {
-    console.log("click");
     sendPasswordResetEmail(auth, email).then(() => {
       enqueueSnackbar("We have sent the reset password in your email", {
         variant: "info",
@@ -41,8 +40,8 @@ function ResetPassword({ isDialogOpen, setDialogOpen, email }) {
         open={isDialogOpen}
         TransitionComponent={Transition}
         keepMounted
-        onClose={closeDialog}
         aria-describedby="alert-dialog-slide-description"
+        onClose={closeDialog}
       >
         <DialogTitle>Change Password?</DialogTitle>
         <DialogContent>
