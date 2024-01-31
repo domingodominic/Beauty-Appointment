@@ -217,5 +217,24 @@ router.get("/branches/:municipality", async (request, response) => {
     return response.status(500).json({ error: "Internal Server Error" });
   }
 });
+router.get("/allBranches/totalBranch", async (request, response) => {
+  try {
+    const providers = await userAccount.find({ role: "provider" });
+    response.json(providers);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    response.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/allCustomers/totalCustomers", async (request, response) => {
+  try {
+    const customer = await userAccount.find({ role: "customer" });
+    response.json(customer);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    response.status(500).json({ error: "Internal server error" });
+  }
+});
 
 export default router;

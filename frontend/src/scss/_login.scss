@@ -30,7 +30,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100svh;
 }
 .login--body {
   animation: bringDown 1s forwards;
@@ -88,7 +88,7 @@ body {
 }
 
 .signup--card {
-  max-height: 80vh;
+  max-height: 80svh;
   overflow-y: scroll !important;
   &::-webkit-scrollbar {
     padding: 1rem;

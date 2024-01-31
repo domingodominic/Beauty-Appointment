@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import Slide from "@mui/material/Slide";
 import { DialogTitle, DialogContent } from "@mui/material";
 import ChangePasswordForm from "../change password/ChangePasswordForm";
+import useProfileinfoStore from "../store/useProfileinfoStore";
 import "../../scss/style.css";
 
 //transition
@@ -28,6 +29,7 @@ function ProviderProfile() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [imageURL, setImageURL] = useState("");
   const [forgotPassword, setForgotPassword] = useState(false);
+  const { setProfilepicture } = useProfileinfoStore();
   const { enqueueSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
@@ -74,6 +76,7 @@ function ProviderProfile() {
         formdata
       );
       setImageURL(cloudinaryResponse.data.secure_url);
+      setProfilepicture(cloudinaryResponse.data.secure_url);
 
       // Send the updated data to the backend
       await axios.put(

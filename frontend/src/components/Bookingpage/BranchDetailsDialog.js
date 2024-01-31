@@ -7,7 +7,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 function BranchDetailsDialog({ isOpen, Details, handleClose, ratingDetails }) {
-  console.log("details ", ratingDetails);
+  const ratingsValue = Details.ratingsTotal / Details.ratingsCount;
+  console.log("details ", Details);
   return (
     <>
       <Dialog
@@ -39,21 +40,22 @@ function BranchDetailsDialog({ isOpen, Details, handleClose, ratingDetails }) {
           </div>
           <h3>Star Rating System</h3>
           <div className="flex justify--content--spacebet gap-7">
-            <div style={{ alignItems: "center", textAlign: "center" }}>
+            {/* <div style={{ alignItems: "center", textAlign: "center" }}>
               <p
                 style={{ fontSize: "40px", fontWeight: "bold", margin: "2px" }}
               >
-                {Details.ratings}
+                {console.log(ratingsValue)}
+                {ratingsValue ? ratingsValue.toFixed(2) : 0}
               </p>
               <Rating
                 name="half-rating-read"
                 size="small"
-                value={Details.ratings}
+                value={ratingsValue.toFixed(2)}
                 precision={0.5}
                 readOnly
               />
               <p style={{ margin: "2px", fontSize: "12px" }}>Total Ratings</p>
-            </div>
+            </div> */}
 
             <div>
               <div
@@ -158,32 +160,35 @@ function BranchDetailsDialog({ isOpen, Details, handleClose, ratingDetails }) {
           </div>
           <h3>Reviews</h3>
 
-          {ratingDetails.map((rating, i) => (
-            <div key={i} className="flex center-flex gap-3 margin-b-5">
-              <div style={{ minWidth: "100px" }}>
-                <Avatar
-                  alt="Customer profile picture"
-                  src={rating.customerProfile}
-                  sx={{ width: 56, height: 56 }}
-                />
-                <p className="margin-00">{rating.customerName}</p>
-              </div>
-              <div>
-                {console.log(rating.rating)}
-                <Rating
-                  value={rating.rating}
-                  precision={0.5}
-                  name="half-rating-read"
-                  size="small"
-                  readOnly
-                />
+          {ratingDetails === "noratings" ? (
+            <p>No ratings yet</p>
+          ) : (
+            ratingDetails.map((rating, i) => (
+              <div key={i} className="flex center-flex gap-3 margin-b-5">
+                <div style={{ minWidth: "100px" }}>
+                  <Avatar
+                    alt="Customer profile picture"
+                    src={rating.customerProfile}
+                    sx={{ width: 56, height: 56 }}
+                  />
+                  <p className="margin-00">{rating.customerName}</p>
+                </div>
+                <div>
+                  <Rating
+                    value={rating.rating}
+                    precision={0.5}
+                    name="half-rating-read"
+                    size="small"
+                    readOnly
+                  />
 
-                <p className="margin-00">
-                  &ldquo;{rating.ratingComment}&ldquo;
-                </p>
+                  <p className="margin-00">
+                    &ldquo;{rating.ratingComment}&ldquo;
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </DialogContent>
       </Dialog>
     </>

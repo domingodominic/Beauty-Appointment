@@ -128,4 +128,23 @@ router.put("/setRated/:id", async (request, response) => {
   response.json("updated rating state successfuly");
 });
 
+router.get("/totalAppointments", async (request, response) => {
+  const appointments = await scheduledAppointment.find({});
+
+  response.json(appointments);
+});
+
+router.put("/approveAppointments/:appointmentID", async (request, response) => {
+  const { appointmentID } = request.params;
+  const { status } = request.body;
+
+  console.log(status);
+
+  const appointment = await scheduledAppointment.updateOne(
+    { _id: appointmentID },
+    { $set: { appointmentState: status } }
+  );
+
+  response.json(appointment);
+});
 export default router;

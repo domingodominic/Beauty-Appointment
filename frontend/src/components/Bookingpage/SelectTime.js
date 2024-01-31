@@ -33,6 +33,8 @@ function SelectTime({ setStep }) {
     };
   }, []);
 
+  console.log("chosen service data ", chosenService);
+
   useEffect(() => {
     const generateDates = () => {
       const currentMonthDates = [];
@@ -137,6 +139,7 @@ function SelectTime({ setStep }) {
   };
   const handleChosenTime = (time) => {
     setTime(time);
+    console.log("the time is", time);
     setStep(4);
   };
   const handleChosenDate = (date) => {

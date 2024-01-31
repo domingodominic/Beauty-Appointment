@@ -1,6 +1,8 @@
 import { Dialog, DialogContent } from "@mui/material";
 import Slide from "@mui/material/Slide";
 import React, { useContext } from "react";
+import { CiCalendarDate } from "react-icons/ci";
+import { IoMdTime } from "react-icons/io";
 import { ThemeContext } from "../../App";
 
 //transition
@@ -33,7 +35,16 @@ function DisplayServiceInfo({
             alt="Service image"
             style={{ width: "100%" }}
           />
-          <p className={`dialog--details--title--${theme}`}>Details :</p>
+          <p
+            className={`dialog--details--title--${theme}`}
+            style={{
+              backgroundColor: "skyblue",
+              color: "white",
+              padding: ".5rem",
+            }}
+          >
+            Details :
+          </p>
           <div className={`dialog--service--container`}>
             <p className={`dialog--service--${theme}`}>Name : </p>
             <p>{serviceData.service_name}</p>
@@ -47,17 +58,29 @@ function DisplayServiceInfo({
             <p>{serviceData.service_price}</p>
           </div>
           <div>
-            <p className={`dialog--details--title--${theme}`}>
+            <p
+              className={`dialog--details--title--${theme}`}
+              style={{
+                backgroundColor: "skyblue",
+                color: "white",
+                padding: ".5rem",
+              }}
+            >
               available schedule:
             </p>
 
             {serviceData.timeAndDate.map((date, i) => (
-              <div key={i}>
-                <p>
-                  <span style={{ fontWeight: "bold" }}>Date :</span>{" "}
-                  {date.service_date}
-                </p>
-                <div>TIME :</div>
+              <div
+                key={i}
+                style={{ borderBottom: "1px dashed gray", padding: "20px 0" }}
+              >
+                <div className="flex justify--content--s gap-3">
+                  <CiCalendarDate width={20} />
+                  <p className="margin-1">
+                    {new Date(date.service_date).toDateString()}
+                  </p>
+                </div>
+
                 <ul className="timelist--container">
                   {date.availability_time.map((time, i) => (
                     <li key={i} className="timelist--items">

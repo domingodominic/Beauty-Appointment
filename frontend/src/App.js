@@ -17,6 +17,8 @@ import CustomerProfile from "./components/customer/CustomerProfile";
 import MunicipalitySelection from "./components/Bookingpage/MunicipalitySelection";
 import ProviderHome from "./components/provider/ProviderHome";
 import "./App.css";
+import AdminLogin from "./components/admin/AdminLogin";
+import Dashboard from "./components/admin/pages/Dashboard";
 import ProviderAppointment from "./components/provider/ProviderAppointment";
 import ProviderSignup from "./components/provider/ProviderSignup";
 import RedirectSpinner from "./components/loaders_folder/RedirectSpinner";
@@ -24,6 +26,7 @@ import ProviderServices from "./components/provider/ProviderServices";
 import SelectTime from "./components/Bookingpage/SelectTime";
 import SelectDate from "./components/Bookingpage/SelectDate";
 import EmailLoader from "./components/loaders_folder/EmailLoader";
+import useProfileinfoStore from "../src/components/store/useProfileinfoStore";
 import { server_url } from "./serverUrl";
 export const ThemeContext = createContext();
 
@@ -35,6 +38,7 @@ function App() {
   const [customerProfile, setCustomerProfile] = useState({});
   const [theme, setTheme] = useState("light");
   const [isLoading, setLoading] = useState(true);
+  const { setProfilepicture } = useProfileinfoStore();
 
   //theme changer
   const updateThemeState = (newValue) => {
@@ -67,6 +71,7 @@ function App() {
     }
     setProviderData(response.data.providerData);
     setUserData(response.data.customerData);
+    setProfilepicture(response.data.foundUser.profilePicture);
     setCustomerProfile(response.data.foundUser);
   };
 
@@ -83,6 +88,8 @@ function App() {
         }}
       >
         <Routes>
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/customerProfile" element={<CustomerProfile />} />
           <Route path="/selectTime" element={<SelectDate />} />
           <Route path="/Bookingpage" element={<BookingPage />} />
@@ -101,7 +108,7 @@ function App() {
             path="/provider--appointments"
             element={<ProviderAppointment />}
           />
-          <Route path="/" element={<Welcome />} />
+          <Route path="/" element={<LoginForm />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/provider--signup" element={<ProviderSignup />} />
           <Route path="/provider--home" element={<ProviderHome />} />

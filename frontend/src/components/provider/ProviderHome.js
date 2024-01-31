@@ -19,6 +19,7 @@ import Slide from "@mui/material/Slide";
 import { DialogTitle, DialogContent } from "@mui/material";
 import { IoIosArrowForward } from "react-icons/io";
 import HorizontalLinearStepper from "../Bookingpage/Stepper";
+import useProfileinfoStore from "../store/useProfileinfoStore";
 
 //transition
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -33,6 +34,7 @@ function ProviderHome() {
   const [openSignout, setOpenSignout] = useState(false);
   const [customerProfile, setCustomerProfile] = useState({});
   const [isDesktop, setIsDesktop] = useState(false);
+  const { profilePicture } = useProfileinfoStore();
 
   const navigate = useNavigate();
 
@@ -262,8 +264,8 @@ function ProviderHome() {
                 </p>
                 <img
                   src={
-                    customerProfiles
-                      ? customerProfiles.customerProfile.profilePicture
+                    profilePicture
+                      ? profilePicture
                       : "https://www.bing.com/th/id/OGC.26ef8bb418031b9bb4f44e1aeea71186?pid=1.7&rurl=https%3a%2f%2fwww.icegif.com%2fwp-content%2fuploads%2floading-icegif-1.gif&ehk=2Acslneog3bqjvPC44LDJtLzNjNxDqIk3NXCrSRZM%2fA%3d"
                   }
                   alt="profile picture"

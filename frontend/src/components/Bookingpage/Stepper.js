@@ -42,6 +42,7 @@ export default function HorizontalLinearStepper({
     date,
     time,
     branch,
+    serviceID,
     branchEmail,
     setCurrentAppointments,
   } = useAppointmentStore();
@@ -59,6 +60,22 @@ export default function HorizontalLinearStepper({
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
+  };
+
+  //handle removing the chosen time to the availability of the service
+  const handleRemovingTime = async () => {
+    try {
+      const res = await axios.put(
+        `${server_url}/provider/updateAvailabilityTime/${branchID}`,
+        {
+          service_date: date,
+          updatedAvailabilityTime: time,
+          serviceId: serviceID,
+        }
+      );
+    } catch (error) {
+      console.error("Error updating availability time:", error);
+    }
   };
 
   const handleNext = () => {
@@ -212,6 +229,7 @@ export default function HorizontalLinearStepper({
 
         handleSendEmail();
         fetchNewAppointments();
+        handleRemovingTime();
         setLoading(false);
         handleNextPage("home");
       } else if (response.status === 500) {

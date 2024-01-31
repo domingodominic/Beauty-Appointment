@@ -7,12 +7,13 @@ import NoAvailableToShow from "../NoAvailableToShow";
 import img from "../../images/noServices.png";
 
 function SelectService({ setStep }) {
-  const { services, setChosenService, chosenService, branch } =
+  const { services, setChosenService, chosenService, branch, setServiceID } =
     useAppointmentStore();
   const { theme } = useContext(ThemeContext);
   const { currentClassname, setCurrentClassname } = useBookingPageClass();
-  const handleClick = (service) => {
+  const handleClick = (service, id) => {
     setChosenService(service);
+    setServiceID(id);
     setStep(3);
     setCurrentClassname("classname--rightslide");
   };
@@ -47,7 +48,7 @@ function SelectService({ setStep }) {
             <li
               className={`list--${theme} available--service`}
               key={index}
-              onClick={() => handleClick(service)}
+              onClick={() => handleClick(service, service._id)}
             >
               <div className="details--container">
                 <div className="details">

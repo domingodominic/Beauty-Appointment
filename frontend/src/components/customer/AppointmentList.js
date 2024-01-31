@@ -34,7 +34,6 @@ function AppointmentList({ handleNextPage }) {
   //check the date of the appointments every 1min if it is greater than to the current date then change it
   useEffect(() => {
     let intervalId;
-
     const checkPastAppointments = async () => {
       if (userId) {
         try {
@@ -48,7 +47,7 @@ function AppointmentList({ handleNextPage }) {
             await Promise.all(
               response.data.map(async (appointment) => {
                 if (
-                  new Date(appointment.serviceDate).getDate() <
+                  new Date(appointment.serviceDate).getDate() <=
                     currentDate.getDate() &&
                   !appointment.isRated
                 ) {
@@ -94,7 +93,6 @@ function AppointmentList({ handleNextPage }) {
             const currentDate = new Date();
 
             const filteredAppointments = response.data.filter((data) => {
-              console.log(new Date(data.serviceDate).getDate());
               const serviceDate = new Date(data.serviceDate);
               return serviceDate.getDate() >= currentDate.getDate();
             });
@@ -235,6 +233,17 @@ function AppointmentList({ handleNextPage }) {
                           <span style={{ color: "#C9B81A" }}>
                             {"   $" + service.servicePrice}
                           </span>
+                        </p>
+                        <p
+                          style={
+                            service.appointmentState === "pending"
+                              ? { color: "gray", fontStyle: "italic" }
+                              : service.appointmentState === "accepted"
+                              ? { color: "green", fontStyle: "italic" }
+                              : { color: "red", fontStyle: "italic" }
+                          }
+                        >
+                          {service.appointmentState}
                         </p>
                       </div>
                     </div>

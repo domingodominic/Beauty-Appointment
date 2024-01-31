@@ -8,9 +8,10 @@ import NoAvailableToShow from "../NoAvailableToShow";
 import img from "../../images/noappointment.png";
 import { GoPeople } from "react-icons/go";
 import Actions from "../Actions";
-import { BsEnvelopeAt } from "react-icons/bs";
+import { BsEnvelopeAt, BsPersonCheckFill, BsPersonFillX } from "react-icons/bs";
 import EmailLoader from "../loaders_folder/EmailLoader";
 import { enqueueSnackbar, useSnackbar } from "notistack";
+import { Tooltip } from "@mui/material";
 
 export default function DataTable() {
   const [customerData, setCustomerData] = React.useState({});
@@ -21,8 +22,6 @@ export default function DataTable() {
   const { providerDatas, theme } = React.useContext(ThemeContext);
   const { enqueueSnackbar } = useSnackbar();
   const today = new Date().getDate();
-
-  console.log("today date ", today);
 
   const columns = [
     { field: "firstname", headerName: "First name", width: 130 },
@@ -65,48 +64,73 @@ export default function DataTable() {
       width: 130,
       renderCell: (params) => (
         <div>
-          {today <= new Date(params.row.serviceDate).getDate() && (
-            <button
-              onClick={() => handleEmail(params.row)}
-              className="flex justify--content--c gap-3"
-              style={{
-                border: "none",
-                color: "white",
-                backgroundColor: "#00a6ff",
-                borderRadius: "5px",
-              }}
-            >
-              <p style={{ margin: "0", padding: "5px 5px", cursor: "pointer" }}>
-                remind
-              </p>{" "}
-              <BsEnvelopeAt />
-            </button>
-          )}
+          {today <= new Date(params.row.serviceDate).getDate() &&
+            params.row.appointmentState === "accepted" && (
+              <button
+                onClick={() => handleEmail(params.row)}
+                className="flex justify--content--c gap-3"
+                style={{
+                  border: "none",
+                  color: "white",
+                  backgroundColor: "#00a6ff",
+                  borderRadius: "5px",
+                }}
+              >
+                <p
+                  style={{ margin: "0", padding: "5px 5px", cursor: "pointer" }}
+                >
+                  remind
+                </p>
+                <BsEnvelopeAt />
+              </button>
+            )}
+          {/* {console.log(
+            today < new Date(params.row.serviceDate).getDate() &&
+              params.row.appointmentState === "pending"
+          )} */}
+          {/* {console.log(params.row.appointmentState === "pending")} */}
+          {console.log(today < new Date(params.row.serviceDate).getDate())}
 
-          {today > new Date(params.row.serviceDate).getDate() && (
-            <button
-              onClick={() => handleInfo(params.row)}
-              className="flex justify--content--c gap-3"
-              style={{
-                border: "none",
-                color: "white",
-                backgroundColor: "#00a6ff",
-                borderRadius: "5px",
-              }}
-            >
-              <p style={{ margin: "0", padding: "5px 5px", cursor: "pointer" }}>
-                No Show
-              </p>
-              <BsEnvelopeAt />
-            </button>
-          )}
+          {today <= new Date(params.row.serviceDate).getDate() &&
+            params.row.appointmentState === "pending" && (
+              <div className="flex justify--content--c">
+                <Tooltip title="accept ?" placement="top-start">
+                  <div
+                    style={{
+                      padding: "10px 5px ",
+                      color: "green",
+                      fontSize: "25px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() =>
+                      handleAppointmentState(params.row.id, "accepted")
+                    }
+                  >
+                    <BsPersonCheckFill />
+                  </div>
+                </Tooltip>
+                <Tooltip title="Decline ?" placement="top-start">
+                  <div
+                    style={{
+                      padding: "10px 5px ",
+                      color: "red",
+                      fontSize: "25px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() =>
+                      handleAppointmentState(params.row.id, "decline")
+                    }
+                  >
+                    <BsPersonFillX />
+                  </div>
+                </Tooltip>
+              </div>
+            )}
         </div>
       ),
     },
   ];
-  const handleInfo = (row) => {
-    console.log(row);
-  };
+
   const handleEmail = async (row) => {
     const toEmail = row.email;
     const subject = "Appointments reminder";
@@ -143,6 +167,29 @@ export default function DataTable() {
     } catch (error) {
       console.error("Error:", error);
       alert("Error sending email");
+    }
+  };
+
+  const handleAppointmentState = async (id, status) => {
+    try {
+      setLoading(true);
+      const approve = await axios.put(
+        `${server_url}/appointments/approveAppointments/${id}`,
+        {
+          status,
+        }
+      );
+
+      console.log(approve.data);
+      if (approve.status === 200) {
+        setLoading(false);
+        fetchService();
+        enqueueSnackbar("You have successfuly accept customer appointments!", {
+          variant: "info",
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

@@ -29,16 +29,16 @@ route.get("/ratingInformation/:providerID", async (request, response) => {
     const { providerID } = request.params;
     console.log("provider id ", providerID);
 
+    const customers = [];
     // Use find to get all ratings matching the providerID
     const ratings = await ratingModel.find({ providerID: providerID });
 
     if (ratings.length === 0) {
       console.log("Ratings not found");
-      return response.status(404).send("Ratings not found");
+      return response.json("noratings");
     }
 
     // Initialize an array to store customer information for each rating
-    const customers = [];
 
     // Iterate through each rating and find the corresponding customer
     for (const rating of ratings) {

@@ -23,6 +23,7 @@ import axios from "axios";
 import { server_url } from "../../serverUrl";
 import Slide from "@mui/material/Slide";
 import HorizontalLinearStepper from "../Bookingpage/Stepper";
+import useProfileinfoStore from "../store/useProfileinfoStore";
 import { DialogTitle, DialogContent } from "@mui/material";
 
 //transition
@@ -39,9 +40,11 @@ function HomeCustomer(props) {
   const [openSignout, setOpenSignout] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const [notificationList, setNotification] = useState([]);
+  const { profilePicture, setProfilepicture } = useProfileinfoStore();
   const navigate = useNavigate();
 
-  console.log(customerProfiles);
+  console.log("profile picture is ", profilePicture);
+
   useEffect(() => {
     const handleResize = () => {
       setIsDesktop(window.innerWidth >= 800);
@@ -332,8 +335,8 @@ function HomeCustomer(props) {
                 </p>
                 <img
                   src={
-                    customerProfiles
-                      ? customerProfiles.customerProfile.profilePicture
+                    profilePicture
+                      ? profilePicture //profile picture
                       : "https://www.bing.com/th/id/OGC.26ef8bb418031b9bb4f44e1aeea71186?pid=1.7&rurl=https%3a%2f%2fwww.icegif.com%2fwp-content%2fuploads%2floading-icegif-1.gif&ehk=2Acslneog3bqjvPC44LDJtLzNjNxDqIk3NXCrSRZM%2fA%3d"
                   }
                   onClick={() => setCurrentPage("profile")}

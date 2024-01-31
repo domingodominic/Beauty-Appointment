@@ -100,7 +100,20 @@ function AskUserToAdd({
               </div>
             </div>
           </div>
-          <button onClick={() => handleSubmit()}>SAVE</button>
+          <div className="flex justify--content--c">
+            <button
+              onClick={() => handleSubmit()}
+              style={{
+                backgroundColor: "#ff9a9c",
+                padding: "5px 20px",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+              }}
+            >
+              SAVE
+            </button>
+          </div>
         </DialogContent>
       </Dialog>
     </>

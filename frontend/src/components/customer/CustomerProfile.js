@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import Signout from "../Signout";
 import Dialog from "@mui/material/Dialog";
 import Slide from "@mui/material/Slide";
+import useProfileinfoStore from "../store/useProfileinfoStore";
 import { DialogTitle } from "@mui/material";
 import { server_url } from "../../serverUrl";
 import "../../scss/style.css";
@@ -27,6 +28,7 @@ function CustomerProfile({ profile, data }) {
   const [loading, setLoading] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openSignout, setOpenSignout] = useState(false);
+  const { setProfilepicture } = useProfileinfoStore();
   const { enqueueSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
@@ -77,7 +79,7 @@ function CustomerProfile({ profile, data }) {
         formdata
       );
       setImageURL(cloudinaryResponse.data.secure_url);
-
+      setProfilepicture(cloudinaryResponse.data.secure_url);
       // Send the updated data to the backend
       await axios.put(
         `${server_url}/customer/updateProfilePicture/${profile._id}`,

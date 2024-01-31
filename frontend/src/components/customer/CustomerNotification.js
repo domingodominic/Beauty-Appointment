@@ -16,6 +16,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { Input } from "@mui/base";
+import { enqueueSnackbar } from "notistack";
 
 //labels for ratings
 const labels = {
@@ -48,27 +49,26 @@ function CustomerNotification() {
   const [ratingDialog, setRatingDialog] = useState(false);
   const [comments, setComments] = useState("");
   const { userDatas, theme } = useContext(ThemeContext);
+  const id = userDatas.userData.userAccount;
+  const getData = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `${server_url}/appointments/getToBeRatedAppointments/${id}`
+      );
+
+      if (response.status === 200) {
+        setLoading(false);
+        setRatingList(response.data);
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const id = userDatas.userData.userAccount;
-
-    const getData = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `${server_url}/appointments/getToBeRatedAppointments/${id}`
-        );
-
-        if (response.status === 200) {
-          setLoading(false);
-          setRatingList(response.data);
-          console.log(response.data);
-        }
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
-      }
-    };
     getData();
   }, []);
   const updateProviderRating = async () => {
@@ -79,7 +79,8 @@ function CustomerNotification() {
       );
 
       if (resProvider.data.success) {
-        console.log("Successfully rated provider");
+        await getData();
+        enqueueSnackbar("Rate successfuly submitted!", { variant: "info" });
         return true;
       } else {
         console.log("Rating update for provider failed");

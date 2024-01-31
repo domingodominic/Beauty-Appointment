@@ -263,13 +263,12 @@ route.put(
     }
   }
 );
-
 //additional time and date sa service
 route.post("/addDateTime/:providerID/:serviceID", async (request, response) => {
   const { providerID, serviceID } = request.params;
   const { date, time } = request.body;
+  console.log("time ", time);
 
-  console.log(serviceID);
   try {
     const provider = await providermodel.findOne({ _id: providerID });
 
@@ -286,11 +285,40 @@ route.post("/addDateTime/:providerID/:serviceID", async (request, response) => {
       return response.status(404).json({ message: "Service not found" });
     }
 
-    // Assuming timeAndDate is an array, pushing the new date and time
-    provider.services[serviceIndex].timeAndDate.push({
-      service_date: date,
-      availability_time: time,
-    });
+    const existingDateIndex = provider.services[
+      serviceIndex
+    ].timeAndDate.findIndex((dateObj) => dateObj.service_date === date);
+
+    if (existingDateIndex !== -1) {
+      // Date already exists, combine the existing time array with the new time array
+      if (
+        !provider.services[serviceIndex].timeAndDate[existingDateIndex]
+          .availability_time
+      ) {
+        // If availability_time is not initialized, initialize it as an array
+        provider.services[serviceIndex].timeAndDate[
+          existingDateIndex
+        ].availability_time = [];
+      }
+
+      // Use Set to ensure unique time values
+      const uniqueTimes = new Set([
+        ...provider.services[serviceIndex].timeAndDate[existingDateIndex]
+          .availability_time,
+        ...time,
+      ]);
+
+      // Convert Set back to an array
+      provider.services[serviceIndex].timeAndDate[
+        existingDateIndex
+      ].availability_time = [...uniqueTimes];
+    } else {
+      // Date does not exist, create a new entry for the combined time values
+      provider.services[serviceIndex].timeAndDate.push({
+        service_date: date,
+        availability_time: time,
+      });
+    }
 
     await provider.save();
 
@@ -300,6 +328,7 @@ route.post("/addDateTime/:providerID/:serviceID", async (request, response) => {
     response.status(500).json({ message: "Internal Server Error" });
   }
 });
+
 //get the provider data using ID
 route.get("/getProvider/:providerID", async (req, res) => {
   try {
@@ -383,19 +412,95 @@ route.put("/setRating/:providerID", async (request, response) => {
       return response.status(404).json({ error: "Provider not found" });
     }
 
-    const updatedRatings = (rating + findProvider.ratings) / 2;
+    const updatedRatings = findProvider.ratingsTotal + rating;
+    console.log("the updated ratings is ", updatedRatings);
     const updatedRatingCount = findProvider.ratingsCount + 1;
-    console.log("update trating count will be ", updatedRatingCount);
-    console.log("update rating value will be ", updatedRatings);
+
     await providermodel.updateOne(
       { _id: providerID },
-      { $set: { ratings: updatedRatings, ratingsCount: updatedRatingCount } }
+      {
+        $set: {
+          ratingsTotal: updatedRatings,
+          ratingsCount: updatedRatingCount,
+        },
+      }
     );
 
     return response.status(200).json({ success: true });
   } catch (error) {
     console.error(error);
     return response.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+route.put("/updateAvailabilityTime/:providerId", async (req, res) => {
+  try {
+    const { providerId } = req.params;
+    const { serviceId, service_date, updatedAvailabilityTime } = req.body;
+
+    // Parse the input date string using the Date object
+    const inputDate = new Date(service_date);
+
+    // Format the date to "MM/DD/YYYY" format
+    const formattedDate = `${(inputDate.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}/${inputDate
+      .getDate()
+      .toString()
+      .padStart(2, "0")}/${inputDate.getFullYear()}`;
+
+    console.log("service date is to date string", formattedDate);
+    // Find the provider by ID
+    const provider = await providermodel
+      .findById(providerId)
+      .populate("services");
+    console.log("service id  is ", serviceId);
+    console.log(
+      "provider:",
+      provider.services[0].timeAndDate[0].availability_time[0]
+    );
+    // Find the index of the service by _id
+    const serviceIndex = provider.services.findIndex(
+      (service) => service._id.toString() === serviceId
+    );
+
+    console.log("service index ", serviceIndex);
+    // Check if service is found
+    if (serviceIndex !== -1) {
+      // Find the index of the service_date in the timeAndDate array
+      const dateIndex = provider.services[serviceIndex].timeAndDate.findIndex(
+        (dateObj) => dateObj.service_date === formattedDate
+      );
+
+      // Check if date is found
+      console.log("date index ", dateIndex);
+
+      // Find the index of the updatedAvailabilityTime in availability_time array
+      const timeIndex = provider.services[serviceIndex].timeAndDate[
+        dateIndex
+      ].availability_time.findIndex((time) => time === updatedAvailabilityTime);
+
+      console.log("time index", timeIndex);
+      // Check if time is found
+      if (timeIndex !== -1) {
+        // Delete the specific availability_time
+        provider.services[serviceIndex].timeAndDate[
+          dateIndex
+        ].availability_time.splice(timeIndex, 1);
+
+        // Save the changes
+        await provider.save();
+
+        res.json({ message: "Availability time updated successfully" });
+      } else {
+        res.status(404).json({ message: "Availability time not found" });
+      }
+    } else {
+      res.status(404).json({ message: "Service not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 

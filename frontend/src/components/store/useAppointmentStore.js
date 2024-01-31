@@ -10,6 +10,7 @@ const useAppointmentStore = create((set) => ({
   availableTime: [],
   time: "",
   branchID: "",
+  serviceID: "",
   branchEmail: "",
   currentAppointments: {},
 
@@ -21,6 +22,7 @@ const useAppointmentStore = create((set) => ({
   setPrice: (price) => set({ price }),
   setTime: (time) => set({ time }),
   setBranchID: (branchID) => set({ branchID }),
+  setServiceID: (serviceID) => set({ serviceID }),
   setAvailableTime: (availableTime) => set({ availableTime }),
   setDate: (date) => set({ date }),
   setCurrentAppointments: (currentAppointments) => set({ currentAppointments }),

@@ -75,7 +75,11 @@ function CustomerHistory() {
                   const currentDate = new Date();
                   const serviceDate = new Date(data.serviceDate);
 
-                  return currentDate.getTime() > serviceDate.getTime();
+                  return (
+                    (currentDate.getTime() > serviceDate.getTime() &&
+                      data.appointmentState === "accepted") ||
+                    data.appointmentState === "declined"
+                  );
                 })
                 .map((service, index) => (
                   <li className={`list--${theme}`} key={index}>

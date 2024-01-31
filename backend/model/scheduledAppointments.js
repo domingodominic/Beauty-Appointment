@@ -29,6 +29,10 @@ const scheduledAppointmentSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    appointmentState: {
+      type: String,
+      default: "pending",
+    },
     isReminded: { type: Boolean, default: false },
     isRated: { type: Boolean, default: false },
     readyToRate: { type: Boolean, default: false },

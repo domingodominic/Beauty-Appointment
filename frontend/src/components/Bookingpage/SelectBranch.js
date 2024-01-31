@@ -116,13 +116,13 @@ function SelectBranch({ setStep }) {
                       <Rating
                         name="half-rating-read"
                         size="small"
-                        value={branch.ratings}
+                        value={branch.ratingsTotal / branch.ratingsCount}
                         precision={0.5}
                         readOnly
                       />
                       <p
                         style={{ margin: "0", color: "gray", fontSize: "12px" }}
-                      >{`${branch.ratings} / 5 `}</p>
+                      >{`${branch.ratingsTotal / branch.ratingsCount} / 5 `}</p>
                     </div>
                   </div>
 
